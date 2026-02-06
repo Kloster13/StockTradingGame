@@ -2,17 +2,17 @@ package Domain;
 
 public class Stock
 {
-  private String symbol;
-  private String name;
+  private final String symbol;
+  private final String name;
   private double currentPrice;
   private String currentState;
 
-  public Stock(String symbol, String name, double currentPrice, String currentState)
+  public Stock(String symbol, String name, double currentPrice)
   {
     this.symbol = symbol;
     this.name = name;
     this.currentPrice = currentPrice;
-    this.currentState = currentState;
+    this.currentState = "Steady";
   }
 
   public String getSymbol()
@@ -20,19 +20,9 @@ public class Stock
     return symbol;
   }
 
-  public void setSymbol(String symbol)
-  {
-    this.symbol = symbol;
-  }
-
   public String getName()
   {
     return name;
-  }
-
-  public void setName(String name)
-  {
-    this.name = name;
   }
 
   public double getCurrentPrice()

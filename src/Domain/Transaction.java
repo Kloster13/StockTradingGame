@@ -5,14 +5,13 @@ import java.time.LocalDate;
 public class Transaction
 {
   private int id;
-  private int portfolioId;
-  private String stockSymbol;
-  private String type;
-  private int quantity;
-  private double pricePrShare;
-  private double totalAmount;
-  private double fee;
-  private LocalDate timestamp;
+  private final String stockSymbol;
+  private final String type;
+  private final int quantity;
+  private final double pricePrShare;
+  private final double totalAmount;
+  private final double fee;
+  private final LocalDate timestamp;
 
   public Transaction(String stockSymbol, String type, int quantity, double pricePrShare, double fee)
   {
@@ -21,8 +20,8 @@ public class Transaction
     this.quantity = quantity;
     this.pricePrShare = pricePrShare;
     this.fee = fee;
-    this.totalAmount=pricePrShare*quantity;
-    this.timestamp=LocalDate.now();
+    this.totalAmount = pricePrShare * quantity;
+    this.timestamp = LocalDate.now();
   }
 
   public int getId()
@@ -35,24 +34,9 @@ public class Transaction
     this.id = id;
   }
 
-  public int getPortfolioId()
-  {
-    return portfolioId;
-  }
-
-  public void setPortfolioId(int portfolioId)
-  {
-    this.portfolioId = portfolioId;
-  }
-
   public String getStockSymbol()
   {
     return stockSymbol;
-  }
-
-  public void setStockSymbol(String stockSymbol)
-  {
-    this.stockSymbol = stockSymbol;
   }
 
   public String getType()
@@ -60,19 +44,9 @@ public class Transaction
     return type;
   }
 
-  public void setType(String type)
-  {
-    this.type = type;
-  }
-
   public int getQuantity()
   {
     return quantity;
-  }
-
-  public void setQuantity(int quantity)
-  {
-    this.quantity = quantity;
   }
 
   public double getPricePrShare()
@@ -80,19 +54,9 @@ public class Transaction
     return pricePrShare;
   }
 
-  public void setPricePrShare(double pricePrShare)
-  {
-    this.pricePrShare = pricePrShare;
-  }
-
   public double getTotalAmount()
   {
     return totalAmount;
-  }
-
-  public void setTotalAmount(double totalAmount)
-  {
-    this.totalAmount = totalAmount;
   }
 
   public double getFee()
@@ -100,18 +64,9 @@ public class Transaction
     return fee;
   }
 
-  public void setFee(double fee)
-  {
-    this.fee = fee;
-  }
-
   public LocalDate getTimestamp()
   {
     return timestamp;
   }
 
-  public void setTimestamp(LocalDate timestamp)
-  {
-    this.timestamp = timestamp;
-  }
 }

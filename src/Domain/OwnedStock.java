@@ -3,7 +3,6 @@ package Domain;
 public class OwnedStock
 {
   private int id;
-  private int portfolioId;
   private String stockSymbol;
   private int numberOfShares;
 
@@ -21,16 +20,6 @@ public class OwnedStock
   public void setId(int id)
   {
     this.id = id;
-  }
-
-  public int getPortfolioId()
-  {
-    return portfolioId;
-  }
-
-  public void setPortfolioId(int portfolioId)
-  {
-    this.portfolioId = portfolioId;
   }
 
   public String getStockSymbol()

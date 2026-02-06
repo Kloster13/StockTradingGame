@@ -5,15 +5,15 @@ import java.time.LocalDate;
 public class StockPriceHistory
 {
   private int id;
-  private String stockSymbol;
-  private double price;
-  private LocalDate timestamp;
+  private final String stockSymbol;
+  private final double price;
+  private final LocalDate timestamp;
 
   public StockPriceHistory(String stockSymbol, double price)
   {
     this.stockSymbol = stockSymbol;
     this.price = price;
-    this.timestamp=LocalDate.now();
+    this.timestamp = LocalDate.now();
   }
 
   public int getId()
@@ -31,19 +31,9 @@ public class StockPriceHistory
     return stockSymbol;
   }
 
-  public void setStockSymbol(String stockSymbol)
-  {
-    this.stockSymbol = stockSymbol;
-  }
-
   public double getPrice()
   {
     return price;
-  }
-
-  public void setPrice(double price)
-  {
-    this.price = price;
   }
 
   public LocalDate getTimestamp()
@@ -51,8 +41,4 @@ public class StockPriceHistory
     return timestamp;
   }
 
-  public void setTimestamp(LocalDate timestamp)
-  {
-    this.timestamp = timestamp;
-  }
 }
