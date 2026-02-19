@@ -13,8 +13,8 @@ public class Portfolio
   public Portfolio(int currentBalance)
   {
     this.currentBalance = currentBalance;
-    ownedStock=new ArrayList<>();
-    transactions=new ArrayList<>();
+    ownedStock = new ArrayList<>();
+    transactions = new ArrayList<>();
   }
 
   public int getId()
@@ -39,21 +39,21 @@ public class Portfolio
 
   public List<Integer> getOwnedStock()
   {
-    return ownedStock;
+    return List.copyOf(ownedStock);
   }
 
-  public void setOwnedStock(List<Integer> ownedStock)
+  public void addOwnedStock(int stockId)
   {
-    this.ownedStock = ownedStock;
+    ownedStock.add(stockId);
   }
 
   public List<Integer> getTransactions()
   {
-    return transactions;
+    return List.copyOf(transactions);
   }
 
-  public void setTransactions(List<Integer> transactions)
+  public void setTransactions(int transactionsId)
   {
-    this.transactions = transactions;
+    transactions.add(transactionsId);
   }
 }

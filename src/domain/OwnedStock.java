@@ -3,7 +3,7 @@ package domain;
 public class OwnedStock
 {
   private int id;
-  private String stockSymbol;
+  private final String stockSymbol;
   private int numberOfShares;
 
   public OwnedStock(String stockSymbol, int numberOfShares)
@@ -25,11 +25,6 @@ public class OwnedStock
   public String getStockSymbol()
   {
     return stockSymbol;
-  }
-
-  public void setStockSymbol(String stockSymbol)
-  {
-    this.stockSymbol = stockSymbol;
   }
 
   public int getNumberOfShares()
