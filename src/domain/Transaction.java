@@ -24,6 +24,19 @@ public class Transaction
     this.timestamp = LocalDate.now();
   }
 
+  public Transaction(int id, String stockSymbol, String type, int quantity, double pricePrShare,
+      double fee, LocalDate timestamp)
+  {
+    this.id = id;
+    this.stockSymbol = stockSymbol;
+    this.type = type;
+    this.quantity = quantity;
+    this.pricePrShare = pricePrShare;
+    this.fee = fee;
+    this.totalAmount = pricePrShare * quantity;
+    this.timestamp = timestamp;
+  }
+
   public int getId()
   {
     return id;

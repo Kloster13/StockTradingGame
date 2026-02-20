@@ -15,7 +15,6 @@ public class Logger {
           instance = new Logger();
         }
       }
-      instance = new Logger();
     }
     return instance;
   }

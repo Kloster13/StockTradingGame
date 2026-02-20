@@ -12,6 +12,13 @@ public class OwnedStock
     this.numberOfShares = numberOfShares;
   }
 
+  public OwnedStock(int id,String stockSymbol, int numberOfShares)
+  {
+    this.id=id;
+    this.stockSymbol = stockSymbol;
+    this.numberOfShares = numberOfShares;
+  }
+
   public int getId()
   {
     return id;

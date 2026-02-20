@@ -16,6 +16,14 @@ public class StockPriceHistory
     this.timestamp = LocalDate.now();
   }
 
+  public StockPriceHistory(int id,String stockSymbol, double price, LocalDate timestamp)
+  {
+    this.id=id;
+    this.stockSymbol = stockSymbol;
+    this.price = price;
+    this.timestamp = timestamp;
+  }
+
   public int getId()
   {
     return id;
@@ -40,5 +48,4 @@ public class StockPriceHistory
   {
     return timestamp;
   }
-
 }

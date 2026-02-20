@@ -2,6 +2,7 @@ package domain;
 
 public class Stock
 {
+  private int id;
   private final String symbol;
   private final String name;
   private double currentPrice;
@@ -13,6 +14,20 @@ public class Stock
     this.name = name;
     this.currentPrice = currentPrice;
     this.currentState = "Steady";
+  }
+
+  public Stock(int id,String symbol, String name, double currentPrice,String currentState)
+  {
+    this.id=id;
+    this.symbol = symbol;
+    this.name = name;
+    this.currentPrice = currentPrice;
+    this.currentState =currentState;
+  }
+
+  public int getId()
+  {
+    return id;
   }
 
   public String getSymbol()

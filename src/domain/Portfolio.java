@@ -16,6 +16,14 @@ public class Portfolio
     ownedStock = new ArrayList<>();
     transactions = new ArrayList<>();
   }
+  public Portfolio(int id, int currentBalance, List<Integer> ownedStock, List<Integer> transactions)
+  {
+    this.id=id;
+    this.currentBalance = currentBalance;
+    this.ownedStock=ownedStock;
+    this.transactions = transactions;
+  }
+
 
   public int getId()
   {
