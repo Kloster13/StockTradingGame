@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Objects;
+
 public class Stock
 {
   private int id;
@@ -16,18 +18,23 @@ public class Stock
     this.currentState = "Steady";
   }
 
-  public Stock(int id,String symbol, String name, double currentPrice,String currentState)
+  public Stock(int id, String symbol, String name, double currentPrice, String currentState)
   {
-    this.id=id;
+    this.id = id;
     this.symbol = symbol;
     this.name = name;
     this.currentPrice = currentPrice;
-    this.currentState =currentState;
+    this.currentState = currentState;
   }
 
   public int getId()
   {
     return id;
+  }
+
+  public void setId(int id)
+  {
+    this.id = id;
   }
 
   public String getSymbol()
@@ -58,5 +65,18 @@ public class Stock
   public void setCurrentState(String currentState)
   {
     this.currentState = currentState;
+  }
+
+  @Override public boolean equals(Object o)
+  {
+    if (!(o instanceof Stock stock))
+      return false;
+    return Double.compare(currentPrice, stock.currentPrice) == 0 && Objects.equals(symbol,
+        stock.symbol) && Objects.equals(name, stock.name);
+  }
+
+  @Override public int hashCode()
+  {
+    return Objects.hash(symbol, name, currentPrice);
   }
 }

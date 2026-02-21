@@ -10,9 +10,9 @@ public interface UnitOfWork
   void commit();
   void rollback();
 
-  List<OwnedStock> getOwnedStock();
-  List<Portfolio> getPortfolio();
-  List<Stock> getStock();
+  List<OwnedStock> getOwnedStocks();
+  List<Portfolio> getPortfolios();
+  List<Stock> getStocks();
   List<StockPriceHistory> getStockPriceHistory();
   List<Transaction> getTransactions();
 }

@@ -1,6 +1,7 @@
 package persistence.fileimplementation;
 
 import domain.*;
+import persistence.FileAccessException;
 import persistence.interfaces.UnitOfWork;
 import shared.logging.Logger;
 
@@ -26,7 +27,7 @@ public class FileUnitOfWork implements UnitOfWork
   private final String directoryPath;
   private static final Object FILE_WRITE_LOCK = new Object();
 
-  public FileUnitOfWork(String directoryPath)
+  public FileUnitOfWork(String directoryPath) throws FileAccessException
   {
     this.directoryPath = directoryPath;
     ensureFilesExist();
@@ -37,29 +38,34 @@ public class FileUnitOfWork implements UnitOfWork
     clearLists();
   }
 
-  @Override public void commit()
+  @Override public void commit() throws FileAccessException
   {
     synchronized (FILE_WRITE_LOCK)
     {
       if (ownedStocks != null)
       {
         writeOwnedStockToFile();
+        Logger.getInstance().log("INFO","Writing owned stock to file");
       }
       if (portfolios != null)
       {
         writePortfoliosToFile();
+        Logger.getInstance().log("INFO","Writing portfolio to file");
       }
       if (stocks != null)
       {
         writeStocksToFile();
+        Logger.getInstance().log("INFO","Writing stock to file");
       }
       if (stockPriceHistory != null)
       {
         writeStockPriceHistoriesToFile();
+        Logger.getInstance().log("INFO","Writing stock history to file");
       }
       if (transactions != null)
       {
         writeTransactionsToFile();
+        Logger.getInstance().log("INFO","Writing transactions to file");
       }
       clearLists();
     }
@@ -70,29 +76,29 @@ public class FileUnitOfWork implements UnitOfWork
     clearLists();
   }
 
-  @Override public List<OwnedStock> getOwnedStock()
+  @Override public List<OwnedStock> getOwnedStocks()
   {
     if (ownedStocks == null)
     {
-      return loadOwnedStockFromFile();
+      ownedStocks=loadOwnedStockFromFile();
     }
     return ownedStocks;
   }
 
-  @Override public List<Portfolio> getPortfolio()
+  @Override public List<Portfolio> getPortfolios()
   {
     if (portfolios == null)
     {
-      return loadPortfoliosFromFile();
+      portfolios=loadPortfoliosFromFile();
     }
     return portfolios;
   }
 
-  @Override public List<Stock> getStock()
+  @Override public List<Stock> getStocks()
   {
     if (stocks == null)
     {
-      return loadStocksFromFile();
+      stocks=loadStocksFromFile();
     }
     return stocks;
   }
@@ -101,7 +107,7 @@ public class FileUnitOfWork implements UnitOfWork
   {
     if (stockPriceHistory == null)
     {
-      return loadStockPriceHistoriesFromFile();
+      stockPriceHistory=loadStockPriceHistoriesFromFile();
     }
     return stockPriceHistory;
   }
@@ -110,7 +116,7 @@ public class FileUnitOfWork implements UnitOfWork
   {
     if (transactions == null)
     {
-      return loadTransactionsFromFile();
+      transactions=loadTransactionsFromFile();
     }
     return transactions;
   }
@@ -208,7 +214,7 @@ public class FileUnitOfWork implements UnitOfWork
     }
     catch (IOException e)
     {
-      Logger.getInstance().log("ERROR", "Failed to write owned stock to file");
+      throw new FileAccessException("Failed to write Owned Stocks to file");
     }
   }
 
@@ -223,7 +229,7 @@ public class FileUnitOfWork implements UnitOfWork
     }
     catch (IOException e)
     {
-      Logger.getInstance().log("ERROR", "Failed to write portfolios to file");
+      throw new FileAccessException("Failed to write portfolios to file");
     }
   }
 
@@ -238,7 +244,7 @@ public class FileUnitOfWork implements UnitOfWork
     }
     catch (IOException e)
     {
-      Logger.getInstance().log("ERROR", "Failed to write stocks to file");
+      throw new FileAccessException("Failed to write stocks to file");
     }
   }
 
@@ -253,7 +259,7 @@ public class FileUnitOfWork implements UnitOfWork
     }
     catch (IOException e)
     {
-      Logger.getInstance().log("ERROR", "Failed to write stock price histories to file");
+      throw  new FileAccessException("Failed to write stock price histories to file");
     }
   }
 
@@ -268,7 +274,7 @@ public class FileUnitOfWork implements UnitOfWork
     }
     catch (IOException e)
     {
-      Logger.getInstance().log("ERROR", "Failed to write transactions to file");
+      throw  new FileAccessException("Failed to write transactions to file");
     }
   }
 
@@ -280,8 +286,7 @@ public class FileUnitOfWork implements UnitOfWork
     }
     catch (IOException e)
     {
-      Logger.getInstance().log("ERROR", "Failed to read from file");
-      throw new RuntimeException("Failed to read fromm file: " + filePath, e);
+      throw new FileAccessException("Failed to read fromm file: "+filePath);
     }
   }
 
@@ -300,7 +305,7 @@ public class FileUnitOfWork implements UnitOfWork
 
   private String stockToPSV(Stock stock)
   {
-    return stock.getSymbol() + "|" + stock.getName() + "|" + stock.getCurrentPrice() + "|"
+    return stock.getId()+"|"+ stock.getSymbol() + "|" + stock.getName() + "|" + stock.getCurrentPrice() + "|"
         + stock.getCurrentState();
   }
 
@@ -413,12 +418,10 @@ public class FileUnitOfWork implements UnitOfWork
     try
     {
       Files.createFile(Path.of(filePath));
-      Logger.getInstance().log("INFO", "Created file for " + filePath);
     }
     catch (IOException e)
     {
-      Logger.getInstance().log("ERROR", "Could not create new file for" + filePath);
-      throw new RuntimeException("Could not create new file" + e);
+      throw new FileAccessException("Could not  new file for "+filePath+"  " + e);
     }
   }
 }
