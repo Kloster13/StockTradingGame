@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Transaction
 {
@@ -20,7 +21,7 @@ public class Transaction
     this.quantity = quantity;
     this.pricePrShare = pricePrShare;
     this.fee = fee;
-    this.totalAmount = pricePrShare * quantity;
+    this.totalAmount = (pricePrShare * quantity) +fee;
     this.timestamp = LocalDate.now();
   }
 
@@ -33,7 +34,7 @@ public class Transaction
     this.quantity = quantity;
     this.pricePrShare = pricePrShare;
     this.fee = fee;
-    this.totalAmount = pricePrShare * quantity;
+    this.totalAmount = (pricePrShare * quantity) +fee;
     this.timestamp = timestamp;
   }
 
@@ -82,4 +83,18 @@ public class Transaction
     return timestamp;
   }
 
+  @Override public boolean equals(Object o)
+  {
+    if (!(o instanceof Transaction that))
+      return false;
+    return quantity == that.quantity && Double.compare(pricePrShare, that.pricePrShare) == 0
+        && Double.compare(totalAmount, that.totalAmount) == 0 && Double.compare(fee, that.fee) == 0
+        && Objects.equals(stockSymbol, that.stockSymbol) && Objects.equals(type, that.type)
+        && Objects.equals(timestamp, that.timestamp);
+  }
+
+  @Override public int hashCode()
+  {
+    return Objects.hash(stockSymbol, type, quantity, pricePrShare, totalAmount, fee, timestamp);
+  }
 }

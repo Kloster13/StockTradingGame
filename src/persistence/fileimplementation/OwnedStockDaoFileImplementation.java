@@ -7,12 +7,12 @@ import shared.logging.Logger;
 import java.util.List;
 import java.util.Optional;
 
-public class OwnedStockFileImplementation implements OwnedStockDao
+public class OwnedStockDaoFileImplementation implements OwnedStockDao
 {
   private static int nextId = 0;
   private final FileUnitOfWork uow;
 
-  public OwnedStockFileImplementation(FileUnitOfWork uow)
+  public OwnedStockDaoFileImplementation(FileUnitOfWork uow)
   {
     this.uow = uow;
     calculateNextId();

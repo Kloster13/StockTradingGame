@@ -68,12 +68,14 @@ public class FileUnitOfWork implements UnitOfWork
         Logger.getInstance().log("INFO","Writing transactions to file");
       }
       clearLists();
+      Logger.getInstance().log("INFO","Comitted");
     }
   }
 
   @Override public void rollback()
   {
     clearLists();
+    Logger.getInstance().log("INFO", "Rolling back");
   }
 
   @Override public List<OwnedStock> getOwnedStocks()
@@ -123,7 +125,6 @@ public class FileUnitOfWork implements UnitOfWork
 
   private void clearLists()
   {
-    Logger.getInstance().log("INFO", "Clearing lists");
     if (ownedStocks != null)
     {
       ownedStocks = null;
@@ -418,10 +419,11 @@ public class FileUnitOfWork implements UnitOfWork
     try
     {
       Files.createFile(Path.of(filePath));
+      Logger.getInstance().log("INFO","No file found.... Creating new file with path: "+filePath);
     }
     catch (IOException e)
     {
-      throw new FileAccessException("Could not  new file for "+filePath+"  " + e);
+      throw new FileAccessException("Could not create new file for "+filePath+"  " + e);
     }
   }
 }

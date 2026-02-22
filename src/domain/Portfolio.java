@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Portfolio
 {
@@ -23,7 +24,6 @@ public class Portfolio
     this.ownedStock=ownedStock;
     this.transactions = transactions;
   }
-
 
   public int getId()
   {
@@ -63,5 +63,24 @@ public class Portfolio
   public void setTransactions(int transactionsId)
   {
     transactions.add(transactionsId);
+  }
+
+  @Override public String toString()
+  {
+    return "Portfolio{" + "currentBalance=" + currentBalance + ", ownedStock=" + ownedStock
+        + ", transactions=" + transactions + '}';
+  }
+
+  @Override public boolean equals(Object o)
+  {
+    if (!(o instanceof Portfolio portfolio))
+      return false;
+    return currentBalance == portfolio.currentBalance && Objects.equals(ownedStock,
+        portfolio.ownedStock) && Objects.equals(transactions, portfolio.transactions);
+  }
+
+  @Override public int hashCode()
+  {
+    return Objects.hash(currentBalance, ownedStock, transactions);
   }
 }
