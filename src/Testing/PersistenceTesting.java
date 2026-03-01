@@ -1,10 +1,12 @@
+package Testing;
+
 import domain.*;
 import persistence.FileAccessException;
 import persistence.fileimplementation.*;
 import persistence.interfaces.*;
 import shared.logging.Logger;
 
-public class Testing
+public class PersistenceTesting
 {
   public static void main(String[] args)
   {
@@ -61,9 +63,10 @@ public class Testing
       Portfolio portfolio3 = new Portfolio(10000);
       portfolioDao.createPortfolio(portfolio3);
       portfolioDao.deletePortfolio(2);
-      portfolioDao.createPortfolio(portfolio2); // Denne får samme id som den der bliver sletter inden
+      portfolioDao.createPortfolio(
+          portfolio2); // Denne får samme id som den der bliver sletter inden
       portfolio2.setCurrentBalance(50);
-      portfolioDao.updatePortfolio(portfolio2,2);
+      portfolioDao.updatePortfolio(portfolio2, 2);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
@@ -74,7 +77,7 @@ public class Testing
     try
     {
       OwnedStockDao ownedStockDao = new OwnedStockDaoFileImplementation(tester);
-      OwnedStock ownedStock = new OwnedStock("MET",200);
+      OwnedStock ownedStock = new OwnedStock("MET", 200);
       ownedStockDao.createOwnedStock(ownedStock);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -84,12 +87,13 @@ public class Testing
     try
     {
       OwnedStockDao OwnedStockDao = new OwnedStockDaoFileImplementation(tester);
-      OwnedStock OwnedStock2 = new OwnedStock("GOG",10);
-      OwnedStock OwnedStock3 = new OwnedStock("TES",1);
+      OwnedStock OwnedStock2 = new OwnedStock("GOG", 10);
+      OwnedStock OwnedStock3 = new OwnedStock("TES", 1);
       OwnedStockDao.createOwnedStock(OwnedStock3);
       OwnedStockDao.deleteOwnedStock(2);
-      OwnedStockDao.createOwnedStock(OwnedStock2); // Denne får samme id som den der bliver sletter inden
-      OwnedStockDao.updateOwnedStock(OwnedStock3,2);
+      OwnedStockDao.createOwnedStock(
+          OwnedStock2); // Denne får samme id som den der bliver sletter inden
+      OwnedStockDao.updateOwnedStock(OwnedStock3, 2);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
@@ -100,7 +104,7 @@ public class Testing
     try
     {
       TransactionDao TransactionDao = new TransactionDaoFileImplementation(tester);
-      Transaction Transaction = new Transaction("MET","buy",10,100,5);
+      Transaction Transaction = new Transaction("MET", "buy", 10, 100, 5);
       TransactionDao.createTransaction(Transaction);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -110,12 +114,13 @@ public class Testing
     try
     {
       TransactionDao TransactionDao = new TransactionDaoFileImplementation(tester);
-      Transaction Transaction2 = new Transaction("GOG","sell",100,20,10);
-      Transaction Transaction3 = new Transaction("GOG","sell",1000,20,10);
+      Transaction Transaction2 = new Transaction("GOG", "sell", 100, 20, 10);
+      Transaction Transaction3 = new Transaction("GOG", "sell", 1000, 20, 10);
       TransactionDao.createTransaction(Transaction3);
       TransactionDao.deleteTransaction(2);
-      TransactionDao.createTransaction(Transaction2); // Denne får samme id som den der bliver sletter inden
-      TransactionDao.updateTransaction(Transaction3,2);
+      TransactionDao.createTransaction(
+          Transaction2); // Denne får samme id som den der bliver sletter inden
+      TransactionDao.updateTransaction(Transaction3, 2);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
@@ -124,8 +129,9 @@ public class Testing
 
     try
     {
-      StockPriceHistoryDao StockPriceHistoryDao = new StockPriceHistoryDaoFileImplementation(tester);
-      StockPriceHistory StockPriceHistory = new StockPriceHistory("MET",10);
+      StockPriceHistoryDao StockPriceHistoryDao = new StockPriceHistoryDaoFileImplementation(
+          tester);
+      StockPriceHistory StockPriceHistory = new StockPriceHistory("MET", 10);
       StockPriceHistoryDao.createStockPriceHistory(StockPriceHistory);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -134,13 +140,15 @@ public class Testing
     }
     try
     {
-      StockPriceHistoryDao StockPriceHistoryDao = new StockPriceHistoryDaoFileImplementation(tester);
-      StockPriceHistory StockPriceHistory2 = new StockPriceHistory("GOG",10);
-      StockPriceHistory StockPriceHistory3 = new StockPriceHistory("GOG",20);
+      StockPriceHistoryDao StockPriceHistoryDao = new StockPriceHistoryDaoFileImplementation(
+          tester);
+      StockPriceHistory StockPriceHistory2 = new StockPriceHistory("GOG", 10);
+      StockPriceHistory StockPriceHistory3 = new StockPriceHistory("GOG", 20);
       StockPriceHistoryDao.createStockPriceHistory(StockPriceHistory3);
       StockPriceHistoryDao.deleteStockPriceHistory(2);
-      StockPriceHistoryDao.createStockPriceHistory(StockPriceHistory2); // Denne får samme id som den der bliver sletter inden
-      StockPriceHistoryDao.updateStockPriceHistory(StockPriceHistory3,2);
+      StockPriceHistoryDao.createStockPriceHistory(
+          StockPriceHistory2); // Denne får samme id som den der bliver sletter inden
+      StockPriceHistoryDao.updateStockPriceHistory(StockPriceHistory3, 2);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
@@ -149,4 +157,5 @@ public class Testing
 
     tester.commit();
   }
+
 }
