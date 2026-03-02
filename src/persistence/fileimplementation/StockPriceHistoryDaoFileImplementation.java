@@ -29,12 +29,11 @@ public class StockPriceHistoryDaoFileImplementation implements StockPriceHistory
       Logger.getInstance().log("ERROR", "StockPriceHistory already in list");
   }
 
-  @Override public void updateStockPriceHistory(StockPriceHistory updatedStockPriceHistory, int oldStockPriceHistoryId)
+  @Override public void updateStockPriceHistory(StockPriceHistory updatedStockPriceHistory)
   {
-    StockPriceHistory oldHistory = getStockPriceHistoryById(oldStockPriceHistoryId).orElseThrow(
+    StockPriceHistory oldHistory = getStockPriceHistoryById(updatedStockPriceHistory.getId()).orElseThrow(
         () -> new IllegalArgumentException("StockPriceHistory not in list"));
 
-    updatedStockPriceHistory.setId(oldHistory.getId());
     uow.getStockPriceHistory().remove(oldHistory);
     uow.getStockPriceHistory().add(updatedStockPriceHistory);
   }

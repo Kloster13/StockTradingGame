@@ -28,12 +28,11 @@ public class OwnedStockDaoFileImplementation implements OwnedStockDao
       Logger.getInstance().log("ERROR", "OwnedStock already in list");
   }
 
-  @Override public void updateOwnedStock(OwnedStock updatedOwnedStock, int oldOwnedStockId)
+  @Override public void updateOwnedStock(OwnedStock updatedOwnedStock)
   {
-    OwnedStock oldOwnedStock = getOwnedStockById(oldOwnedStockId).orElseThrow(
+    OwnedStock oldOwnedStock = getOwnedStockById(updatedOwnedStock.getId()).orElseThrow(
         () -> new IllegalArgumentException("OwnedStock not in list"));
 
-    updatedOwnedStock.setId(oldOwnedStock.getId());
     uow.getOwnedStocks().remove(oldOwnedStock);
     uow.getOwnedStocks().add(updatedOwnedStock);
   }

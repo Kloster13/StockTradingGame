@@ -1,12 +1,13 @@
 package business.stockmarket.simulation;
 
+import domain.Stock;
 import shared.configuration.AppConfiguration;
 import shared.logging.Logger;
 
 public class LiveStock
 {
-  private String symbol;
-  private StockState state; // Change
+  private final String symbol;
+  private StockState state;
   double currentPrice;
 
   public LiveStock(String symbol)
@@ -16,7 +17,20 @@ public class LiveStock
     currentPrice = AppConfiguration.getAppConfiguration().getStockResetValue();
   }
 
-  // TODO add second constructor that take an actual stock
+  public LiveStock(Stock stock)
+  {
+    symbol = stock.getSymbol();
+    state = switch (stock.getCurrentState())
+    {
+      case "Steady" -> new Steady();
+      case "Bankrupt" -> new Bankrupt();
+      case "Declining" -> new Declining();
+      case "FastDecline" -> new FastDecline();
+      case "Growing" -> new Growing();
+      default -> throw new IllegalStateException("Unexpected value: " + stock.getCurrentState());
+    };
+    currentPrice = stock.getCurrentPrice();
+  }
 
   public void updatePrice()
   {
@@ -26,7 +40,7 @@ public class LiveStock
     if (currentPrice < 0)
     {
       Logger.getInstance().log("INFO", symbol + " went bankrupt");
-      currentPrice=0;
+      currentPrice = 0;
       state = new Bankrupt();
     }
   }

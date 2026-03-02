@@ -29,12 +29,11 @@ public class TransactionDaoFileImplementation implements TransactionDao
       Logger.getInstance().log("ERROR", "Transaction already in list");
   }
 
-  @Override public void updateTransaction(Transaction updatedTransaction, int oldTransactionId)
+  @Override public void updateTransaction(Transaction updatedTransaction)
   {
-    Transaction oldTransaction = getTransactionById(oldTransactionId).orElseThrow(
+    Transaction oldTransaction = getTransactionById(updatedTransaction.getId()).orElseThrow(
         () -> new IllegalArgumentException("Transaction not in list"));
 
-    updatedTransaction.setId(oldTransaction.getId());
     uow.getTransactions().remove(oldTransaction);
     uow.getTransactions().add(updatedTransaction);
   }

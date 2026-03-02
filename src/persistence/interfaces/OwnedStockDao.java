@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface OwnedStockDao
 {
   void createOwnedStock(OwnedStock OwnedStock);
-  void updateOwnedStock(OwnedStock updatedOwnedStock, int oldOwnedStock);
+  void updateOwnedStock(OwnedStock updatedOwnedStock);
   Optional<OwnedStock> getOwnedStockById(int id);
   List<OwnedStock> getAllOwnedStocks();
   void deleteOwnedStock(int id);

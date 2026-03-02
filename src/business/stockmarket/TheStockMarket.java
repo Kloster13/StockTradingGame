@@ -6,13 +6,14 @@ import shared.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TheStockMarket
 {
   private volatile static TheStockMarket instance;
-  private static Logger logger = Logger.getInstance();
+  private static final Logger logger = Logger.getInstance();
 
-  private List<LiveStock> liveStocks;
+  private final List<LiveStock> liveStocks;
 
   public TheStockMarket()
   {
@@ -36,7 +37,7 @@ public class TheStockMarket
 
   public void addLiveStock(Stock stock)
   {
-    liveStocks.add(new LiveStock(stock.getSymbol()));
+    liveStocks.add(new LiveStock(stock));
   }
 
   public void updateStocks()
@@ -45,7 +46,7 @@ public class TheStockMarket
     {
       liveStock.updatePrice();
       logger.log("INFO", liveStock.getSymbol() + " was updated to " + liveStock.getCurrentPrice());
-      logger.log("INFO","New state: "+liveStock.getStateName());
+      logger.log("INFO", "New state: " + liveStock.getStateName());
     }
   }
 }

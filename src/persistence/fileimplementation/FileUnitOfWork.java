@@ -26,6 +26,7 @@ public class FileUnitOfWork implements UnitOfWork
 
   private final String directoryPath;
   private static final Object FILE_WRITE_LOCK = new Object();
+  private final Logger logger = Logger.getInstance();
 
   public FileUnitOfWork(String directoryPath) throws FileAccessException
   {
@@ -44,107 +45,92 @@ public class FileUnitOfWork implements UnitOfWork
     {
       if (ownedStocks != null)
       {
-        writeOwnedStockToFile();
-        Logger.getInstance().log("INFO","Writing owned stock to file");
+        writeObjectToFile(ownedStocks, getOwnedStockPath());
+        logger.log("INFO", "Writing owned stock to file");
       }
       if (portfolios != null)
       {
-        writePortfoliosToFile();
-        Logger.getInstance().log("INFO","Writing portfolio to file");
+        writeObjectToFile(portfolios, getPortfolioPath());
+        logger.log("INFO", "Writing portfolio to file");
       }
       if (stocks != null)
       {
-        writeStocksToFile();
-        Logger.getInstance().log("INFO","Writing stock to file");
+        writeObjectToFile(stocks, getStockPath());
+        logger.log("INFO", "Writing stock to file");
       }
       if (stockPriceHistory != null)
       {
-        writeStockPriceHistoriesToFile();
-        Logger.getInstance().log("INFO","Writing stock history to file");
+        writeObjectToFile(stockPriceHistory, getStockPriceHistoryPath());
+        logger.log("INFO", "Writing stock history to file");
       }
       if (transactions != null)
       {
-        writeTransactionsToFile();
-        Logger.getInstance().log("INFO","Writing transactions to file");
+        writeObjectToFile(transactions, getTransactionPath());
+        logger.log("INFO", "Writing transactions to file");
       }
       clearLists();
-      Logger.getInstance().log("INFO","Comitted");
+      logger.log("INFO", "Comitted");
     }
   }
 
   @Override public void rollback()
   {
     clearLists();
-    Logger.getInstance().log("INFO", "Rolling back");
+    logger.log("INFO", "Rolling back");
   }
 
-  @Override public List<OwnedStock> getOwnedStocks()
+  public List<OwnedStock> getOwnedStocks()
   {
     if (ownedStocks == null)
     {
-      ownedStocks=loadOwnedStockFromFile();
+      ownedStocks = loadOwnedStockFromFile();
     }
     return ownedStocks;
   }
 
-  @Override public List<Portfolio> getPortfolios()
+  public List<Portfolio> getPortfolios()
   {
     if (portfolios == null)
     {
-      portfolios=loadPortfoliosFromFile();
+      portfolios = loadPortfoliosFromFile();
     }
     return portfolios;
   }
 
-  @Override public List<Stock> getStocks()
+  public List<Stock> getStocks()
   {
     if (stocks == null)
     {
-      stocks=loadStocksFromFile();
+      stocks = loadStocksFromFile();
     }
     return stocks;
   }
 
-  @Override public List<StockPriceHistory> getStockPriceHistory()
+  public List<StockPriceHistory> getStockPriceHistory()
   {
     if (stockPriceHistory == null)
     {
-      stockPriceHistory=loadStockPriceHistoriesFromFile();
+      stockPriceHistory = loadStockPriceHistoriesFromFile();
     }
     return stockPriceHistory;
   }
 
-  @Override public List<Transaction> getTransactions()
+  public List<Transaction> getTransactions()
   {
     if (transactions == null)
     {
-      transactions=loadTransactionsFromFile();
+      transactions = loadTransactionsFromFile();
     }
     return transactions;
   }
 
   private void clearLists()
   {
-    if (ownedStocks != null)
-    {
-      ownedStocks = null;
-    }
-    if (portfolios != null)
-    {
-      portfolios = null;
-    }
-    if (stocks != null)
-    {
-      stocks = null;
-    }
-    if (stockPriceHistory != null)
-    {
-      stockPriceHistory = null;
-    }
-    if (transactions != null)
-    {
-      transactions = null;
-    }
+    ownedStocks = null;
+    portfolios = null;
+    stocks = null;
+    stockPriceHistory = null;
+    transactions = null;
   }
 
   // Load
@@ -204,78 +190,26 @@ public class FileUnitOfWork implements UnitOfWork
   }
 
   // Write to file
-  private void writeOwnedStockToFile()
+  private void writeObjectToFile(List<?> listOfData, String path)
   {
-    try (PrintWriter writer = new PrintWriter(new FileWriter(getOwnedStockPath())))
+    try (PrintWriter writer = new PrintWriter(new FileWriter(path)))
     {
-      for (OwnedStock ownedStock : ownedStocks)
+      for (Object object : listOfData)
       {
-        writer.println(ownedStockToPSV(ownedStock));
+        switch (object)
+        {
+          case Stock stock -> writer.println(stockToPSV(stock));
+          case OwnedStock ownedStock -> writer.println(ownedStockToPSV(ownedStock));
+          case Portfolio portfolio -> writer.println(portfolioToPSV(portfolio));
+          case Transaction transaction -> writer.println(transactionToPSV(transaction));
+          case StockPriceHistory history -> writer.println(stockPriceHistoryToPSV(history));
+          default -> throw new FileAccessException("Failed to write to file\" + path");
+        }
       }
     }
     catch (IOException e)
     {
-      throw new FileAccessException("Failed to write Owned Stocks to file");
-    }
-  }
-
-  private void writePortfoliosToFile()
-  {
-    try (PrintWriter writer = new PrintWriter(new FileWriter(getPortfolioPath())))
-    {
-      for (Portfolio portfolio : portfolios)
-      {
-        writer.println(portfolioToPSV(portfolio));
-      }
-    }
-    catch (IOException e)
-    {
-      throw new FileAccessException("Failed to write portfolios to file");
-    }
-  }
-
-  private void writeStocksToFile()
-  {
-    try (PrintWriter writer = new PrintWriter(new FileWriter(getStockPath())))
-    {
-      for (Stock stock : stocks)
-      {
-        writer.println(stockToPSV(stock));
-      }
-    }
-    catch (IOException e)
-    {
-      throw new FileAccessException("Failed to write stocks to file");
-    }
-  }
-
-  private void writeStockPriceHistoriesToFile()
-  {
-    try (PrintWriter writer = new PrintWriter(new FileWriter(getStockPriceHistoryPath())))
-    {
-      for (StockPriceHistory history : stockPriceHistory)
-      {
-        writer.println(stockPriceHistoryToPSV(history));
-      }
-    }
-    catch (IOException e)
-    {
-      throw  new FileAccessException("Failed to write stock price histories to file");
-    }
-  }
-
-  private void writeTransactionsToFile()
-  {
-    try (PrintWriter writer = new PrintWriter(new FileWriter(getTransactionPath())))
-    {
-      for (Transaction transaction : transactions)
-      {
-        writer.println(transactionToPSV(transaction));
-      }
-    }
-    catch (IOException e)
-    {
-      throw  new FileAccessException("Failed to write transactions to file");
+      throw new FileAccessException("Failed to write to file" + path);
     }
   }
 
@@ -287,7 +221,7 @@ public class FileUnitOfWork implements UnitOfWork
     }
     catch (IOException e)
     {
-      throw new FileAccessException("Failed to read fromm file: "+filePath);
+      throw new FileAccessException("Failed to read fromm file: " + filePath);
     }
   }
 
@@ -306,8 +240,8 @@ public class FileUnitOfWork implements UnitOfWork
 
   private String stockToPSV(Stock stock)
   {
-    return stock.getId()+"|"+ stock.getSymbol() + "|" + stock.getName() + "|" + stock.getCurrentPrice() + "|"
-        + stock.getCurrentState();
+    return stock.getId() + "|" + stock.getSymbol() + "|" + stock.getName() + "|"
+        + stock.getCurrentPrice() + "|" + stock.getCurrentState();
   }
 
   private String stockPriceHistoryToPSV(StockPriceHistory history)
@@ -324,7 +258,7 @@ public class FileUnitOfWork implements UnitOfWork
   }
 
   // From string to object
-  private List<Integer> parseList(String listToParse)
+  private List<Integer> parseStringToList(String listToParse)
   {
     return Arrays.stream(listToParse.substring(1, listToParse.length() - 1).split(","))
         .map(String::trim).map(Integer::parseInt).toList();
@@ -340,7 +274,7 @@ public class FileUnitOfWork implements UnitOfWork
   {
     String[] parts = psv.split("\\|");
     return new Portfolio(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
-        parseList(parts[2]), parseList(parts[3]));
+        parseStringToList(parts[2]), parseStringToList(parts[3]));
   }
 
   private Stock stockFromPSV(String psv)
@@ -419,11 +353,11 @@ public class FileUnitOfWork implements UnitOfWork
     try
     {
       Files.createFile(Path.of(filePath));
-      Logger.getInstance().log("INFO","No file found.... Creating new file with path: "+filePath);
+      logger.log("INFO", "No file found.... Creating new file with path: " + filePath);
     }
     catch (IOException e)
     {
-      throw new FileAccessException("Could not create new file for "+filePath+"  " + e);
+      throw new FileAccessException("Could not create new file for " + filePath + "  " + e);
     }
   }
 }

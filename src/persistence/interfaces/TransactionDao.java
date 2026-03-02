@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface TransactionDao
 {
   void createTransaction(Transaction transaction);
-  void updateTransaction(Transaction updatedTransaction, int oldTransaction);
+  void updateTransaction(Transaction updatedTransaction);
   Optional<Transaction> getTransactionById(int id);
   List<Transaction> getAllTransactions();
   void deleteTransaction(int id);

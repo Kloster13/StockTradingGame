@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface PortfolioDao
 {
   void createPortfolio(Portfolio Portfolio);
-  void updatePortfolio(Portfolio updatedPortfolio, int oldPortfolio);
+  void updatePortfolio(Portfolio updatedPortfolio);
   Optional<Portfolio> getPortfolioById(int id);
   List<Portfolio> getAllPortfolios();
   void deletePortfolio(int id);

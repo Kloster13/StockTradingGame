@@ -17,7 +17,7 @@ public class PersistenceTesting
     try
     {
       StockDao stockDao = new StockDaoFileImplementation(tester);
-      Stock stockTest = new Stock("MET", "Meta", 1000);
+      Stock stockTest = new Stock("GOOG", "" + "Gooogle", 100);
       stockDao.createStock(stockTest);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -27,7 +27,7 @@ public class PersistenceTesting
     try
     {
       StockDao stockDao = new StockDaoFileImplementation(tester);
-      Stock stockTest2 = new Stock("MET2", "Meta", 1000);
+      Stock stockTest2 = new Stock("MET2", "Meta", 100);
       stockDao.createStock(stockTest2);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -38,7 +38,7 @@ public class PersistenceTesting
     {
       StockDao stockDao = new StockDaoFileImplementation(tester);
       Stock updatedTest = new Stock("MET1", "Meta", 2000);
-      stockDao.updateStock(updatedTest, 1);
+      stockDao.updateStock(updatedTest);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
@@ -66,7 +66,7 @@ public class PersistenceTesting
       portfolioDao.createPortfolio(
           portfolio2); // Denne får samme id som den der bliver sletter inden
       portfolio2.setCurrentBalance(50);
-      portfolioDao.updatePortfolio(portfolio2, 2);
+      portfolioDao.updatePortfolio(portfolio2);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
@@ -93,7 +93,7 @@ public class PersistenceTesting
       OwnedStockDao.deleteOwnedStock(2);
       OwnedStockDao.createOwnedStock(
           OwnedStock2); // Denne får samme id som den der bliver sletter inden
-      OwnedStockDao.updateOwnedStock(OwnedStock3, 2);
+      OwnedStockDao.updateOwnedStock(OwnedStock3);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
@@ -120,7 +120,8 @@ public class PersistenceTesting
       TransactionDao.deleteTransaction(2);
       TransactionDao.createTransaction(
           Transaction2); // Denne får samme id som den der bliver sletter inden
-      TransactionDao.updateTransaction(Transaction3, 2);
+      Transaction3.setId(Transaction2.getId());
+      TransactionDao.updateTransaction(Transaction3);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
@@ -148,7 +149,7 @@ public class PersistenceTesting
       StockPriceHistoryDao.deleteStockPriceHistory(2);
       StockPriceHistoryDao.createStockPriceHistory(
           StockPriceHistory2); // Denne får samme id som den der bliver sletter inden
-      StockPriceHistoryDao.updateStockPriceHistory(StockPriceHistory3, 2);
+      StockPriceHistoryDao.updateStockPriceHistory(StockPriceHistory3);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
@@ -157,5 +158,4 @@ public class PersistenceTesting
 
     tester.commit();
   }
-
 }

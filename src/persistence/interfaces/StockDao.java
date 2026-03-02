@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface StockDao
 {
  void createStock(Stock stock);
- void updateStock(Stock updatedStock, int oldStock);
+ void updateStock(Stock updatedStock);
  Optional<Stock> getStockById(int id);
  List<Stock> getAllStocks();
  void deleteStock(int id);

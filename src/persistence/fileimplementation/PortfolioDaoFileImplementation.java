@@ -29,12 +29,11 @@ public class PortfolioDaoFileImplementation implements PortfolioDao
       Logger.getInstance().log("ERROR", "Portfolio already in list");
   }
 
-  @Override public void updatePortfolio(Portfolio updatedPortfolio, int oldPortfolioId)
+  @Override public void updatePortfolio(Portfolio updatedPortfolio)
   {
-    Portfolio oldPortfolio = getPortfolioById(oldPortfolioId).orElseThrow(
+    Portfolio oldPortfolio = getPortfolioById(updatedPortfolio.getId()).orElseThrow(
         () -> new IllegalArgumentException("Portfolio not in list"));
 
-    updatedPortfolio.setId(oldPortfolio.getId());
     uow.getPortfolios().remove(oldPortfolio);
     uow.getPortfolios().add(updatedPortfolio);
   }

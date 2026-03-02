@@ -28,12 +28,11 @@ public class StockDaoFileImplementation implements StockDao
       Logger.getInstance().log("ERROR", "Stock already in list");
   }
 
-  @Override public void updateStock(Stock updatedStock, int oldStockId)
+  @Override public void updateStock(Stock updatedStock)
   {
-    Stock oldStock = getStockById(oldStockId).orElseThrow(
+    Stock oldStock = getStockById(updatedStock.getId()).orElseThrow(
         () -> new IllegalArgumentException("Stock not in list"));
 
-    updatedStock.setId(oldStock.getId());
     uow.getStocks().remove(oldStock);
     uow.getStocks().add(updatedStock);
   }
