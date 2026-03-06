@@ -47,6 +47,16 @@ public class StockDaoFileImplementation implements StockDao
     return Optional.empty();
   }
 
+  @Override public Optional<Stock> getStockBySymbol(String symbol)
+  {
+    for (Stock stock : uow.getStocks())
+    {
+      if (stock.getSymbol().equals(symbol))
+        return Optional.of(stock);
+    }
+    return Optional.empty();
+  }
+
   @Override public List<Stock> getAllStocks()
   {
     return List.copyOf(uow.getStocks());

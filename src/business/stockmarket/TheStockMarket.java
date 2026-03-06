@@ -1,23 +1,46 @@
 package business.stockmarket;
 
+import business.stockmarket.simulation.Bankrupt;
 import business.stockmarket.simulation.LiveStock;
 import domain.Stock;
 import shared.logging.Logger;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class TheStockMarket
 {
   private volatile static TheStockMarket instance;
   private static final Logger logger = Logger.getInstance();
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
   private final List<LiveStock> liveStocks;
 
   private TheStockMarket()
   {
     liveStocks = new ArrayList<>();
+  }
+
+  public void addListener(String evtName, PropertyChangeListener listener)
+  {
+    support.addPropertyChangeListener(evtName, listener);
+  }
+
+  public void addListener(PropertyChangeListener listener)
+  {
+    support.addPropertyChangeListener(listener);
+  }
+
+  public void removeListener(String evtName, PropertyChangeListener listener)
+  {
+    support.removePropertyChangeListener(evtName, listener);
+  }
+
+  public void removeListener(PropertyChangeListener listener)
+  {
+    support.removePropertyChangeListener(listener);
   }
 
   public static synchronized TheStockMarket getInstance()
@@ -45,8 +68,21 @@ public class TheStockMarket
     for (LiveStock liveStock : liveStocks)
     {
       liveStock.updatePrice();
-      logger.log("INFO", liveStock.getSymbol() + " was updated to " + liveStock.getCurrentPrice());
-      logger.log("INFO", "New state: " + liveStock.getStateName());
+      firePriceUpdate(liveStock);
+      if (liveStock.getStateName().equals("Bankrupt") && liveStock.getBankruptTic() == 0)
+        fireBankruptUpdate(liveStock.getSymbol());
     }
+  }
+
+  private void firePriceUpdate(LiveStock liveStock)
+  {
+    support.firePropertyChange("PriceUpdate", null,
+        new LiveStockDTU(liveStock.getSymbol(), liveStock.getCurrentPrice(),
+            liveStock.getStateName()));
+  }
+
+  private void fireBankruptUpdate(String symbol)
+  {
+    support.firePropertyChange("Bankrupt", null, symbol);
   }
 }

@@ -9,6 +9,7 @@ public class LiveStock
   private final String symbol;
   private StockState state;
   double currentPrice;
+  private int bankruptTic;
 
   public LiveStock(String symbol)
   {
@@ -22,12 +23,13 @@ public class LiveStock
     symbol = stock.getSymbol();
     state = switch (stock.getCurrentState())
     {
-      case "Steady" -> new Steady();
       case "Bankrupt" -> new Bankrupt();
+
+      case "Steady" -> new Steady();
       case "Declining" -> new Declining();
       case "FastDecline" -> new FastDecline();
       case "Growing" -> new Growing();
-      case "UnicornGrowth"-> new UnicornGrowth();
+      case "UnicornGrowth" -> new UnicornGrowth();
       default -> throw new IllegalStateException("Unexpected value: " + stock.getCurrentState());
     };
     currentPrice = stock.getCurrentPrice();
@@ -42,7 +44,12 @@ public class LiveStock
     {
       Logger.getInstance().log("INFO", symbol + " went bankrupt");
       currentPrice = 0;
+      bankruptTic++;
       state = new Bankrupt();
+    }
+    if (state instanceof Reset)
+    {
+      bankruptTic = -1;
     }
   }
 
@@ -64,5 +71,10 @@ public class LiveStock
   void setState(StockState state)
   {
     this.state = state;
+  }
+
+  public int getBankruptTic()
+  {
+    return bankruptTic;
   }
 }

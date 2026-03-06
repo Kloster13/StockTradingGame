@@ -1,5 +1,6 @@
 package Testing;
 
+import business.services.StockListenerService;
 import business.stockmarket.MarketTicker;
 import business.stockmarket.TheStockMarket;
 import domain.Stock;
@@ -28,9 +29,10 @@ public class MarketUpdateTest
     }
     TheStockMarket market = TheStockMarket.getInstance();
 
-    market.addNewLiveStock("META");
     market.addLiveStock(stockFromList);
     MarketTicker marketTicker = new MarketTicker();
+    StockListenerService listenerService = new StockListenerService(tester);
+    market.addListener(listenerService);
     try
     {
       marketTicker.runMarket();

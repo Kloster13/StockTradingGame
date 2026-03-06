@@ -16,11 +16,11 @@ public class StockPriceHistoryDaoFileImplementation implements StockPriceHistory
   public StockPriceHistoryDaoFileImplementation(FileUnitOfWork uow)
   {
     this.uow = uow;
-    calculateNextId();
   }
 
   @Override public void createStockPriceHistory(StockPriceHistory stockPriceHistory)
   {
+    calculateNextId();
     stockPriceHistory.setId(nextId);
     List<StockPriceHistory> histories = uow.getStockPriceHistory();
     if (!histories.contains(stockPriceHistory))

@@ -71,12 +71,11 @@ public class Stock
   {
     if (!(o instanceof Stock stock))
       return false;
-    return Double.compare(currentPrice, stock.currentPrice) == 0 && Objects.equals(symbol,
-        stock.symbol) && Objects.equals(name, stock.name);
+    return Objects.equals(symbol, stock.symbol);
   }
 
   @Override public int hashCode()
   {
-    return Objects.hash(symbol, name, currentPrice);
+    return Objects.hash(symbol);
   }
 }
