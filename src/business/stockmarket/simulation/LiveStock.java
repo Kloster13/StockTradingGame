@@ -35,7 +35,7 @@ public class LiveStock
 
   public void updatePrice()
   {
-    double priceChange = state.CalculatePriceChange(this);
+    double priceChange = state.calculatePriceChange(this);
 
     currentPrice += priceChange;
     if (currentPrice < 0)

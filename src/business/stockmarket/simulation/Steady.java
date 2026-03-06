@@ -10,7 +10,7 @@ public class Steady implements StockState
   {
   }
 
-  public double CalculatePriceChange(LiveStock liveStock)
+  public double calculatePriceChange(LiveStock liveStock)
   {
     double change = random.nextDouble();
     if (change < 0.03)

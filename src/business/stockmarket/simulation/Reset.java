@@ -8,7 +8,7 @@ public class Reset implements StockState
   {
   }
 
-  @Override public double CalculatePriceChange(LiveStock liveStock)
+  @Override public double calculatePriceChange(LiveStock liveStock)
   {
     liveStock.setState(new Steady());
     return AppConfiguration.getAppConfiguration().getStockResetValue();

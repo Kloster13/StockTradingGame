@@ -15,7 +15,7 @@ public class TheStockMarket
 
   private final List<LiveStock> liveStocks;
 
-  public TheStockMarket()
+  private TheStockMarket()
   {
     liveStocks = new ArrayList<>();
   }

@@ -10,13 +10,13 @@ public class FastDecline implements StockState
   {
   }
 
-  @Override public double CalculatePriceChange(LiveStock liveStock)
+  @Override public double calculatePriceChange(LiveStock liveStock)
   {
     double change = random.nextDouble();
     if (change < 0.3)
       liveStock.setState(new Declining());
 
-    return random.nextInt(10)-20;
+    return random.nextInt(15)-30;
   }
 
   @Override public String getName()

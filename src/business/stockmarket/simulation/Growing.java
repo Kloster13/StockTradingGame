@@ -9,7 +9,7 @@ public class Growing implements StockState
   {
   }
 
-  @Override public double CalculatePriceChange(LiveStock liveStock)
+  @Override public double calculatePriceChange(LiveStock liveStock)
   {
     double change = random.nextDouble();
     if (change < 0.02)

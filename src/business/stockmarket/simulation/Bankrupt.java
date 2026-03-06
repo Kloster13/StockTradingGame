@@ -11,7 +11,7 @@ public class Bankrupt implements StockState
     tics = 0;
   }
 
-  @Override public double CalculatePriceChange(LiveStock liveStock)
+  @Override public double calculatePriceChange(LiveStock liveStock)
   {
     tics++;
     if (tics <= 10)
