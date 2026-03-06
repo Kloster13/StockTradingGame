@@ -17,7 +17,7 @@ public class Growing implements StockState
     else if (change < 0.22)
       liveStock.setState(new Steady());
 
-    return (0.03 + 0.03 * random.nextDouble()) * liveStock.currentPrice;
+    return random.nextInt(15)+5;
   }
   @Override public String getName()
   {

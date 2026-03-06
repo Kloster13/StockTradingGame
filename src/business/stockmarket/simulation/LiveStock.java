@@ -27,6 +27,7 @@ public class LiveStock
       case "Declining" -> new Declining();
       case "FastDecline" -> new FastDecline();
       case "Growing" -> new Growing();
+      case "UnicornGrowth"-> new UnicornGrowth();
       default -> throw new IllegalStateException("Unexpected value: " + stock.getCurrentState());
     };
     currentPrice = stock.getCurrentPrice();

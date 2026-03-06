@@ -18,7 +18,7 @@ public class Declining implements StockState
     else if(change<0.23)
       liveStock.setState(new Steady());
 
-    return (0.03 +0.03 *random.nextDouble()) * liveStock.currentPrice * -1; // Between -0.5-1
+    return random.nextInt(15)-5;
   }
 
   @Override public String getName()

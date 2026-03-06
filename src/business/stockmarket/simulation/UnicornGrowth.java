@@ -17,6 +17,6 @@ public class UnicornGrowth implements StockState
 
   @Override public String getName()
   {
-    return "Unicorn Growth";
+    return "UnicornGrowth";
   }
 }
