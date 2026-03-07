@@ -1,5 +1,7 @@
 package Testing;
 
+import business.services.StockAlertService;
+import business.services.StockBankruptService;
 import business.services.StockListenerService;
 import business.stockmarket.MarketTicker;
 import business.stockmarket.TheStockMarket;
@@ -10,29 +12,33 @@ import persistence.fileimplementation.StockDaoFileImplementation;
 import persistence.interfaces.StockDao;
 import shared.logging.Logger;
 
-import java.util.Optional;
-
 public class MarketUpdateTest
 {
   public static void main(String[] args)
   {
     FileUnitOfWork tester = new FileUnitOfWork("src/data/testdata/");
-    Stock stockFromList = null;
-    try
+    TheStockMarket market = TheStockMarket.getInstance();
+    try // Stocks
     {
       StockDao stockDao = new StockDaoFileImplementation(tester);
-      stockFromList = stockDao.getStockById(1).orElse(stockFromList = null);
+      Stock stockFromList = stockDao.getStockById(1).orElse(stockFromList = null);
+      Stock stockFromList2 = stockDao.getStockById(2).orElse(stockFromList2 = null);
+      market.addLiveStock(stockFromList);
+      market.addLiveStock(stockFromList2);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
       Logger.getInstance().log("ERROR", e.getMessage());
     }
-    TheStockMarket market = TheStockMarket.getInstance();
 
-    market.addLiveStock(stockFromList);
     MarketTicker marketTicker = new MarketTicker();
-    StockListenerService listenerService = new StockListenerService(tester);
-    market.addListener(listenerService);
+    StockListenerService stockListenerService = new StockListenerService(tester);
+    StockBankruptService bankruptListenerService = new StockBankruptService(tester);
+    StockAlertService stockAlertService = new StockAlertService(tester);
+
+    market.addListener(stockListenerService);
+    market.addListener(bankruptListenerService);
+    market.addListener(stockAlertService);
     try
     {
       marketTicker.runMarket();

@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FileUnitOfWork implements UnitOfWork
@@ -258,10 +259,25 @@ public class FileUnitOfWork implements UnitOfWork
   }
 
   // From string to object
-  private List<Integer> parseStringToList(String listToParse)
-  {
-    return Arrays.stream(listToParse.substring(1, listToParse.length() - 1).split(","))
-        .map(String::trim).map(Integer::parseInt).toList();
+  private List<Integer> parseStringToList(String listToParse) {
+    if (listToParse == null || listToParse.isBlank()) {
+      return Collections.emptyList();
+    }
+    String s = listToParse.trim();
+    if (s.length() < 2 || s.charAt(0) != '[' || s.charAt(s.length() - 1) != ']') {
+      return Collections.emptyList();
+    }
+
+    String inner = s.substring(1, s.length() - 1).trim();
+    if (inner.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    return Arrays.stream(inner.split(","))
+        .map(String::trim)
+        .filter(token -> !token.isEmpty())
+        .map(Integer::parseInt)
+        .toList();
   }
 
   private OwnedStock ownedStockFromPSV(String psv)

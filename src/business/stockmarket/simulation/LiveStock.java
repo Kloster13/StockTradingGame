@@ -16,6 +16,7 @@ public class LiveStock
     this.symbol = symbol;
     state = new Steady();
     currentPrice = AppConfiguration.getAppConfiguration().getStockResetValue();
+    bankruptTic=-1;
   }
 
   public LiveStock(Stock stock)
@@ -44,9 +45,10 @@ public class LiveStock
     {
       Logger.getInstance().log("INFO", symbol + " went bankrupt");
       currentPrice = 0;
-      bankruptTic++;
       state = new Bankrupt();
     }
+    else if(state instanceof Bankrupt)
+      bankruptTic++;
     if (state instanceof Reset)
     {
       bankruptTic = -1;

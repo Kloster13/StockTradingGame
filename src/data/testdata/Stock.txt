@@ -1,2 +1,2 @@
-2|MET2|Meta|100.0|Steady
-1|GOOG|Gooogle|304.0|Growing
+1|GOOG|Google|286.0|Growing
+2|MET|Meta|282.0|Declining

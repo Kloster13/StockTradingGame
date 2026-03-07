@@ -1,8 +1,6 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Portfolio
 {
@@ -21,8 +19,9 @@ public class Portfolio
   {
     this.id=id;
     this.currentBalance = currentBalance;
-    this.ownedStock=ownedStock;
-    this.transactions = transactions;
+    this.ownedStock = new ArrayList<>(Objects.requireNonNull(ownedStock, "ownedStock"));
+    this.transactions = new ArrayList<>(Objects.requireNonNull(transactions, "transactions"));
+
   }
 
   public int getId()
@@ -45,9 +44,14 @@ public class Portfolio
     this.currentBalance = currentBalance;
   }
 
-  public List<Integer> getOwnedStock()
+  public ArrayList<Integer> getOwnedStock()
   {
-    return List.copyOf(ownedStock);
+    return new ArrayList<>(ownedStock);
+  }
+
+  public void removeOwnedStock(int id){
+    if(ownedStock.contains(id))
+      ownedStock.remove(Integer.valueOf(id));
   }
 
   public void addOwnedStock(int stockId)
@@ -55,12 +59,12 @@ public class Portfolio
     ownedStock.add(stockId);
   }
 
-  public List<Integer> getTransactions()
+  public ArrayList<Integer> getTransactions()
   {
-    return List.copyOf(transactions);
+    return new ArrayList<>(transactions);
   }
 
-  public void setTransactions(int transactionsId)
+  public void addTransactions(int transactionsId)
   {
     transactions.add(transactionsId);
   }

@@ -71,6 +71,8 @@ public class TheStockMarket
       firePriceUpdate(liveStock);
       if (liveStock.getStateName().equals("Bankrupt") && liveStock.getBankruptTic() == 0)
         fireBankruptUpdate(liveStock.getSymbol());
+      if(liveStock.getStateName().equals("Reset"))
+        fireResetUpdate(liveStock.getSymbol());
     }
   }
 
@@ -84,5 +86,9 @@ public class TheStockMarket
   private void fireBankruptUpdate(String symbol)
   {
     support.firePropertyChange("Bankrupt", null, symbol);
+  }
+
+  private void fireResetUpdate(String symbol){
+    support.firePropertyChange("Reset",null,symbol);
   }
 }

@@ -3,7 +3,6 @@ package persistence.fileimplementation;
 import domain.OwnedStock;
 import persistence.interfaces.OwnedStockDao;
 import shared.logging.Logger;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +68,4 @@ public class OwnedStockDaoFileImplementation implements OwnedStockDao
     }
     nextId = maxValue + 1;
   }
-
 }

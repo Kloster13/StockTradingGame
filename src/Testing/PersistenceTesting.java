@@ -61,6 +61,8 @@ public class PersistenceTesting
       PortfolioDao portfolioDao = new PortfolioDaoFileImplementation(tester);
       Portfolio portfolio2 = new Portfolio(2000);
       Portfolio portfolio3 = new Portfolio(10000);
+      portfolio3.addOwnedStock(1);
+      portfolio3.addOwnedStock(2);
       portfolioDao.createPortfolio(portfolio3);
       portfolioDao.deletePortfolio(2);
       portfolioDao.createPortfolio(
