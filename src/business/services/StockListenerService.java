@@ -11,7 +11,6 @@ import persistence.interfaces.StockDao;
 import persistence.interfaces.StockPriceHistoryDao;
 import shared.logging.Logger;
 
-import javax.xml.crypto.Data;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -33,10 +32,9 @@ public class StockListenerService implements PropertyChangeListener
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     String evtName = evt.getPropertyName();
-    switch (evtName)
+    if (evtName.equals("PriceUpdate"))
     {
-      case "PriceUpdate" -> stockPersistenceUpdate((LiveStockDTU) evt.getNewValue());
-      default -> System.out.println(evtName);
+      stockPersistenceUpdate((LiveStockDTU) evt.getNewValue());
     }
   }
 

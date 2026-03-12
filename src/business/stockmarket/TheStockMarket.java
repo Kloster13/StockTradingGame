@@ -1,6 +1,5 @@
 package business.stockmarket;
 
-import business.stockmarket.simulation.Bankrupt;
 import business.stockmarket.simulation.LiveStock;
 import domain.Stock;
 import shared.logging.Logger;

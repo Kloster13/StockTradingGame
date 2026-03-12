@@ -11,9 +11,10 @@ public class MarketTicker
 
   public void runMarket() throws InterruptedException
   {
+    TheStockMarket market = TheStockMarket.getInstance();
     while (true)
     {
-     TheStockMarket.getInstance().updateStocks();
+     market.updateStocks();
      Thread.sleep(AppConfiguration.getAppConfiguration().getUpdateFrequencyInMs());
     }
   }
