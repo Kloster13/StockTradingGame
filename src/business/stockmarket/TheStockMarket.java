@@ -1,5 +1,6 @@
 package business.stockmarket;
 
+import business.services.dtos.LiveStockDTU;
 import business.stockmarket.simulation.LiveStock;
 import domain.Stock;
 import shared.logging.Logger;

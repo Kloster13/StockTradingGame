@@ -1,6 +1,6 @@
 package business.services;
 
-import business.stockmarket.LiveStockDTU;
+import business.services.dtos.LiveStockDTU;
 import domain.Stock;
 import domain.StockPriceHistory;
 import persistence.FileAccessException;
