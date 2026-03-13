@@ -15,7 +15,6 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class StockBankruptService implements PropertyChangeListener
 {
   private final UnitOfWork uow;
@@ -42,12 +41,12 @@ public class StockBankruptService implements PropertyChangeListener
     try
     {
       List<OwnedStock> ownedStocks = ownedStockDao.getAllOwnedStocks();
-      ArrayList<String> listOfBankruptOwnedStock = new ArrayList<>();
+      ArrayList<Integer> listOfBankruptOwnedStock = new ArrayList<>();
       for (OwnedStock ownedStock : ownedStocks)
       {
         if (ownedStock.getStockSymbol().equals(symbol))
         {
-          listOfBankruptOwnedStock.add(symbol);
+          listOfBankruptOwnedStock.add(ownedStock.getId());
           ownedStockDao.deleteOwnedStock(ownedStock.getId());
         }
       }
@@ -63,14 +62,15 @@ public class StockBankruptService implements PropertyChangeListener
     }
   }
 
-  private void deleteOwnedStockFromPortfolio(ArrayList<String> listOfBankruptOwnedStock)
+
+  private void deleteOwnedStockFromPortfolio(ArrayList<Integer> listOfBankruptOwnedStock)
   {
     ArrayList<Portfolio> portfolios = new ArrayList<>(portfolioDao.getAllPortfolios());
     for (Portfolio portfolio : portfolios)
     {
-      for (int Remove : listOfBankruptOwnedStock)
+      for (int idToRemove : listOfBankruptOwnedStock)
       {
-        portfolio.removeOwnedStock(symbolToRemove);
+        portfolio.removeOwnedStock(idToRemove);
       }
     }
   }

@@ -1,2 +1,0 @@
-1|GOOG|Google|286.0|Growing
-2|MET|Meta|282.0|Declining

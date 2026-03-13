@@ -106,7 +106,7 @@ public class PersistenceTesting
     try
     {
       TransactionDao TransactionDao = new TransactionDaoFileImplementation(tester);
-      Transaction Transaction = new Transaction("MET", "buy", 10, 100, 5);
+      Transaction Transaction = new Transaction("MET", "buy", 10, 100);
       TransactionDao.createTransaction(Transaction);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -116,8 +116,8 @@ public class PersistenceTesting
     try
     {
       TransactionDao TransactionDao = new TransactionDaoFileImplementation(tester);
-      Transaction Transaction2 = new Transaction("GOG", "sell", 100, 20, 10);
-      Transaction Transaction3 = new Transaction("GOG", "sell", 1000, 20, 10);
+      Transaction Transaction2 = new Transaction("GOG", "sell", 100, 20);
+      Transaction Transaction3 = new Transaction("GOG", "sell", 1000, 20);
       TransactionDao.createTransaction(Transaction3);
       TransactionDao.deleteTransaction(2);
       TransactionDao.createTransaction(

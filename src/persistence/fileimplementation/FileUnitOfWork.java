@@ -254,8 +254,7 @@ public class FileUnitOfWork implements UnitOfWork
   private String transactionToPSV(Transaction transaction)
   {
     return transaction.getId() + "|" + transaction.getStockSymbol() + "|" + transaction.getType()
-        + "|" + transaction.getQuantity() + "|" + transaction.getPricePrShare() + "|"
-        + transaction.getFee() + "|" + transaction.getTimestamp();
+        + "|" + transaction.getQuantity() + "|" + transaction.getPricePrShare() + "|" + transaction.getTimestamp();
   }
 
   // From string to object
@@ -311,8 +310,8 @@ public class FileUnitOfWork implements UnitOfWork
   {
     String[] parts = psv.split("\\|");
     return new Transaction(Integer.parseInt(parts[0]), parts[1], parts[2],
-        Integer.parseInt(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]),
-        LocalDate.parse(parts[6]));
+        Integer.parseInt(parts[3]), Double.parseDouble(parts[4]),
+        LocalDate.parse(parts[5]));
   }
 
   private void ensureFilesExist()
