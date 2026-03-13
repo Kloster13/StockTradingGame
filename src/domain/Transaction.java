@@ -1,5 +1,7 @@
 package domain;
 
+import shared.configuration.AppConfiguration;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,26 +16,25 @@ public class Transaction
   private final double fee;
   private final LocalDate timestamp;
 
-  public Transaction(String stockSymbol, String type, int quantity, double pricePrShare, double fee)
+  public Transaction(String stockSymbol, String type, int quantity, double pricePrShare)
   {
     this.stockSymbol = stockSymbol;
     this.type = type;
     this.quantity = quantity;
     this.pricePrShare = pricePrShare;
-    this.fee = fee;
+    this.fee = AppConfiguration.getAppConfiguration().getTransactionFee();
     this.totalAmount = (pricePrShare * quantity) +fee;
     this.timestamp = LocalDate.now();
   }
 
-  public Transaction(int id, String stockSymbol, String type, int quantity, double pricePrShare,
-      double fee, LocalDate timestamp)
+  public Transaction(int id, String stockSymbol, String type, int quantity, double pricePrShare, LocalDate timestamp)
   {
     this.id = id;
     this.stockSymbol = stockSymbol;
     this.type = type;
     this.quantity = quantity;
     this.pricePrShare = pricePrShare;
-    this.fee = fee;
+    this.fee = AppConfiguration.getAppConfiguration().getTransactionFee();
     this.totalAmount = (pricePrShare * quantity) +fee;
     this.timestamp = timestamp;
   }

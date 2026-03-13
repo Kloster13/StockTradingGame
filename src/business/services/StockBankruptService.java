@@ -7,6 +7,7 @@ import persistence.fileimplementation.OwnedStockDaoFileImplementation;
 import persistence.fileimplementation.PortfolioDaoFileImplementation;
 import persistence.interfaces.OwnedStockDao;
 import persistence.interfaces.PortfolioDao;
+import persistence.interfaces.UnitOfWork;
 import shared.logging.Logger;
 
 import java.beans.PropertyChangeEvent;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class StockBankruptService implements PropertyChangeListener
 {
-  private final FileUnitOfWork uow;
+  private final UnitOfWork uow;
   private final OwnedStockDao ownedStockDao;
   private final PortfolioDao portfolioDao;
 
@@ -41,12 +42,12 @@ public class StockBankruptService implements PropertyChangeListener
     try
     {
       List<OwnedStock> ownedStocks = ownedStockDao.getAllOwnedStocks();
-      ArrayList<Integer> listOfBankruptOwnedStock = new ArrayList<>();
+      ArrayList<String> listOfBankruptOwnedStock = new ArrayList<>();
       for (OwnedStock ownedStock : ownedStocks)
       {
         if (ownedStock.getStockSymbol().equals(symbol))
         {
-          listOfBankruptOwnedStock.add(ownedStock.getId());
+          listOfBankruptOwnedStock.add(symbol);
           ownedStockDao.deleteOwnedStock(ownedStock.getId());
         }
       }
@@ -62,14 +63,14 @@ public class StockBankruptService implements PropertyChangeListener
     }
   }
 
-  private void deleteOwnedStockFromPortfolio(ArrayList<Integer> listOfBankruptOwnedStock)
+  private void deleteOwnedStockFromPortfolio(ArrayList<String> listOfBankruptOwnedStock)
   {
     ArrayList<Portfolio> portfolios = new ArrayList<>(portfolioDao.getAllPortfolios());
     for (Portfolio portfolio : portfolios)
     {
-      for (int idToRemove : listOfBankruptOwnedStock)
+      for (int Remove : listOfBankruptOwnedStock)
       {
-        portfolio.removeOwnedStock(idToRemove);
+        portfolio.removeOwnedStock(symbolToRemove);
       }
     }
   }
