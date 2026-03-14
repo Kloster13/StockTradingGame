@@ -1,4 +1,4 @@
-package business.services;
+package business.services.events;
 
 import persistence.fileimplementation.FileUnitOfWork;
 import shared.logging.Logger;

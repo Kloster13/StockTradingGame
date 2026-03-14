@@ -15,11 +15,11 @@ public class StockDaoFileImplementation implements StockDao
   public StockDaoFileImplementation(FileUnitOfWork uow)
   {
     this.uow = uow;
-    calculateNextId();
   }
 
   @Override public void createStock(Stock stock)
   {
+    calculateNextId();
     stock.setId(nextId);
     List<Stock> stocks = uow.getStocks();
     if (!stocks.contains(stock))

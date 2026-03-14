@@ -16,11 +16,11 @@ public class TransactionDaoFileImplementation implements TransactionDao
   public TransactionDaoFileImplementation(FileUnitOfWork uow)
   {
     this.uow = uow;
-    calculateNextId();
   }
 
   @Override public void createTransaction(Transaction transaction)
   {
+    calculateNextId();
     transaction.setId(nextId);
     List<Transaction> transactions = uow.getTransactions();
     if (!transactions.contains(transaction))

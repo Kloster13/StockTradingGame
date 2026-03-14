@@ -286,7 +286,7 @@ public class FileUnitOfWork implements UnitOfWork
   private Portfolio portfolioFromPSV(String psv)
   {
     String[] parts = psv.split("\\|");
-    return new Portfolio(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), parseStringToList(parts[2]));
+    return new Portfolio(Integer.parseInt(parts[0]), Double.parseDouble(parts[1]), parseStringToList(parts[2]));
   }
 
   private Stock stockFromPSV(String psv)

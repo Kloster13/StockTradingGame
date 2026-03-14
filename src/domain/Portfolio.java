@@ -5,15 +5,16 @@ import java.util.*;
 public class Portfolio
 {
   private int id;
-  private int currentBalance;
+  private double currentBalance;
   private List<Integer> transactions;
 
-  public Portfolio(int currentBalance)
+  public Portfolio(double currentBalance)
   {
     this.currentBalance = currentBalance;
     transactions = new ArrayList<>();
   }
-  public Portfolio(int id, int currentBalance, List<Integer> transactions)
+
+  public Portfolio(int id, double currentBalance, List<Integer> transactions)
   {
     this.id = id;
     this.currentBalance = currentBalance;
@@ -30,14 +31,19 @@ public class Portfolio
     this.id = id;
   }
 
-  public int getCurrentBalance()
+  public double getCurrentBalance()
   {
     return currentBalance;
   }
 
-  public void setCurrentBalance(int currentBalance)
+  public void setCurrentBalance(double currentBalance)
   {
     this.currentBalance = currentBalance;
+  }
+
+  public void updateCurrentBalance(double change)
+  {
+    this.currentBalance += change;
   }
 
   public ArrayList<Integer> getTransactions()
@@ -52,14 +58,16 @@ public class Portfolio
 
   @Override public String toString()
   {
-    return "Portfolio{" + "currentBalance=" + currentBalance + ", transactions=" + transactions + '}';
+    return "Portfolio{" + "currentBalance=" + currentBalance + ", transactions=" + transactions
+        + '}';
   }
 
   @Override public boolean equals(Object o)
   {
     if (!(o instanceof Portfolio portfolio))
       return false;
-    return currentBalance == portfolio.currentBalance && Objects.equals(transactions, portfolio.transactions);
+    return currentBalance == portfolio.currentBalance && Objects.equals(transactions,
+        portfolio.transactions);
   }
 
   @Override public int hashCode()

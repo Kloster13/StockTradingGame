@@ -1,8 +1,8 @@
 package Testing;
 
-import business.services.StockAlertService;
-import business.services.StockBankruptService;
-import business.services.StockListenerService;
+import business.services.events.StockAlertService;
+import business.services.events.StockBankruptService;
+import business.services.events.StockListenerService;
 import business.stockmarket.MarketTicker;
 import business.stockmarket.TheStockMarket;
 import domain.Stock;

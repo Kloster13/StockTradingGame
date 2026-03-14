@@ -1,5 +1,6 @@
-package business.services;
+package business.services.events;
 
+import business.services.DateUpdateException;
 import business.services.dtos.LiveStockDTU;
 import domain.Stock;
 import domain.StockPriceHistory;

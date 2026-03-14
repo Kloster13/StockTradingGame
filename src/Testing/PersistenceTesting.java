@@ -18,7 +18,9 @@ public class PersistenceTesting
     {
       StockDao stockDao = new StockDaoFileImplementation(tester);
       Stock stockTest = new Stock("GOOG", "Google", 100);
+      Stock stockTest3 = new Stock("NVID", "NVIDIA", 100);
       stockDao.createStock(stockTest);
+      stockDao.createStock(stockTest3);
     }
     catch (FileAccessException | IllegalArgumentException e)
     {

@@ -1,7 +1,7 @@
-package business.services;
+package business.services.events;
 
+import business.services.DateUpdateException;
 import domain.OwnedStock;
-import domain.Portfolio;
 import persistence.fileimplementation.FileUnitOfWork;
 import persistence.fileimplementation.OwnedStockDaoFileImplementation;
 import persistence.fileimplementation.PortfolioDaoFileImplementation;
@@ -12,7 +12,6 @@ import shared.logging.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StockBankruptService implements PropertyChangeListener

@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Objects;
+
 public class OwnedStock
 {
   private int id;
@@ -55,5 +57,18 @@ public class OwnedStock
   public void setNumberOfShares(int numberOfShares)
   {
     this.numberOfShares = numberOfShares;
+  }
+
+  @Override public boolean equals(Object o)
+  {
+    if (!(o instanceof OwnedStock that))
+      return false;
+    return portfolioId == that.portfolioId && numberOfShares == that.numberOfShares
+        && Objects.equals(stockSymbol, that.stockSymbol);
+  }
+
+  @Override public int hashCode()
+  {
+    return Objects.hash(portfolioId, stockSymbol, numberOfShares);
   }
 }
