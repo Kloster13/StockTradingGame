@@ -3,6 +3,7 @@ package business.services;
 import business.services.dtos.PortfolioData;
 import domain.OwnedStock;
 import domain.Portfolio;
+import domain.Stock;
 import persistence.fileimplementation.*;
 import persistence.interfaces.*;
 import shared.logging.Logger;
@@ -41,8 +42,12 @@ public class PortfolioService
               .getCurrentPrice())*ownedStock.getNumberOfShares();
         }
       }
+      Map<String,Double> stocksToBuy= new HashMap<>();
+      for(Stock stock : stockDao.getAllStocks()){
+        stocksToBuy.put(stock.getSymbol(),stock.getCurrentPrice());
+      }
 
-      return new PortfolioData(portfolio.getCurrentBalance(), portfolioValue, ownedStockInfo);
+      return new PortfolioData(portfolio.getCurrentBalance(), portfolioValue, ownedStockInfo,stocksToBuy);
     }
     catch (NoSuchElementException e)
     {

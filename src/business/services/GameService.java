@@ -24,6 +24,6 @@ public class GameService
   }
 
   public void startGame(){
-    // TODO think about this one same with rest
+    // TODO think about this one same with reset
   }
 }
