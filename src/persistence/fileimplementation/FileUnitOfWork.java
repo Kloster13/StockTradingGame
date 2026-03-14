@@ -229,13 +229,13 @@ public class FileUnitOfWork implements UnitOfWork
   // From object to string
   private String ownedStockToPSV(OwnedStock ownedStock)
   {
-    return ownedStock.getId() + "|" + ownedStock.getStockSymbol() + "|"
+    return ownedStock.getId() + "|"+ownedStock.getPortfolioId() + "|" + ownedStock.getStockSymbol() + "|"
         + ownedStock.getNumberOfShares();
   }
 
   private String portfolioToPSV(Portfolio portfolio)
   {
-    return portfolio.getId() + "|" + portfolio.getCurrentBalance() + "|" + portfolio.getOwnedStock()
+    return portfolio.getId() + "|" + portfolio.getCurrentBalance()
         + "|" + portfolio.getTransactions();
   }
 
@@ -266,12 +266,10 @@ public class FileUnitOfWork implements UnitOfWork
     if (s.length() < 2 || s.charAt(0) != '[' || s.charAt(s.length() - 1) != ']') {
       return Collections.emptyList();
     }
-
     String inner = s.substring(1, s.length() - 1).trim();
     if (inner.isEmpty()) {
       return Collections.emptyList();
     }
-
     return Arrays.stream(inner.split(","))
         .map(String::trim)
         .filter(token -> !token.isEmpty())
@@ -282,14 +280,13 @@ public class FileUnitOfWork implements UnitOfWork
   private OwnedStock ownedStockFromPSV(String psv)
   {
     String[] parts = psv.split("\\|");
-    return new OwnedStock(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2]));
+    return new OwnedStock(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]), parts[2], Integer.parseInt(parts[3]));
   }
 
   private Portfolio portfolioFromPSV(String psv)
   {
     String[] parts = psv.split("\\|");
-    return new Portfolio(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
-        parseStringToList(parts[2]), parseStringToList(parts[3]));
+    return new Portfolio(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), parseStringToList(parts[2]));
   }
 
   private Stock stockFromPSV(String psv)

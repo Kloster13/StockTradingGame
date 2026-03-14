@@ -14,11 +14,11 @@ public class OwnedStockDaoFileImplementation implements OwnedStockDao
   public OwnedStockDaoFileImplementation(FileUnitOfWork uow)
   {
     this.uow = uow;
-    calculateNextId();
   }
 
   @Override public void createOwnedStock(OwnedStock ownedStock)
   {
+    calculateNextId();
     ownedStock.setId(nextId);
     List<OwnedStock> ownedStocks = uow.getOwnedStocks();
     if (!ownedStocks.contains(ownedStock))

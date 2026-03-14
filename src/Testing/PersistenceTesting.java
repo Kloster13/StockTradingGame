@@ -17,7 +17,7 @@ public class PersistenceTesting
     try
     {
       StockDao stockDao = new StockDaoFileImplementation(tester);
-      Stock stockTest = new Stock("GOOG", "" + "Gooogle", 100);
+      Stock stockTest = new Stock("GOOG", "Google", 100);
       stockDao.createStock(stockTest);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -27,7 +27,7 @@ public class PersistenceTesting
     try
     {
       StockDao stockDao = new StockDaoFileImplementation(tester);
-      Stock stockTest2 = new Stock("MET2", "Meta", 100);
+      Stock stockTest2 = new Stock("META", "Meta", 100);
       stockDao.createStock(stockTest2);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -56,57 +56,42 @@ public class PersistenceTesting
     {
       Logger.getInstance().log("ERROR", e.getMessage());
     }
-    try
-    {
-      PortfolioDao portfolioDao = new PortfolioDaoFileImplementation(tester);
-      Portfolio portfolio2 = new Portfolio(2000);
-      Portfolio portfolio3 = new Portfolio(10000);
-      portfolio3.addOwnedStock(1);
-      portfolio3.addOwnedStock(2);
-      portfolioDao.createPortfolio(portfolio3);
-      portfolioDao.deletePortfolio(2);
-      portfolioDao.createPortfolio(
-          portfolio2); // Denne får samme id som den der bliver sletter inden
-      portfolio2.setCurrentBalance(50);
-      portfolioDao.updatePortfolio(portfolio2);
-    }
-    catch (FileAccessException | IllegalArgumentException e)
-    {
-      Logger.getInstance().log("ERROR", e.getMessage());
-    }
-
     // owned stock testing
     try
     {
       OwnedStockDao ownedStockDao = new OwnedStockDaoFileImplementation(tester);
-      OwnedStock ownedStock = new OwnedStock("MET", 200);
+      OwnedStock ownedStock = new OwnedStock("META",1, 20);
+      OwnedStock ownedStock2 = new OwnedStock("GOOG",1, 10);
       ownedStockDao.createOwnedStock(ownedStock);
+      ownedStock2.setId(2);
+      ownedStockDao.createOwnedStock(ownedStock2);
+
     }
     catch (FileAccessException | IllegalArgumentException e)
     {
       Logger.getInstance().log("ERROR", e.getMessage());
     }
-    try
-    {
-      OwnedStockDao OwnedStockDao = new OwnedStockDaoFileImplementation(tester);
-      OwnedStock OwnedStock2 = new OwnedStock("GOG", 10);
-      OwnedStock OwnedStock3 = new OwnedStock("TES", 1);
-      OwnedStockDao.createOwnedStock(OwnedStock3);
-      OwnedStockDao.deleteOwnedStock(2);
-      OwnedStockDao.createOwnedStock(
-          OwnedStock2); // Denne får samme id som den der bliver sletter inden
-      OwnedStockDao.updateOwnedStock(OwnedStock3);
-    }
-    catch (FileAccessException | IllegalArgumentException e)
-    {
-      Logger.getInstance().log("ERROR", e.getMessage());
-    }
+//    try
+//    {
+//      OwnedStockDao OwnedStockDao = new OwnedStockDaoFileImplementation(tester);
+//      OwnedStock OwnedStock2 = new OwnedStock("GOOG",1, 10);
+//      OwnedStock OwnedStock3 = new OwnedStock("META",1, 1);
+//      OwnedStockDao.createOwnedStock(OwnedStock3);
+//      OwnedStockDao.deleteOwnedStock(2);
+//      OwnedStockDao.createOwnedStock(
+//          OwnedStock2); // Denne får samme id som den der bliver sletter inden
+//      OwnedStockDao.updateOwnedStock(OwnedStock3);
+//    }
+//    catch (FileAccessException | IllegalArgumentException e)
+//    {
+//      Logger.getInstance().log("ERROR", e.getMessage());
+//    }
 
     // transaction testing
     try
     {
       TransactionDao TransactionDao = new TransactionDaoFileImplementation(tester);
-      Transaction Transaction = new Transaction("MET", "buy", 10, 100);
+      Transaction Transaction = new Transaction("META", "buy", 10, 100);
       TransactionDao.createTransaction(Transaction);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -116,8 +101,8 @@ public class PersistenceTesting
     try
     {
       TransactionDao TransactionDao = new TransactionDaoFileImplementation(tester);
-      Transaction Transaction2 = new Transaction("GOG", "sell", 100, 20);
-      Transaction Transaction3 = new Transaction("GOG", "sell", 1000, 20);
+      Transaction Transaction2 = new Transaction("GOOG", "sell", 100, 20);
+      Transaction Transaction3 = new Transaction("GOOG", "sell", 1000, 20);
       TransactionDao.createTransaction(Transaction3);
       TransactionDao.deleteTransaction(2);
       TransactionDao.createTransaction(
@@ -145,8 +130,8 @@ public class PersistenceTesting
     {
       StockPriceHistoryDao StockPriceHistoryDao = new StockPriceHistoryDaoFileImplementation(
           tester);
-      StockPriceHistory StockPriceHistory2 = new StockPriceHistory("GOG", 10);
-      StockPriceHistory StockPriceHistory3 = new StockPriceHistory("GOG", 20);
+      StockPriceHistory StockPriceHistory2 = new StockPriceHistory("GOOG", 10);
+      StockPriceHistory StockPriceHistory3 = new StockPriceHistory("GOOG", 20);
       StockPriceHistoryDao.createStockPriceHistory(StockPriceHistory3);
       StockPriceHistoryDao.deleteStockPriceHistory(2);
       StockPriceHistoryDao.createStockPriceHistory(

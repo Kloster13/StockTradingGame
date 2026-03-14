@@ -41,16 +41,13 @@ public class StockBankruptService implements PropertyChangeListener
     try
     {
       List<OwnedStock> ownedStocks = ownedStockDao.getAllOwnedStocks();
-      ArrayList<Integer> listOfBankruptOwnedStock = new ArrayList<>();
       for (OwnedStock ownedStock : ownedStocks)
       {
         if (ownedStock.getStockSymbol().equals(symbol))
         {
-          listOfBankruptOwnedStock.add(ownedStock.getId());
           ownedStockDao.deleteOwnedStock(ownedStock.getId());
         }
       }
-      deleteOwnedStockFromPortfolio(listOfBankruptOwnedStock);
       uow.commit();
       logger.log("INFO", "Owned stock from " + symbol + " was deleted");
     }
@@ -59,19 +56,6 @@ public class StockBankruptService implements PropertyChangeListener
       uow.rollback();
       logger.log("ERROR", e.getMessage());
       throw new DateUpdateException("Error in deleting owned stock");
-    }
-  }
-
-
-  private void deleteOwnedStockFromPortfolio(ArrayList<Integer> listOfBankruptOwnedStock)
-  {
-    ArrayList<Portfolio> portfolios = new ArrayList<>(portfolioDao.getAllPortfolios());
-    for (Portfolio portfolio : portfolios)
-    {
-      for (int idToRemove : listOfBankruptOwnedStock)
-      {
-        portfolio.removeOwnedStock(idToRemove);
-      }
     }
   }
 }
