@@ -73,7 +73,7 @@ public class StockTransactionService
       logger.log("INFO", request.quantity() + " of " + stock.getName() + " was bought");
     }
 
-    catch (IllegalArgumentException | NoSuchElementException e) // TODO FIX
+    catch (IllegalArgumentException | NoSuchElementException e)
     {
       uow.rollback();
       logger.log("ERROR", "Could not buy stock" + e.getMessage());
