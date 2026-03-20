@@ -38,7 +38,7 @@ public class StockTransactionService
     {
       uow.begin();
       // Validation and transaction creation
-      Stock stock = stockDao.getStockById(request.stockId()).orElseThrow();
+      Stock stock = stockDao.getStockBySymbol(request.symbol()).orElseThrow();
       Portfolio portfolio = portfolioDao.getPortfolioById(request.portfolioID()).orElseThrow();
       if (stock.getCurrentState().equals("Bankrupt"))
         throw new IllegalArgumentException(stock.getSymbol() + " is bankrupt");
@@ -87,7 +87,7 @@ public class StockTransactionService
     {
       uow.begin();
 
-      Stock stock = stockDao.getStockById(request.stockId()).orElseThrow();
+      Stock stock = stockDao.getStockBySymbol(request.symbol()).orElseThrow();
       Portfolio portfolio = portfolioDao.getPortfolioById(request.portfolioID()).orElseThrow();
       OwnedStock ownedStock = getOwnedStockFromData(stock, portfolio);
       if (ownedStock == null)

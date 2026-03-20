@@ -14,6 +14,8 @@ public class MockUnitOfWork implements UnitOfWork
   private List<Stock> stocks;
   private List<StockPriceHistory> stockPriceHistory;
   private List<Transaction> transactions;
+  public int beginCounter=0;
+  public int commitCounter=0;
 
   private final Logger logger = Logger.getInstance();
 
@@ -23,11 +25,12 @@ public class MockUnitOfWork implements UnitOfWork
 
   @Override public void begin()
   {
-
+    beginCounter++;
   }
 
   @Override public void commit()
   {
+    commitCounter++;
   }
 
   @Override public void rollback()

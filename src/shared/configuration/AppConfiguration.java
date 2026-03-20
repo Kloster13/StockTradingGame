@@ -3,8 +3,8 @@ package shared.configuration;
 public class AppConfiguration
 {
   private static AppConfiguration instance;
-  private final int startingBalance = 1000;
-  private final double transactionFee = 5;
+  private final int startingBalance = 10000;
+  private double transactionFee = 5;
   private final int updateFrequencyInMs = 1000;
   private final double stockResetValue = 100;
 
@@ -26,10 +26,16 @@ public class AppConfiguration
     return startingBalance;
   }
 
+  public void setTransactionFee(double transactionFee)
+  {
+    this.transactionFee = transactionFee;
+  }
+
   public double getTransactionFee()
   {
     return transactionFee;
   }
+
 
   public int getUpdateFrequencyInMs()
   {

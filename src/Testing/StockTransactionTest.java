@@ -10,14 +10,14 @@ public class StockTransactionTest
   public static void main(String[] args)
   {
     StockTransactionService transaction = getStockTransactionService();
-    BuySellStockRequest buyStockRequest = new BuySellStockRequest(1, 2,
+    BuySellStockRequest buyStockRequest = new BuySellStockRequest(1, "NVID",
         20);// NVIDIA
-    BuySellStockRequest buyStockRequest1 = new BuySellStockRequest(1, 1,
+    BuySellStockRequest buyStockRequest1 = new BuySellStockRequest(1, "GOOG",
         20); // GOOGLE
     transaction.buyStock(buyStockRequest);
     transaction.buyStock(buyStockRequest1);
 
-    BuySellStockRequest sellStockRequest = new BuySellStockRequest(1, 2,
+    BuySellStockRequest sellStockRequest = new BuySellStockRequest(1, "GOOG",
         10);// NVIDIA
     transaction.sellStock(sellStockRequest);
 

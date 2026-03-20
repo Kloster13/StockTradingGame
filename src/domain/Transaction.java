@@ -16,18 +16,24 @@ public class Transaction
   private final double fee;
   private final LocalDate timestamp;
 
-  public Transaction(String stockSymbol, String type, int quantity, double pricePrShare)
+  public Transaction(String stockSymbol, String type, int quantity,
+      double pricePrShare)
   {
     this.stockSymbol = stockSymbol;
     this.type = type;
     this.quantity = quantity;
     this.pricePrShare = pricePrShare;
     this.fee = AppConfiguration.getAppConfiguration().getTransactionFee();
-    this.totalAmount = (pricePrShare * quantity) +fee;
+    if (type.equals("sell"))
+      this.totalAmount = (pricePrShare * quantity) - fee;
+    else
+
+      this.totalAmount = (pricePrShare * quantity) + fee;
     this.timestamp = LocalDate.now();
   }
 
-  public Transaction(int id, String stockSymbol, String type, int quantity, double pricePrShare, LocalDate timestamp)
+  public Transaction(int id, String stockSymbol, String type, int quantity,
+      double pricePrShare, LocalDate timestamp)
   {
     this.id = id;
     this.stockSymbol = stockSymbol;
@@ -35,7 +41,11 @@ public class Transaction
     this.quantity = quantity;
     this.pricePrShare = pricePrShare;
     this.fee = AppConfiguration.getAppConfiguration().getTransactionFee();
-    this.totalAmount = (pricePrShare * quantity) +fee;
+    if (type.equals("sell"))
+      this.totalAmount = (pricePrShare * quantity) - fee;
+    else
+
+      this.totalAmount = (pricePrShare * quantity) + fee;
     this.timestamp = timestamp;
   }
 
@@ -88,14 +98,17 @@ public class Transaction
   {
     if (!(o instanceof Transaction that))
       return false;
-    return quantity == that.quantity && Double.compare(pricePrShare, that.pricePrShare) == 0
-        && Double.compare(totalAmount, that.totalAmount) == 0 && Double.compare(fee, that.fee) == 0
-        && Objects.equals(stockSymbol, that.stockSymbol) && Objects.equals(type, that.type)
-        && Objects.equals(timestamp, that.timestamp);
+    return quantity == that.quantity
+        && Double.compare(pricePrShare, that.pricePrShare) == 0
+        && Double.compare(totalAmount, that.totalAmount) == 0
+        && Double.compare(fee, that.fee) == 0 && Objects.equals(stockSymbol,
+        that.stockSymbol) && Objects.equals(type, that.type) && Objects.equals(
+        timestamp, that.timestamp);
   }
 
   @Override public int hashCode()
   {
-    return Objects.hash(stockSymbol, type, quantity, pricePrShare, totalAmount, fee, timestamp);
+    return Objects.hash(stockSymbol, type, quantity, pricePrShare, totalAmount,
+        fee, timestamp);
   }
 }
