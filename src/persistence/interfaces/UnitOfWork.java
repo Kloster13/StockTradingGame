@@ -9,4 +9,5 @@ public interface UnitOfWork
   void begin();
   void commit();
   void rollback();
+  void reset();
 }

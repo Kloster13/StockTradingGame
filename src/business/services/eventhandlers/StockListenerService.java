@@ -1,4 +1,4 @@
-package business.services.events;
+package business.services.eventhandlers;
 
 import business.services.DateUpdateException;
 import business.services.dtos.LiveStockDTU;

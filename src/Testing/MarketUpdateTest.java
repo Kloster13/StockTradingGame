@@ -1,8 +1,8 @@
 package Testing;
 
-import business.services.events.StockAlertService;
-import business.services.events.StockBankruptService;
-import business.services.events.StockListenerService;
+import business.services.eventhandlers.StockAlertService;
+import business.services.eventhandlers.StockBankruptService;
+import business.services.eventhandlers.StockListenerService;
 import business.stockmarket.MarketTicker;
 import business.stockmarket.TheStockMarket;
 import domain.Stock;
@@ -41,9 +41,9 @@ public class MarketUpdateTest
     market.addListener(stockAlertService);
     try
     {
-      marketTicker.runMarket();
+      marketTicker.run();
     }
-    catch (InterruptedException e)
+    catch (RuntimeException e)
     {
       Logger.getInstance().log("ERROR", "Interrupted");
     }

@@ -2,21 +2,36 @@ package business.stockmarket;
 
 import shared.configuration.AppConfiguration;
 
-public class MarketTicker
+public class MarketTicker implements Runnable
 {
+  private volatile boolean running;
 
   public MarketTicker()
   {
+    running = false;
   }
 
-  public void runMarket() throws InterruptedException
+  @Override public void run()
   {
     TheStockMarket market = TheStockMarket.getInstance();
-    while (true)
+    running = true;
+    while (running)
     {
-     market.updateStocks();
-     Thread.sleep(AppConfiguration.getAppConfiguration().getUpdateFrequencyInMs());
+      market.updateStocks();
+      try
+      {
+        Thread.sleep(
+            AppConfiguration.getAppConfiguration().getUpdateFrequencyInMs());
+      }
+      catch (InterruptedException e)
+      {
+        throw new RuntimeException(e);
+      }
     }
   }
 
+  public void stopMarket()
+  {
+    running = false;
+  }
 }

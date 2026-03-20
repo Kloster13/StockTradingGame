@@ -34,7 +34,6 @@ public class StockTransactionService
     try
     {
       uow.begin();
-
       // Validation and transaction creation
       Stock stock = stockDao.getStockById(request.stockId()).orElseThrow();
       Portfolio portfolio = portfolioDao.getPortfolioById(request.portfolioID()).orElseThrow();

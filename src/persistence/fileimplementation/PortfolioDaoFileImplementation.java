@@ -16,11 +16,11 @@ public class PortfolioDaoFileImplementation implements PortfolioDao
   public PortfolioDaoFileImplementation(FileUnitOfWork uow)
   {
     this.uow = uow;
-    calculateNextId();
   }
 
   @Override public void createPortfolio(Portfolio portfolio)
   {
+    calculateNextId();
     portfolio.setId(nextId);
     List<Portfolio> portfolios = uow.getPortfolios();
     if (!portfolios.contains(portfolio))

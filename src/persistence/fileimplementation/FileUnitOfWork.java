@@ -80,6 +80,12 @@ public class FileUnitOfWork implements UnitOfWork
     logger.log("INFO", "Rolling back");
   }
 
+  @Override public void reset()
+  {
+    begin();
+    commit();
+  }
+
   public List<OwnedStock> getOwnedStocks()
   {
     if (ownedStocks == null)
