@@ -17,11 +17,11 @@ public class PortfolioService
   private final PortfolioDao portfolioDao;
   private final StockDao stockDao;
 
-  public PortfolioService(FileUnitOfWork uow)
+  public PortfolioService(UnitOfWork uow, OwnedStockDao ownedStockDao, PortfolioDao portfolioDao, StockDao stockDao)
   {
-    this.ownedStockDao = new OwnedStockDaoFileImplementation(uow);
-    this.portfolioDao = new PortfolioDaoFileImplementation(uow);
-    this.stockDao = new StockDaoFileImplementation(uow);
+    this.ownedStockDao = ownedStockDao;
+    this.portfolioDao = portfolioDao;
+    this.stockDao = stockDao;
   }
 
   public PortfolioData getPortfolioData(int portfolioId)

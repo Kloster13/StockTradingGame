@@ -1,7 +1,7 @@
 package business.services.eventhandlers;
 
 import business.services.DateUpdateException;
-import business.services.dtos.LiveStockDTU;
+import business.services.dtos.LiveStockDTO;
 import domain.Stock;
 import domain.StockPriceHistory;
 import persistence.FileAccessException;
@@ -10,6 +10,7 @@ import persistence.fileimplementation.StockDaoFileImplementation;
 import persistence.fileimplementation.StockPriceHistoryDaoFileImplementation;
 import persistence.interfaces.StockDao;
 import persistence.interfaces.StockPriceHistoryDao;
+import persistence.interfaces.UnitOfWork;
 import shared.logging.Logger;
 
 import java.beans.PropertyChangeEvent;
@@ -17,17 +18,18 @@ import java.beans.PropertyChangeListener;
 
 public class StockListenerService implements PropertyChangeListener
 {
-  private FileUnitOfWork uow;
+  private UnitOfWork uow;
   private StockDao stockDao;
   private StockPriceHistoryDao historyDao;
 
   private Logger logger = Logger.getInstance();
 
-  public StockListenerService(FileUnitOfWork uow)
+  public StockListenerService(UnitOfWork uow, StockDao stockDao,
+      StockPriceHistoryDao historyDao)
   {
     this.uow = uow;
-    stockDao = new StockDaoFileImplementation(uow);
-    historyDao = new StockPriceHistoryDaoFileImplementation(uow);
+    this.stockDao = stockDao;
+    this.historyDao = historyDao;
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)
@@ -35,11 +37,11 @@ public class StockListenerService implements PropertyChangeListener
     String evtName = evt.getPropertyName();
     if (evtName.equals("PriceUpdate"))
     {
-      stockPersistenceUpdate((LiveStockDTU) evt.getNewValue());
+      stockPersistenceUpdate((LiveStockDTO) evt.getNewValue());
     }
   }
 
-  private void stockPersistenceUpdate(LiveStockDTU liveStockDTU)
+  private void stockPersistenceUpdate(LiveStockDTO liveStockDTU)
   {
     try
     {
@@ -54,7 +56,8 @@ public class StockListenerService implements PropertyChangeListener
       stockDao.updateStock(stock);
 
       uow.commit();
-      logger.log("INFO", stock.getSymbol() + " was updated to: " + stock.getCurrentPrice());
+      logger.log("INFO",
+          stock.getSymbol() + " was updated to: " + stock.getCurrentPrice());
     }
     catch (IllegalArgumentException | FileAccessException e)
     {

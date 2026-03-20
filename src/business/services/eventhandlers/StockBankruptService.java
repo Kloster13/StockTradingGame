@@ -18,15 +18,13 @@ public class StockBankruptService implements PropertyChangeListener
 {
   private final UnitOfWork uow;
   private final OwnedStockDao ownedStockDao;
-  private final PortfolioDao portfolioDao;
 
   private final Logger logger = Logger.getInstance();
 
-  public StockBankruptService(FileUnitOfWork uow)
+  public StockBankruptService(UnitOfWork uow, OwnedStockDao ownedStockDao)
   {
     this.uow = uow;
-    ownedStockDao = new OwnedStockDaoFileImplementation(uow);
-    portfolioDao = new PortfolioDaoFileImplementation(uow);
+    this.ownedStockDao=ownedStockDao;
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)
@@ -39,6 +37,7 @@ public class StockBankruptService implements PropertyChangeListener
   {
     try
     {
+      uow.begin();
       List<OwnedStock> ownedStocks = ownedStockDao.getAllOwnedStocks();
       for (OwnedStock ownedStock : ownedStocks)
       {

@@ -1,6 +1,7 @@
 package business.services.eventhandlers;
 
 import persistence.fileimplementation.FileUnitOfWork;
+import persistence.interfaces.UnitOfWork;
 import shared.logging.Logger;
 
 import java.beans.PropertyChangeEvent;
@@ -10,7 +11,7 @@ public class StockAlertService implements PropertyChangeListener
 {
   private final Logger logger = Logger.getInstance();
 
-  public StockAlertService(FileUnitOfWork uow)
+  public StockAlertService(UnitOfWork uow)
   {
   }
 

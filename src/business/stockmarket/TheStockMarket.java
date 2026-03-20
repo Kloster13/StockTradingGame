@@ -1,6 +1,6 @@
 package business.stockmarket;
 
-import business.services.dtos.LiveStockDTU;
+import business.services.dtos.LiveStockDTO;
 import business.stockmarket.simulation.LiveStock;
 import domain.Stock;
 import shared.logging.Logger;
@@ -79,7 +79,7 @@ public class TheStockMarket
   private void firePriceUpdate(LiveStock liveStock)
   {
     support.firePropertyChange("PriceUpdate", null,
-        new LiveStockDTU(liveStock.getSymbol(), liveStock.getCurrentPrice(),
+        new LiveStockDTO(liveStock.getSymbol(), liveStock.getCurrentPrice(),
             liveStock.getStateName()));
   }
 

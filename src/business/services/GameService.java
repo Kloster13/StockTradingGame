@@ -11,16 +11,13 @@ import persistence.fileimplementation.FileUnitOfWork;
 import persistence.fileimplementation.OwnedStockDaoFileImplementation;
 import persistence.fileimplementation.PortfolioDaoFileImplementation;
 import persistence.fileimplementation.StockDaoFileImplementation;
-import persistence.interfaces.OwnedStockDao;
-import persistence.interfaces.PortfolioDao;
-import persistence.interfaces.StockDao;
-import persistence.interfaces.UnitOfWork;
+import persistence.interfaces.*;
 import shared.configuration.AppConfiguration;
 import shared.logging.Logger;
 
 public class GameService
 {
-  private final FileUnitOfWork uow;
+  private final UnitOfWork uow;
   private final Logger logger = Logger.getInstance();
   private final OwnedStockDao ownedStockDao;
   private final PortfolioDao portfolioDao;
@@ -29,15 +26,17 @@ public class GameService
   private final MarketTicker marketTicker = new MarketTicker();
   private final Thread marketThread = new Thread(marketTicker);
 
-  public GameService(FileUnitOfWork uow)
+  public GameService(UnitOfWork uow, OwnedStockDao ownedStockDao,
+      PortfolioDao portfolioDao, StockDao stockDao,
+      StockPriceHistoryDao historyDao)
   {
     this.uow = uow;
-    this.ownedStockDao = new OwnedStockDaoFileImplementation(uow);
-    this.portfolioDao = new PortfolioDaoFileImplementation(uow);
-    this.stockDao = new StockDaoFileImplementation(uow);
+    this.ownedStockDao = ownedStockDao;
+    this.portfolioDao = portfolioDao;
+    this.stockDao = stockDao;
     market = TheStockMarket.getInstance();
-    market.addListener(new StockListenerService(uow));
-    market.addListener(new StockBankruptService(uow));
+    market.addListener(new StockListenerService(uow, stockDao, historyDao));
+    market.addListener(new StockBankruptService(uow,ownedStockDao));
     market.addListener(new StockAlertService(uow));
   }
 

@@ -20,13 +20,15 @@ public class StockTransactionService
   private final StockDao stockDao;
   private final TransactionDao transactionDao;
 
-  public StockTransactionService(FileUnitOfWork uow)
+  public StockTransactionService(UnitOfWork uow, OwnedStockDao ownedStockDao,
+      PortfolioDao portfolioDao, StockDao stockDao,
+      TransactionDao transactionDao)
   {
     this.uow = uow;
-    this.ownedStockDao = new OwnedStockDaoFileImplementation(uow);
-    this.portfolioDao = new PortfolioDaoFileImplementation(uow);
-    this.stockDao = new StockDaoFileImplementation(uow);
-    this.transactionDao = new TransactionDaoFileImplementation(uow);
+    this.ownedStockDao = ownedStockDao;
+    this.portfolioDao = portfolioDao;
+    this.stockDao = stockDao;
+    this.transactionDao=transactionDao;
   }
 
   public void buyStock(BuySellStockRequest request)

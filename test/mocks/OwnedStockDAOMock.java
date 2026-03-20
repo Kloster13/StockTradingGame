@@ -1,20 +1,19 @@
-package persistence.fileimplementation;
+package mocks;
 
 import domain.OwnedStock;
+import persistence.fileimplementation.FileUnitOfWork;
 import persistence.interfaces.OwnedStockDao;
-import persistence.interfaces.UnitOfWork;
 import shared.logging.Logger;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
-public class OwnedStockDaoFileImplementation implements OwnedStockDao
+public class OwnedStockDAOMock implements OwnedStockDao
 {
   private static int nextId = 0;
-  private final FileUnitOfWork uow;
+  private final MockUnitOfWork uow;
 
-  public OwnedStockDaoFileImplementation(FileUnitOfWork uow)
+  public OwnedStockDAOMock(MockUnitOfWork uow)
   {
     this.uow = uow;
   }

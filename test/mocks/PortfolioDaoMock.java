@@ -1,0 +1,74 @@
+package mocks;
+
+import domain.Portfolio;
+import persistence.fileimplementation.FileUnitOfWork;
+import persistence.interfaces.PortfolioDao;
+import shared.logging.Logger;
+
+import java.util.List;
+import java.util.Optional;
+
+public class PortfolioDaoMock implements PortfolioDao
+{
+  private static int nextId = 0;
+
+  private final MockUnitOfWork uow;
+
+  public PortfolioDaoMock(MockUnitOfWork uow)
+  {
+    this.uow = uow;
+  }
+
+  @Override public void createPortfolio(Portfolio portfolio)
+  {
+    calculateNextId();
+    portfolio.setId(nextId);
+    List<Portfolio> portfolios = uow.getPortfolios();
+    if (!portfolios.contains(portfolio))
+      portfolios.add(portfolio);
+    else
+      Logger.getInstance().log("ERROR", "Portfolio already in list");
+  }
+
+  @Override public void updatePortfolio(Portfolio updatedPortfolio)
+  {
+    Portfolio oldPortfolio = getPortfolioById(updatedPortfolio.getId()).orElseThrow(
+        () -> new IllegalArgumentException("Portfolio not in list"));
+
+    uow.getPortfolios().remove(oldPortfolio);
+    uow.getPortfolios().add(updatedPortfolio);
+  }
+
+  @Override public Optional<Portfolio> getPortfolioById(int id)
+  {
+    for (Portfolio portfolio : uow.getPortfolios())
+    {
+      if (portfolio.getId() == id)
+        return Optional.of(portfolio);
+    }
+    return Optional.empty();
+  }
+
+  @Override public List<Portfolio> getAllPortfolios()
+  {
+    return List.copyOf(uow.getPortfolios());
+  }
+
+  @Override public void deletePortfolio(int portfolioId)
+  {
+    Portfolio oldPortfolio = getPortfolioById(portfolioId).orElseThrow(
+        () -> new IllegalArgumentException("Portfolio not in list"));
+    uow.getPortfolios().remove(oldPortfolio);
+  }
+
+  private void calculateNextId()
+  {
+    int maxValue = 0;
+    for (Portfolio portfolio : uow.getPortfolios())
+    {
+      if (portfolio.getId() > maxValue)
+        maxValue = portfolio.getId();
+    }
+    nextId = maxValue + 1;
+  }
+}
