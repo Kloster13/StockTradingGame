@@ -10,6 +10,7 @@ import persistence.interfaces.*;
 import shared.logging.Logger;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class StockTransactionService
 {
@@ -72,7 +73,7 @@ public class StockTransactionService
       logger.log("INFO", request.quantity() + " of " + stock.getName() + " was bought");
     }
 
-    catch (Exception e) // TODO FIX
+    catch (IllegalArgumentException | NoSuchElementException e) // TODO FIX
     {
       uow.rollback();
       logger.log("ERROR", "Could not buy stock" + e.getMessage());

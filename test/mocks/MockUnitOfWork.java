@@ -17,7 +17,9 @@ public class MockUnitOfWork implements UnitOfWork
 
   private final Logger logger = Logger.getInstance();
 
-  public MockUnitOfWork(){}
+  public MockUnitOfWork()
+  {
+  }
 
   @Override public void begin()
   {
@@ -26,12 +28,10 @@ public class MockUnitOfWork implements UnitOfWork
 
   @Override public void commit()
   {
-
   }
 
   @Override public void rollback()
   {
-
   }
 
   @Override public void reset()
@@ -82,5 +82,14 @@ public class MockUnitOfWork implements UnitOfWork
       transactions = new ArrayList<>();
     }
     return transactions;
+  }
+
+  private void clearLists()
+  {
+    ownedStocks = null;
+    portfolios = null;
+    stocks = null;
+    stockPriceHistory = null;
+    transactions = null;
   }
 }
