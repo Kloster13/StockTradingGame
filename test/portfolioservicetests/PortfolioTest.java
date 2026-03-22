@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.*;
     stockPriceHistoryDao = new StockPriceHistoryDaoMock(uow);
     transactionService = new StockTransactionService(uow, ownedStockDao,
         portfolioDao, stockDao, transactionDao);
-    portfolioService = new PortfolioService(uow, ownedStockDao, portfolioDao,
+    portfolioService = new PortfolioService(ownedStockDao, portfolioDao,
         stockDao);
 
   }

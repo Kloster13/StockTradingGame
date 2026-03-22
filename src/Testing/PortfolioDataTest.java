@@ -17,7 +17,7 @@ public class PortfolioDataTest
     OwnedStockDao ownedStockDao = new OwnedStockDaoFileImplementation(tester);
     PortfolioDao portfolioDao = new PortfolioDaoFileImplementation(tester);
     StockDao stockDao = new StockDaoFileImplementation(tester);
-    PortfolioService portfolioService = new PortfolioService(tester,ownedStockDao,portfolioDao,stockDao);
+    PortfolioService portfolioService = new PortfolioService(ownedStockDao,portfolioDao,stockDao);
     System.out.println(portfolioService.getPortfolioData(1));
 
   }

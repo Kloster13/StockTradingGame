@@ -17,7 +17,7 @@ public class PortfolioService
   private final PortfolioDao portfolioDao;
   private final StockDao stockDao;
 
-  public PortfolioService(UnitOfWork uow, OwnedStockDao ownedStockDao, PortfolioDao portfolioDao, StockDao stockDao)
+  public PortfolioService(OwnedStockDao ownedStockDao, PortfolioDao portfolioDao, StockDao stockDao)
   {
     this.ownedStockDao = ownedStockDao;
     this.portfolioDao = portfolioDao;
@@ -28,6 +28,7 @@ public class PortfolioService
   {
     try
     {
+      logger.log("INFO","Fetching portfolio data");
       Portfolio portfolio = portfolioDao.getPortfolioById(portfolioId).orElseThrow();
       List<OwnedStock> ownedStocks = ownedStockDao.getAllOwnedStocks();
 

@@ -36,6 +36,7 @@ public class StockTransactionService
   {
     try
     {
+      logger.log("INFO","Buying "+ request.quantity() +" of "+ request.symbol());
       uow.begin();
       // Validation and transaction creation
       Stock stock = stockDao.getStockBySymbol(request.symbol()).orElseThrow();
@@ -85,6 +86,7 @@ public class StockTransactionService
   {
     try
     {
+      logger.log("INFO","Selling "+ request.quantity() +" of "+ request.symbol());
       uow.begin();
 
       Stock stock = stockDao.getStockBySymbol(request.symbol()).orElseThrow();
