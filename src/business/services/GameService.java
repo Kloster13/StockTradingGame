@@ -32,7 +32,7 @@ public class GameService
     market = TheStockMarket.getInstance();
     market.addListener(new StockListenerService(uow, stockDao, historyDao));
     market.addListener(new StockBankruptService(uow,ownedStockDao));
-    market.addListener(new StockAlertService(uow));
+    market.addListener(new StockAlertService());
   }
 
   public void startGame()

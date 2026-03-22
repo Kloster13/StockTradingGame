@@ -11,7 +11,7 @@ public class StockAlertService implements PropertyChangeListener
 {
   private final Logger logger = Logger.getInstance();
 
-  public StockAlertService(UnitOfWork uow)
+  public StockAlertService()
   {
   }
 
