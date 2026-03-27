@@ -1,5 +1,6 @@
 package business.services;
 
+import business.services.dtos.OwnedStockDTO;
 import business.services.dtos.PortfolioData;
 import domain.OwnedStock;
 import domain.Portfolio;
@@ -28,27 +29,25 @@ public class PortfolioService
   {
     try
     {
-      logger.log("INFO","Fetching portfolio data");
+      logger.log("INFO", "Fetching portfolio data");
       Portfolio portfolio = portfolioDao.getPortfolioById(portfolioId).orElseThrow();
       List<OwnedStock> ownedStocks = ownedStockDao.getAllOwnedStocks();
 
-      Map<String, Integer> ownedStockInfo = new HashMap<>();
+      ArrayList<OwnedStockDTO> ownedStockInfo = new ArrayList<>();
       double portfolioValue = 0;
       for (OwnedStock ownedStock : ownedStocks)
       {
         if (ownedStock.getPortfolioId() == portfolioId)
         {
-          ownedStockInfo.put(ownedStock.getStockSymbol(), ownedStock.getNumberOfShares());
-          portfolioValue += (stockDao.getStockBySymbol(ownedStock.getStockSymbol()).orElseThrow()
-              .getCurrentPrice())*ownedStock.getNumberOfShares();
+          Stock stock = stockDao.getStockBySymbol(ownedStock.getStockSymbol()).orElseThrow();
+          ownedStockInfo.add(
+              new OwnedStockDTO(ownedStock.getStockSymbol(), ownedStock.getNumberOfShares(),
+                  stock.getCurrentPrice()));
+          portfolioValue += (stock.getCurrentPrice()) * ownedStock.getNumberOfShares();
         }
       }
-      Map<String,Double> stocksToBuy= new HashMap<>();
-      for(Stock stock : stockDao.getAllStocks()){
-        stocksToBuy.put(stock.getSymbol(),stock.getCurrentPrice());
-      }
 
-      return new PortfolioData(portfolio.getCurrentBalance(), portfolioValue, ownedStockInfo,stocksToBuy);
+      return new PortfolioData(portfolio.getCurrentBalance(), portfolioValue, ownedStockInfo);
     }
     catch (NoSuchElementException e)
     {
