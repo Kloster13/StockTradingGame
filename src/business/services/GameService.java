@@ -18,7 +18,8 @@ import shared.logging.Logger;
 public class GameService
 {
   private final UnitOfWork uow;
-  private final Logger logger = Logger.getInstance();;
+  private final Logger logger = Logger.getInstance();
+  ;
   private final StockDao stockDao;
   private final TheStockMarket market;
   private final MarketTicker marketTicker = new MarketTicker();
@@ -31,13 +32,13 @@ public class GameService
     this.stockDao = stockDao;
     market = TheStockMarket.getInstance();
     market.addListener(new StockListenerService(uow, stockDao, historyDao));
-    market.addListener(new StockBankruptService(uow,ownedStockDao));
+    market.addListener(new StockBankruptService(uow, ownedStockDao));
     market.addListener(new StockAlertService());
   }
 
   public void startGame()
   {
-    logger.log("INFO","Starting game");
+    logger.log("INFO", "Starting game");
     for (Stock stock : stockDao.getAllStocks())
     {
       market.addNewLiveStock(stock.getSymbol());
@@ -47,18 +48,17 @@ public class GameService
 
   public void resetGame()
   {
-    logger.log("INFO","Resetting game");
+    logger.log("INFO", "Resetting game");
     uow.reset();
     for (Stock stock : stockDao.getAllStocks())
     {
-      stock.setCurrentPrice(
-          AppConfiguration.getAppConfiguration().getStockResetValue());
+      stock.setCurrentPrice(AppConfiguration.getAppConfiguration().getStockResetValue());
     }
   }
 
   public void stopGame()
   {
-    logger.log("INFO","Stopping game");
+    logger.log("INFO", "Stopping game");
     marketTicker.stopMarket();
   }
 
