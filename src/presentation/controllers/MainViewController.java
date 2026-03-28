@@ -16,8 +16,10 @@ public class MainViewController implements Initializable
   @FXML
   private BorderPane shell;
 
-  public void handleStockMarket()
+  public void handleStockMarket(ActionEvent evt)
   {
+    Node source = (Node)evt.getSource();
+    source.fireEvent(new ChangeViewEvent("StockMarketView"));
   }
   public void handleWatchPortfolio(ActionEvent evt)
   {

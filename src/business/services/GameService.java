@@ -41,7 +41,8 @@ public class GameService
     logger.log("INFO", "Starting game");
     for (Stock stock : stockDao.getAllStocks())
     {
-      market.addNewLiveStock(stock.getSymbol());
+      logger.log("INFO" , "Starting stock: "+stock.getSymbol() +" price: "+stock.getCurrentPrice());
+      market.addLiveStock(stock);
     }
     marketThread.start();
   }
@@ -61,5 +62,4 @@ public class GameService
     logger.log("INFO", "Stopping game");
     marketTicker.stopMarket();
   }
-
 }

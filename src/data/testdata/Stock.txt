@@ -1,3 +1,0 @@
-1|GOOG|Google|97.0|Steady
-2|NVID|NVIDIA|95.0|Steady
-3|META|Meta|97.0|Steady

@@ -3,8 +3,11 @@ package portfolioservicetests;
 import business.services.PortfolioService;
 import business.services.StockTransactionService;
 import business.services.dtos.BuySellStockRequest;
+import business.services.dtos.OwnedStockDTO;
+import business.services.dtos.PortfolioData;
 import domain.Portfolio;
 import domain.Stock;
+import domain.Transaction;
 import mocks.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
   StockTransactionService transactionService;
   PortfolioService portfolioService;
   Logger logger;
+  double transactionFee;
 
   @BeforeAll void setupLogger()
   {
@@ -47,11 +51,10 @@ import static org.junit.jupiter.api.Assertions.*;
     portfolioDao = new PortfolioDaoMock(uow);
     transactionDao = new TransactionDaoMock(uow);
     stockPriceHistoryDao = new StockPriceHistoryDaoMock(uow);
-    transactionService = new StockTransactionService(uow, ownedStockDao,
-        portfolioDao, stockDao, transactionDao);
-    portfolioService = new PortfolioService(ownedStockDao, portfolioDao,
-        stockDao);
-
+    transactionService = new StockTransactionService(uow, ownedStockDao, portfolioDao, stockDao,
+        transactionDao);
+    portfolioService = new PortfolioService(ownedStockDao, portfolioDao, stockDao);
+    transactionFee = AppConfiguration.getAppConfiguration().getTransactionFee();
   }
 
   private void createAndBuyStock()
@@ -67,8 +70,7 @@ import static org.junit.jupiter.api.Assertions.*;
   {
     createAndBuyStock();
     double balance = portfolioService.getPortfolioData(1).currentBalance();
-    assertEquals(10000 - 100 - AppConfiguration.getAppConfiguration()
-        .getTransactionFee(), balance);
+    assertEquals(10000 - 100 - transactionFee, balance);
   }
 
   @Test void getValue_whenPortfolioService_returnTrue()
@@ -78,21 +80,11 @@ import static org.junit.jupiter.api.Assertions.*;
     assertEquals(100, value);
   }
 
-  @Test void getOwnedStock_whenPortfolioService_returnTrue()
+  @Test void getPortfolioData_whenPortfolioService_returnTrue()
   {
     createAndBuyStock();
-    Map<String,Integer> toCompareTo = new HashMap<>();
-    toCompareTo.put("GOOG",1);
-    Map<String,Integer>  data= portfolioService.getPortfolioData(1).ownedStockInfo();
-    assertEquals(toCompareTo,data);
-  }
-
-  @Test void getStockInfo_whenPortfolioService_returnTrue()
-  {
-    createAndBuyStock();
-    Map<String,Double> toCompareTo = new HashMap<>();
-    toCompareTo.put("GOOG",100.0);
-    Map<String,Double>  data= portfolioService.getPortfolioData(1).stockInfo();
-    assertEquals(toCompareTo,data);
+    OwnedStockDTO toCompare= new OwnedStockDTO("GOOG",1,100);
+    OwnedStockDTO data = portfolioService.getPortfolioData(1).ownedStockInfo().getFirst();
+    assertEquals(toCompare, data);
   }
 }

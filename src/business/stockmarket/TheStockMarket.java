@@ -15,12 +15,14 @@ public class TheStockMarket
   private volatile static TheStockMarket instance;
   private static final Logger logger = Logger.getInstance();
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+  private int secondsRun;
 
   private final List<LiveStock> liveStocks;
 
   private TheStockMarket()
   {
     liveStocks = new ArrayList<>();
+    secondsRun=0;
   }
 
   public void addListener(String evtName, PropertyChangeListener listener)
@@ -69,10 +71,13 @@ public class TheStockMarket
     {
       liveStock.updatePrice();
       firePriceUpdate(liveStock);
+      fireGraphUpdate(liveStock);
       if (liveStock.getStateName().equals("Bankrupt") && liveStock.getBankruptTic() == 0)
         fireBankruptUpdate(liveStock.getSymbol());
       if (liveStock.getStateName().equals("Reset"))
         fireResetUpdate(liveStock.getSymbol());
+      if(liveStock.getSymbol().equals(liveStocks.getLast().getSymbol()))
+        secondsRun++;
     }
   }
 
@@ -81,6 +86,12 @@ public class TheStockMarket
     support.firePropertyChange("PriceUpdate", null,
         new LiveStockDTO(liveStock.getSymbol(), liveStock.getCurrentPrice(),
             liveStock.getStateName()));
+  }
+
+  private void fireGraphUpdate(LiveStock liveStock)
+  {
+    support.firePropertyChange("GraphUpdate", null,
+        new StockGraphDTO(secondsRun, liveStock.getSymbol(), liveStock.getCurrentPrice()));
   }
 
   private void fireBankruptUpdate(String symbol)

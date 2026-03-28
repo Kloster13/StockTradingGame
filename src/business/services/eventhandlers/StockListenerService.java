@@ -41,18 +41,18 @@ public class StockListenerService implements PropertyChangeListener
     }
   }
 
-  private void stockPersistenceUpdate(LiveStockDTO liveStockDTU)
+  private void stockPersistenceUpdate(LiveStockDTO liveStockDTO)
   {
     try
     {
       uow.begin();
-      Stock stock = stockDao.getStockBySymbol(liveStockDTU.symbol())
+      Stock stock = stockDao.getStockBySymbol(liveStockDTO.symbol())
           .orElseThrow(() -> new IllegalArgumentException("Stock not in list"));
-      stock.setCurrentPrice(liveStockDTU.price());
-      stock.setCurrentState(liveStockDTU.state());
+      stock.setCurrentPrice(liveStockDTO.price());
+      stock.setCurrentState(liveStockDTO.state());
 
       historyDao.createStockPriceHistory(
-          new StockPriceHistory(liveStockDTU.symbol(), liveStockDTU.price()));
+          new StockPriceHistory(liveStockDTO.symbol(), liveStockDTO.price()));
       stockDao.updateStock(stock);
 
       uow.commit();

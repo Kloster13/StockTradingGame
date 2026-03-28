@@ -1,21 +1,32 @@
 package presentation.core;
 
+import business.services.GameService;
 import business.services.PortfolioService;
 import javafx.util.Callback;
 import persistence.fileimplementation.*;
 import persistence.interfaces.*;
 import presentation.controllers.MainViewController;
 import presentation.controllers.PortfolioViewController;
+import presentation.controllers.StockMarketController;
 import presentation.viewmodels.PortfolioViewModel;
+import presentation.viewmodels.StockMarketViewModel;
 
 public class ControllerFactory implements Callback<Class<?>, Object>
 {
+  private final FileUnitOfWork uow = new FileUnitOfWork("src/data/testdata/");
+  private final StockDao stockDao = new StockDaoFileImplementation(uow);
+  private final OwnedStockDao ownedStockDao = new OwnedStockDaoFileImplementation(uow);
+  private final PortfolioDao portfolioDao = new PortfolioDaoFileImplementation(uow);
+  private final StockPriceHistoryDao historyDao = new StockPriceHistoryDaoFileImplementation(uow);
+
   @Override public Object call(Class<?> controllerType)
   {
     if (controllerType == MainViewController.class)
       return new MainViewController();
     if (controllerType == PortfolioViewController.class)
       return createPortfolioController();
+    if (controllerType == StockMarketController.class)
+      return createStockMarketController();
 
     throw new RuntimeException("Cant find controller of type " + controllerType.getSimpleName());
   }
@@ -26,34 +37,16 @@ public class ControllerFactory implements Callback<Class<?>, Object>
     return new PortfolioViewController(vm);
   }
 
-
-//////////////////////////////////
-  private FileUnitOfWork createUOW()
+  private StockMarketController createStockMarketController()
   {
-    return new FileUnitOfWork("src/data/testdata/");
+    StockMarketViewModel vm = new StockMarketViewModel(
+        new GameService(uow, ownedStockDao, stockDao, historyDao));
+    return new StockMarketController(vm);
   }
 
-  private StockDao createStockDao()
+  /// ///////////////////////////////
+  private PortfolioService createPortfolioService()
   {
-    return new StockDaoFileImplementation(createUOW());
-  }
-
-  private OwnedStockDao createOwnedStockDao()
-  {
-    return new OwnedStockDaoFileImplementation(createUOW());
-  }
-
-  private TransactionDao createTransactionDao()
-  {
-    return new TransactionDaoFileImplementation(createUOW());
-  }
-
-  private PortfolioDao createPortfolioDao()
-  {
-    return new PortfolioDaoFileImplementation(createUOW());
-  }
-
-  private PortfolioService createPortfolioService(){
-    return new PortfolioService(createOwnedStockDao(),createPortfolioDao(),createStockDao());
+    return new PortfolioService(ownedStockDao, portfolioDao, stockDao);
   }
 }
