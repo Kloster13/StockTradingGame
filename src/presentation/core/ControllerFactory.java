@@ -40,7 +40,7 @@ public class ControllerFactory implements Callback<Class<?>, Object>
   private StockMarketController createStockMarketController()
   {
     StockMarketViewModel vm = new StockMarketViewModel(
-        new GameService(uow, ownedStockDao, stockDao, historyDao));
+        new GameService(uow, ownedStockDao, stockDao, historyDao,portfolioDao));
     return new StockMarketController(vm);
   }
 

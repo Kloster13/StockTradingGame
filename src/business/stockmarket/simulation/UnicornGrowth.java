@@ -10,8 +10,7 @@ public class UnicornGrowth implements StockState
 
   @Override public double calculatePriceChange(LiveStock liveStock)
   {
-    if(new Random().nextDouble()>0.01)
-      liveStock.setState(new Growing());
+    liveStock.setState(new Growing());
     return liveStock.getCurrentPrice();
   }
 

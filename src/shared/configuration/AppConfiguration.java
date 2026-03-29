@@ -1,5 +1,9 @@
 package shared.configuration;
 
+import domain.Stock;
+
+import java.util.List;
+
 public class AppConfiguration
 {
   private static AppConfiguration instance;

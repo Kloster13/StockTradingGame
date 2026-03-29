@@ -16,13 +16,12 @@ public class TheStockMarket
   private static final Logger logger = Logger.getInstance();
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
   private int secondsRun;
-
-  private final List<LiveStock> liveStocks;
+  private List<LiveStock> liveStocks;
 
   private TheStockMarket()
   {
     liveStocks = new ArrayList<>();
-    secondsRun=0;
+    secondsRun = 0;
   }
 
   public void addListener(String evtName, PropertyChangeListener listener)
@@ -76,9 +75,15 @@ public class TheStockMarket
         fireBankruptUpdate(liveStock.getSymbol());
       if (liveStock.getStateName().equals("Reset"))
         fireResetUpdate(liveStock.getSymbol());
-      if(liveStock.getSymbol().equals(liveStocks.getLast().getSymbol()))
+      if (liveStock.getSymbol().equals(liveStocks.getLast().getSymbol()))
         secondsRun++;
     }
+  }
+
+  public void resetMarket()
+  {
+    liveStocks = new ArrayList<>();
+    secondsRun = 0;
   }
 
   private void firePriceUpdate(LiveStock liveStock)

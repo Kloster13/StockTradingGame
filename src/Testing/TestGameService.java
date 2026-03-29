@@ -17,7 +17,7 @@ public class TestGameService
     StockDao stockDao = new StockDaoFileImplementation(tester);
     StockPriceHistoryDao historyDao = new StockPriceHistoryDaoFileImplementation(
         tester);
-    GameService gameService = new GameService(tester, ownedStockDao, stockDao, historyDao);
+    GameService gameService = new GameService(tester, ownedStockDao, stockDao, historyDao,portfolioDao);
 
     gameService.startGame();
     Thread.sleep(100);

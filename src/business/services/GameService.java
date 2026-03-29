@@ -6,6 +6,7 @@ import business.services.eventhandlers.StockListenerService;
 import business.stockmarket.MarketTicker;
 import business.stockmarket.TheStockMarket;
 import domain.OwnedStock;
+import domain.Portfolio;
 import domain.Stock;
 import persistence.fileimplementation.FileUnitOfWork;
 import persistence.fileimplementation.OwnedStockDaoFileImplementation;
@@ -22,14 +23,16 @@ public class GameService
   ;
   private final StockDao stockDao;
   private final TheStockMarket market;
-  private final MarketTicker marketTicker = new MarketTicker();
-  private final Thread marketThread = new Thread(marketTicker);
+  private  MarketTicker marketTicker;;
+  private Thread marketThread;
+  private final PortfolioDao portfolioDao;
 
   public GameService(UnitOfWork uow, OwnedStockDao ownedStockDao, StockDao stockDao,
-      StockPriceHistoryDao historyDao)
+      StockPriceHistoryDao historyDao, PortfolioDao portfolioDao)
   {
     this.uow = uow;
     this.stockDao = stockDao;
+    this.portfolioDao=portfolioDao;
     market = TheStockMarket.getInstance();
     market.addListener(new StockListenerService(uow, stockDao, historyDao));
     market.addListener(new StockBankruptService(uow, ownedStockDao));
@@ -41,25 +44,48 @@ public class GameService
     logger.log("INFO", "Starting game");
     for (Stock stock : stockDao.getAllStocks())
     {
-      logger.log("INFO" , "Starting stock: "+stock.getSymbol() +" price: "+stock.getCurrentPrice());
+      logger.log("INFO",
+          "Starting stock: " + stock.getSymbol() + " price: " + stock.getCurrentPrice());
       market.addLiveStock(stock);
     }
+    marketTicker=new MarketTicker();
+    marketThread=new Thread(marketTicker);
     marketThread.start();
   }
 
   public void resetGame()
   {
+
     logger.log("INFO", "Resetting game");
-    uow.reset();
-    for (Stock stock : stockDao.getAllStocks())
+    marketTicker.stopMarket();
+    try
     {
-      stock.setCurrentPrice(AppConfiguration.getAppConfiguration().getStockResetValue());
+      marketThread.join();
     }
+    catch (InterruptedException e)
+    {
+      throw new RuntimeException(e);
+    }
+    market.resetMarket();
+    uow.reset();
+    setUpStartingStocksAndPortfolio();
   }
 
   public void stopGame()
   {
     logger.log("INFO", "Stopping game");
     marketTicker.stopMarket();
+  }
+
+  private void setUpStartingStocksAndPortfolio()
+  {
+    uow.begin();
+    double startingPrice = AppConfiguration.getAppConfiguration().getStockResetValue();
+    stockDao.createStock(new Stock("GOOG","Google",startingPrice));
+    stockDao.createStock(new Stock("MET","Meta",startingPrice));
+    stockDao.createStock(new Stock("NVDA","Nvidia",startingPrice));
+    stockDao.createStock(new Stock("TSLA","Tesla",startingPrice));
+    portfolioDao.createPortfolio(new Portfolio(AppConfiguration.getAppConfiguration().getStartingBalance()));
+    uow.commit();
   }
 }

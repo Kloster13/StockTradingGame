@@ -16,6 +16,7 @@ public class StockMarketController
 {
   public LineChart<Number, Number> stockChart;
   public Button startGameButton;
+  public Button resetButton;
   private NumberAxis xAxis;
   private NumberAxis yAxis;
 
@@ -30,7 +31,6 @@ public class StockMarketController
   {
     stockChart.setAnimated(false);
     stockChart.setCreateSymbols(false);
-
     xAxis = (NumberAxis) stockChart.getXAxis();
     yAxis = (NumberAxis) stockChart.getYAxis();
 
@@ -85,5 +85,11 @@ public class StockMarketController
   {
     viewModel.startGame();
     startGameButton.setDisable(true);
+  }
+
+  public void handleReset(ActionEvent actionEvent)
+  {
+    viewModel.resetGame();
+    startGameButton.setDisable(false);
   }
 }

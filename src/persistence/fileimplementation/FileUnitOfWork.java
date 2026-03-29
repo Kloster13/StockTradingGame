@@ -83,6 +83,11 @@ public class FileUnitOfWork implements UnitOfWork
   @Override public void reset()
   {
     begin();
+    portfolios = new ArrayList<>();
+    ownedStocks = new ArrayList<>();
+    stockPriceHistory = new ArrayList<>();
+    transactions = new ArrayList<>();
+    stocks = new ArrayList<>();
     commit();
   }
 
@@ -235,14 +240,14 @@ public class FileUnitOfWork implements UnitOfWork
   // From object to string
   private String ownedStockToPSV(OwnedStock ownedStock)
   {
-    return ownedStock.getId() + "|"+ownedStock.getPortfolioId() + "|" + ownedStock.getStockSymbol() + "|"
-        + ownedStock.getNumberOfShares();
+    return ownedStock.getId() + "|" + ownedStock.getPortfolioId() + "|"
+        + ownedStock.getStockSymbol() + "|" + ownedStock.getNumberOfShares();
   }
 
   private String portfolioToPSV(Portfolio portfolio)
   {
-    return portfolio.getId() + "|" + portfolio.getCurrentBalance()
-        + "|" + portfolio.getTransactions();
+    return portfolio.getId() + "|" + portfolio.getCurrentBalance() + "|"
+        + portfolio.getTransactions();
   }
 
   private String stockToPSV(Stock stock)
@@ -260,39 +265,43 @@ public class FileUnitOfWork implements UnitOfWork
   private String transactionToPSV(Transaction transaction)
   {
     return transaction.getId() + "|" + transaction.getStockSymbol() + "|" + transaction.getType()
-        + "|" + transaction.getQuantity() + "|" + transaction.getPricePrShare() + "|" + transaction.getTimestamp();
+        + "|" + transaction.getQuantity() + "|" + transaction.getPricePrShare() + "|"
+        + transaction.getTimestamp();
   }
 
   // From string to object
-  private List<Integer> parseStringToList(String listToParse) {
-    if (listToParse == null || listToParse.isBlank()) {
+  private List<Integer> parseStringToList(String listToParse)
+  {
+    if (listToParse == null || listToParse.isBlank())
+    {
       return Collections.emptyList();
     }
     String s = listToParse.trim();
-    if (s.length() < 2 || s.charAt(0) != '[' || s.charAt(s.length() - 1) != ']') {
+    if (s.length() < 2 || s.charAt(0) != '[' || s.charAt(s.length() - 1) != ']')
+    {
       return Collections.emptyList();
     }
     String inner = s.substring(1, s.length() - 1).trim();
-    if (inner.isEmpty()) {
+    if (inner.isEmpty())
+    {
       return Collections.emptyList();
     }
-    return Arrays.stream(inner.split(","))
-        .map(String::trim)
-        .filter(token -> !token.isEmpty())
-        .map(Integer::parseInt)
-        .toList();
+    return Arrays.stream(inner.split(",")).map(String::trim).filter(token -> !token.isEmpty())
+        .map(Integer::parseInt).toList();
   }
 
   private OwnedStock ownedStockFromPSV(String psv)
   {
     String[] parts = psv.split("\\|");
-    return new OwnedStock(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]), parts[2], Integer.parseInt(parts[3]));
+    return new OwnedStock(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), parts[2],
+        Integer.parseInt(parts[3]));
   }
 
   private Portfolio portfolioFromPSV(String psv)
   {
     String[] parts = psv.split("\\|");
-    return new Portfolio(Integer.parseInt(parts[0]), Double.parseDouble(parts[1]), parseStringToList(parts[2]));
+    return new Portfolio(Integer.parseInt(parts[0]), Double.parseDouble(parts[1]),
+        parseStringToList(parts[2]));
   }
 
   private Stock stockFromPSV(String psv)
@@ -313,8 +322,7 @@ public class FileUnitOfWork implements UnitOfWork
   {
     String[] parts = psv.split("\\|");
     return new Transaction(Integer.parseInt(parts[0]), parts[1], parts[2],
-        Integer.parseInt(parts[3]), Double.parseDouble(parts[4]),
-        LocalDate.parse(parts[5]));
+        Integer.parseInt(parts[3]), Double.parseDouble(parts[4]), LocalDate.parse(parts[5]));
   }
 
   private void ensureFilesExist()

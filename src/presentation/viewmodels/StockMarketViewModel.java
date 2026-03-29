@@ -49,8 +49,14 @@ public class StockMarketViewModel implements PropertyChangeListener
     }
   }
 
-  public void startGame(){
+  public void startGame()
+  {
     gameService.startGame();
+  }
+
+  public void resetGame()
+  {
+    gameService.resetGame();
   }
 
   public ObservableMap<String, XYChart.Series<Number, Number>> getPiceMap()
