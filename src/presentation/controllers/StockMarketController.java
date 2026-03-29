@@ -39,7 +39,6 @@ public class StockMarketController
     xAxis.setLowerBound(0);
     xAxis.setUpperBound(40);
 
-    // Tilføj eksisterende serier (hvis nogen)
     for (XYChart.Series<Number, Number> s : viewModel.getPiceMap().values())
     {
       attachSeries(s);
