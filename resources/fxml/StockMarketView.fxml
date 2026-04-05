@@ -27,10 +27,20 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="buyStockDropdown" onAction="#handleStockDropdown" prefWidth="150.0" />
-                  <Spinner fx:id="buyNumberInput" />
-                  <Button fx:id="buyStockButton" mnemonicParsing="false" onAction="#handleBuyStock" text="Button" />
+                  <ComboBox fx:id="buyStockDropdown" prefWidth="150.0" />
+                  <Spinner fx:id="buyStockAmount" />
+                  <Button fx:id="buyStockButton" mnemonicParsing="false" onAction="#handleBuyStock" text="Buy Stock" />
                   <Label fx:id="buyStatusLabel" />
+                  <Separator prefWidth="200.0" />
+                  <Label text="Sell Stocks">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="sellStockDropdown" prefWidth="150.0" />
+                  <Spinner fx:id="sellStockAmount" />
+                  <Button fx:id="sellStockButton" mnemonicParsing="false" onAction="#handleSellStock" text="Sell Stock" />
+                  <Label fx:id="sellStatusLabel" />
                </children>
                <padding>
                   <Insets top="20.0" />

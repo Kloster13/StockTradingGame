@@ -1,0 +1,4 @@
+1|GOOG|Google|0.0|Bankrupt
+2|MET|Meta|100.0|Steady
+3|NVDA|Nvidia|273.0|Growing
+4|TSLA|Tesla|76.0|Steady

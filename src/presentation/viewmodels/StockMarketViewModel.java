@@ -1,23 +1,21 @@
 package presentation.viewmodels;
 
 import business.services.GameService;
+import business.services.StockTransactionService;
+import business.services.dtos.BuySellStockRequest;
 import business.stockmarket.StockGraphDTO;
 import business.stockmarket.TheStockMarket;
+import domain.Stock;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.chart.XYChart;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StockMarketViewModel implements PropertyChangeListener
 {
@@ -25,26 +23,26 @@ public class StockMarketViewModel implements PropertyChangeListener
   private final ObservableList<String> stockSymbols = FXCollections.observableArrayList();
 
   private GameService gameService;
+  private StockTransactionService transactionService;
   private final StringProperty buyStatus = new SimpleStringProperty("");
   private final IntegerProperty buyAmount = new SimpleIntegerProperty(0);
   private final StringProperty stockSymbol = new SimpleStringProperty();
+  private final BooleanProperty canBuy = new SimpleBooleanProperty(false);
+  private final IntegerProperty sellAmount = new SimpleIntegerProperty(0);
+  private final StringProperty sellStockSymbol = new SimpleStringProperty();
+  private final StringProperty sellStatus = new SimpleStringProperty("");
 
-  public StockMarketViewModel(GameService gameService)
+  public StockMarketViewModel(GameService gameService, StockTransactionService transactionService)
   {
     this.gameService = gameService;
+    this.transactionService = transactionService;
     TheStockMarket.getInstance().addListener("GraphUpdate", this);
 
-    priceMap.addListener((MapChangeListener<String, XYChart.Series<Number, Number>>) change -> {
-      if (change.wasAdded())
-      {
-        stockSymbols.add(change.getKey());
-      }
-      if (change.wasRemoved())
-      {
-        stockSymbols.remove(change.getKey());
-      }
-    });
+    stockSymbols.setAll(gameService.getAllStocks().stream().map(Stock::getSymbol).toList());
 
+    buyAmount.addListener((obs, oldValue, newValue) -> validateStockBuy());
+    stockSymbol.addListener((obs, oldValue, newValue) -> validateStockBuy());
+    validateStockBuy();
   }
 
   public void addPriceData(StockGraphDTO dto)
@@ -71,6 +69,44 @@ public class StockMarketViewModel implements PropertyChangeListener
     }
   }
 
+  private void validateStockBuy()
+  {
+    boolean validStock = stockSymbol.getValue() != null && !stockSymbol.getValue().isBlank();
+    boolean validAmount = buyAmount.getValue() > 0;
+    canBuy.set(validAmount && validStock);
+  }
+
+  public void buyStock()
+  {
+    try
+    {
+      BuySellStockRequest request = new BuySellStockRequest(1, stockSymbol.getValue(),
+          buyAmount.getValue()); // TODO FIX PORTFOLIO LOGIC
+      transactionService.buyStock(request);
+      buyStatus.setValue("Transaction completed");
+    }
+    catch (Exception e)
+    {
+      buyStatus.setValue(e.getMessage());
+    }
+    System.out.println(buyAmount.getValue());
+  }
+
+  public void sellStock()
+  {
+    try
+    {
+      BuySellStockRequest request = new BuySellStockRequest(1, sellStockSymbol.getValue(),
+          sellAmount.getValue());
+      transactionService.sellStock(request);
+      sellStatus.setValue("Transaction completed");
+    }
+    catch (Exception e)
+    {
+      sellStatus.setValue(e.getMessage());
+    }
+  }
+
   public ObservableList<String> getStockSymbols()
   {
     return stockSymbols;
@@ -83,6 +119,7 @@ public class StockMarketViewModel implements PropertyChangeListener
 
   public void resetGame()
   {
+    priceMap.clear();
     gameService.resetGame();
   }
 
@@ -104,5 +141,25 @@ public class StockMarketViewModel implements PropertyChangeListener
   public StringProperty stockSymbolProperty()
   {
     return stockSymbol;
+  }
+
+  public BooleanProperty canBuyProperty()
+  {
+    return canBuy;
+  }
+
+  public IntegerProperty sellAmountProperty()
+  {
+    return sellAmount;
+  }
+
+  public StringProperty sellStockSymbolProperty()
+  {
+    return sellStockSymbol;
+  }
+
+  public StringProperty sellStatusProperty()
+  {
+    return sellStatus;
   }
 }

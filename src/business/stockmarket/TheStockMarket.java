@@ -17,6 +17,8 @@ public class TheStockMarket
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
   private int secondsRun;
   private List<LiveStock> liveStocks;
+  private MarketTicker marketTicker;
+  private Thread marketThread;
 
   private TheStockMarket()
   {
@@ -53,12 +55,6 @@ public class TheStockMarket
     return instance;
   }
 
-  public void addNewLiveStock(String stockSymbol)
-  {
-
-    liveStocks.add(new LiveStock(stockSymbol));
-  }
-
   public void addLiveStock(Stock stock)
   {
     liveStocks.add(new LiveStock(stock));
@@ -82,15 +78,45 @@ public class TheStockMarket
 
   public void resetMarket()
   {
+    marketTicker.stopMarket();
+    try
+    {
+      marketThread.join();
+    }
+    catch (InterruptedException e)
+    {
+      throw new RuntimeException(e);
+    }
     liveStocks = new ArrayList<>();
     secondsRun = 0;
+  }
+
+  public void startMarket()
+  {
+
+    if (marketThread != null && marketThread.isAlive())
+    {
+      throw new RuntimeException("Market already Running");
+    }
+
+    marketTicker = new MarketTicker();
+    marketThread = new Thread(marketTicker);
+    marketThread.start();
+  }
+
+  public List<LiveStock> getLiveStocks(){
+    return liveStocks;
+  }
+
+  public void stopMarket()
+  {
+    marketTicker.stopMarket();
   }
 
   private void firePriceUpdate(LiveStock liveStock)
   {
     support.firePropertyChange("PriceUpdate", null,
-        new LiveStockDTO(liveStock.getSymbol(), liveStock.getCurrentPrice(),
-            liveStock.getStateName()));
+        new LiveStockDTO(liveStock.getSymbol(), liveStock.getCurrentPrice(), liveStock.getStateName()));
   }
 
   private void fireGraphUpdate(LiveStock liveStock)

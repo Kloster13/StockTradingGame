@@ -2,6 +2,7 @@ package presentation.core;
 
 import business.services.GameService;
 import business.services.PortfolioService;
+import business.services.StockTransactionService;
 import javafx.util.Callback;
 import persistence.fileimplementation.*;
 import persistence.interfaces.*;
@@ -18,6 +19,7 @@ public class ControllerFactory implements Callback<Class<?>, Object>
   private final OwnedStockDao ownedStockDao = new OwnedStockDaoFileImplementation(uow);
   private final PortfolioDao portfolioDao = new PortfolioDaoFileImplementation(uow);
   private final StockPriceHistoryDao historyDao = new StockPriceHistoryDaoFileImplementation(uow);
+  private final TransactionDao transactionDao = new TransactionDaoFileImplementation(uow);
 
   @Override public Object call(Class<?> controllerType)
   {
@@ -40,7 +42,8 @@ public class ControllerFactory implements Callback<Class<?>, Object>
   private StockMarketController createStockMarketController()
   {
     StockMarketViewModel vm = new StockMarketViewModel(
-        new GameService(uow, ownedStockDao, stockDao, historyDao,portfolioDao));
+        new GameService(uow, ownedStockDao, stockDao, historyDao, portfolioDao),
+        new StockTransactionService(uow, ownedStockDao, portfolioDao, stockDao, transactionDao));
     return new StockMarketController(vm);
   }
 

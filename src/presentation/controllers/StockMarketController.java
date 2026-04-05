@@ -1,16 +1,15 @@
 package presentation.controllers;
 
+import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import presentation.core.events.ChangeViewEvent;
 import presentation.viewmodels.StockMarketViewModel;
 
 public class StockMarketController
@@ -19,9 +18,13 @@ public class StockMarketController
   public Button startGameButton;
   public Button resetButton;
   public ComboBox<String> buyStockDropdown;
-  public Spinner<Integer> buyNumberInput;
+  public Spinner<Integer> buyStockAmount;
   public Button buyStockButton;
   public Label buyStatusLabel;
+  public ComboBox<String> sellStockDropdown;
+  public Spinner<Integer> sellStockAmount;
+  public Label sellStatusLabel;
+  public Button sellStockButton;
   private NumberAxis xAxis;
   private NumberAxis yAxis;
 
@@ -34,6 +37,36 @@ public class StockMarketController
 
   @FXML private void initialize()
   {
+    // binding
+    // TODO note til Troels - det tog mig meget lang tid at få min AI til at finde frem til den her løsning.
+    //  Det var den eneste måde jeg kunne få bindingen til at fungere. Er det virkelig sådan her det skal gøres?
+    Platform.runLater(() -> {
+      SpinnerValueFactory<Integer> buyStockValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+          0, 200, 0);
+      buyStockAmount.setValueFactory(buyStockValueFactory);
+      buyStockAmount.setEditable(true);
+      buyStockValueFactory.valueProperty().bindBidirectional(viewModel.buyAmountProperty().asObject());
+
+      SpinnerValueFactory<Integer> sellStockValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+          0, 200, 0);
+      sellStockAmount.setValueFactory(sellStockValueFactory);
+      sellStockAmount.setEditable(true);
+      sellStockValueFactory.valueProperty().bindBidirectional(viewModel.sellAmountProperty().asObject());
+
+    });
+    //Byy
+    buyStatusLabel.textProperty().bind(viewModel.buyStatusProperty());
+    buyStockDropdown.valueProperty().bindBidirectional(viewModel.stockSymbolProperty());
+    buyStockDropdown.setItems(viewModel.getStockSymbols());
+    BooleanBinding cannotBuy = viewModel.canBuyProperty().not();
+    buyStockButton.disableProperty().bind(cannotBuy);
+
+    // Sell
+    sellStatusLabel.textProperty().bind(viewModel.sellStatusProperty());
+    sellStockDropdown.valueProperty().bindBidirectional(viewModel.sellStockSymbolProperty());
+    sellStockDropdown.setItems(viewModel.getStockSymbols()); // TODO træk owned stock og brug listeners
+
+    // Chart Stuff
     stockChart.setAnimated(false);
     stockChart.setCreateSymbols(false);
     xAxis = (NumberAxis) stockChart.getXAxis();
@@ -48,24 +81,13 @@ public class StockMarketController
     {
       attachSeries(s);
     }
-    viewModel.getPiceMap().addListener(
-        (MapChangeListener<? super String, ? super XYChart.Series<Number, Number>>) (change) -> {
+    viewModel.getPiceMap()
+        .addListener((MapChangeListener<? super String, ? super XYChart.Series<Number, Number>>) (change) -> {
           if (change.wasAdded())
           {
             attachSeries(change.getValueAdded());
           }
         });
-
-    SpinnerValueFactory<Integer> buyStockValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
-        0, 100, 0);
-    buyNumberInput.setValueFactory(buyStockValueFactory);
-    buyStockDropdown.setItems(viewModel.getStockSymbols());
-
-    // binding
-    buyStatusLabel.textProperty().bind(viewModel.buyStatusProperty());
-    buyNumberInput.getValueFactory().valueProperty()
-        .bindBidirectional(viewModel.buyAmountProperty().asObject());
-    buyStockDropdown.valueProperty().bindBidirectional(viewModel.stockSymbolProperty());
   }
 
   private void attachSeries(XYChart.Series<Number, Number> series)
@@ -85,7 +107,7 @@ public class StockMarketController
     {
       if (!s.getData().isEmpty())
       {
-        XYChart.Data<Number, Number> last = s.getData().get(s.getData().size() - 1);
+        XYChart.Data<Number, Number> last = s.getData().getLast();
         maxX = Math.max(maxX, last.getXValue().doubleValue());
       }
     }
@@ -105,16 +127,18 @@ public class StockMarketController
 
   public void handleReset(ActionEvent actionEvent)
   {
+    stockChart.getData().clear();
     viewModel.resetGame();
     startGameButton.setDisable(false);
   }
 
-  public void handleStockDropdown(ActionEvent actionEvent)
-  {
-  }
-
   public void handleBuyStock(ActionEvent actionEvent)
   {
+    viewModel.buyStock();
+  }
 
+  public void handleSellStock()
+  {
+    viewModel.sellStock();
   }
 }
