@@ -20,8 +20,7 @@ public class MarketTicker implements Runnable
       market.updateStocks();
       try
       {
-        Thread.sleep(
-            AppConfiguration.getAppConfiguration().getUpdateFrequencyInMs());
+        Thread.sleep(AppConfiguration.getAppConfiguration().getUpdateFrequencyInMs());
       }
       catch (InterruptedException e)
       {

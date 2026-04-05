@@ -20,7 +20,6 @@ public class GameService
 {
   private final UnitOfWork uow;
   private final Logger logger = Logger.getInstance();
-  ;
   private final StockDao stockDao;
   private final TheStockMarket market;
   private  MarketTicker marketTicker;;
@@ -55,7 +54,6 @@ public class GameService
 
   public void resetGame()
   {
-
     logger.log("INFO", "Resetting game");
     marketTicker.stopMarket();
     try

@@ -2,13 +2,14 @@ package presentation.controllers;
 
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import presentation.core.events.ChangeViewEvent;
 import presentation.viewmodels.StockMarketViewModel;
 
@@ -17,6 +18,10 @@ public class StockMarketController
   public LineChart<Number, Number> stockChart;
   public Button startGameButton;
   public Button resetButton;
+  public ComboBox<String> buyStockDropdown;
+  public Spinner<Integer> buyNumberInput;
+  public Button buyStockButton;
+  public Label buyStatusLabel;
   private NumberAxis xAxis;
   private NumberAxis yAxis;
 
@@ -50,6 +55,17 @@ public class StockMarketController
             attachSeries(change.getValueAdded());
           }
         });
+
+    SpinnerValueFactory<Integer> buyStockValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+        0, 100, 0);
+    buyNumberInput.setValueFactory(buyStockValueFactory);
+    buyStockDropdown.setItems(viewModel.getStockSymbols());
+
+    // binding
+    buyStatusLabel.textProperty().bind(viewModel.buyStatusProperty());
+    buyNumberInput.getValueFactory().valueProperty()
+        .bindBidirectional(viewModel.buyAmountProperty().asObject());
+    buyStockDropdown.valueProperty().bindBidirectional(viewModel.stockSymbolProperty());
   }
 
   private void attachSeries(XYChart.Series<Number, Number> series)
@@ -77,8 +93,8 @@ public class StockMarketController
       xAxis.setLowerBound(0);
     else
       xAxis.setLowerBound(maxX - window);
-    if (maxX+10 > window)
-      xAxis.setUpperBound(maxX+10);
+    if (maxX + 10 > window)
+      xAxis.setUpperBound(maxX + 10);
   }
 
   public void handleStartGame()
@@ -91,5 +107,14 @@ public class StockMarketController
   {
     viewModel.resetGame();
     startGameButton.setDisable(false);
+  }
+
+  public void handleStockDropdown(ActionEvent actionEvent)
+  {
+  }
+
+  public void handleBuyStock(ActionEvent actionEvent)
+  {
+
   }
 }
