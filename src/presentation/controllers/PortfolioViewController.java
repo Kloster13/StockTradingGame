@@ -23,6 +23,7 @@ public class PortfolioViewController
   public TableColumn<OwnedStockDTO, String> symbolColumn;
   public TableColumn<OwnedStockDTO, Integer> ownedColumn;
   public TableColumn<OwnedStockDTO, Double> priceColumn;
+  public Label portfolioNameLabel;
 
   public PortfolioViewController(PortfolioViewModel viewModel)
   {
@@ -33,6 +34,7 @@ public class PortfolioViewController
   {
     balanceLabel.textProperty().bind(viewModel.balanceProperty());
     valueLabel.textProperty().bind(viewModel.valueProperty());
+    portfolioNameLabel.textProperty().bind(viewModel.portfolioNameProperty());
 
     symbolColumn.setCellValueFactory(
         cellData -> new ReadOnlyStringWrapper(cellData.getValue().symbol()));

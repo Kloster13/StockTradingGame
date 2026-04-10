@@ -81,7 +81,7 @@ public class GameService
     stockDao.createStock(new Stock("MET", "Meta", startingPrice));
     stockDao.createStock(new Stock("NVDA", "Nvidia", startingPrice));
     stockDao.createStock(new Stock("TSLA", "Tesla", startingPrice));
-    portfolioDao.createPortfolio(new Portfolio(AppConfiguration.getAppConfiguration().getStartingBalance()));
+    portfolioDao.createPortfolio(new Portfolio("Starting Portfolio",AppConfiguration.getAppConfiguration().getStartingBalance()));
     uow.commit();
   }
 

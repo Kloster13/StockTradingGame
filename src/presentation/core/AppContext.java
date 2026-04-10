@@ -5,6 +5,7 @@ import business.services.PortfolioService;
 import business.services.StockTransactionService;
 import persistence.fileimplementation.*;
 import persistence.interfaces.*;
+import presentation.viewmodels.HomeViewModel;
 import presentation.viewmodels.PortfolioViewModel;
 import presentation.viewmodels.StockMarketViewModel;
 import shared.configuration.AppConfiguration;
@@ -12,6 +13,7 @@ import shared.configuration.AppConfiguration;
 public class AppContext
 {
   private static AppContext instance;
+  private int activePortfolio;
   private final String filePath = AppConfiguration.getAppConfiguration().getDirectoryPath();
   private GameService gameService;
   private PortfolioService portfolioService;
@@ -20,7 +22,7 @@ public class AppContext
   {
   }
 
-  public static AppContext getAppConfiguration()
+  public static AppContext getAppContext()
   {
     if (instance == null)
     {
@@ -38,6 +40,11 @@ public class AppContext
   public StockMarketViewModel createStockMarketViewModel()
   {
     return new StockMarketViewModel(createGameService(), createStockTransactionService());
+  }
+
+  public HomeViewModel createHomeViewModel()
+  {
+    return new HomeViewModel(createGameService());
   }
 
   // Services
@@ -107,5 +114,15 @@ public class AppContext
   private UnitOfWork creatUnitOfWork()
   {
     return new FileUnitOfWork(filePath);
+  }
+
+  public int getActivePortfolio()
+  {
+    return activePortfolio;
+  }
+
+  public void setActivePortfolio(int activePortfolio)
+  {
+    this.activePortfolio = activePortfolio;
   }
 }

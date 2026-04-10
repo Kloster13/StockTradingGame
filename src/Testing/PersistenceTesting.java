@@ -51,7 +51,7 @@ public class PersistenceTesting
     try
     {
       PortfolioDao portfolioDao = new PortfolioDaoFileImplementation(tester);
-      Portfolio portfolio = new Portfolio(1000);
+      Portfolio portfolio = new Portfolio("test",1000);
       portfolioDao.createPortfolio(portfolio);
     }
     catch (FileAccessException | IllegalArgumentException e)

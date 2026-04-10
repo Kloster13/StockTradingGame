@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.chart.XYChart;
+import presentation.core.AppContext;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -21,6 +22,7 @@ public class StockMarketViewModel implements PropertyChangeListener
 {
   private final ObservableMap<String, XYChart.Series<Number, Number>> priceMap = FXCollections.observableHashMap();
   private final ObservableList<String> stockSymbols = FXCollections.observableArrayList();
+  private int activePortfolio = AppContext.getAppContext().getActivePortfolio();
 
   private GameService gameService;
   private StockTransactionService transactionService;
@@ -82,7 +84,7 @@ public class StockMarketViewModel implements PropertyChangeListener
   {
     try
     {
-      BuySellStockRequest request = new BuySellStockRequest(1, stockSymbol.getValue(),
+      BuySellStockRequest request = new BuySellStockRequest(activePortfolio, stockSymbol.getValue(),
           buyAmount.getValue()); // TODO FIX PORTFOLIO LOGIC
       transactionService.buyStock(request);
       buyStatus.setValue("Transaction completed");
@@ -98,7 +100,7 @@ public class StockMarketViewModel implements PropertyChangeListener
   {
     try
     {
-      BuySellStockRequest request = new BuySellStockRequest(1, sellStockSymbol.getValue(),
+      BuySellStockRequest request = new BuySellStockRequest(activePortfolio, sellStockSymbol.getValue(),
           sellAmount.getValue());
       transactionService.sellStock(request);
       sellStatus.setValue("Transaction completed");

@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.*;
     transactionService = new StockTransactionService(uow, ownedStockDao,
         portfolioDao, stockDao, transactionDao);
 
-    Portfolio portfolio = new Portfolio(1, 10000, new ArrayList<>());
+    Portfolio portfolio = new Portfolio(1,"TestPorfolio", 10000, new ArrayList<>());
     portfolioDao.createPortfolio(portfolio);
   }
 

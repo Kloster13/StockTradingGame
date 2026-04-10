@@ -41,7 +41,6 @@ public class AppConfiguration
     return transactionFee;
   }
 
-
   public int getUpdateFrequencyInMs()
   {
     return updateFrequencyInMs;

@@ -46,8 +46,7 @@ public class PortfolioService
           portfolioValue += (stock.getCurrentPrice()) * ownedStock.getNumberOfShares();
         }
       }
-
-      return new PortfolioData(portfolio.getCurrentBalance(), portfolioValue, ownedStockInfo);
+      return new PortfolioData(portfolio.getName(),portfolio.getCurrentBalance(), portfolioValue, ownedStockInfo);
     }
     catch (NoSuchElementException e)
     {

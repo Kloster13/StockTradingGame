@@ -19,7 +19,7 @@ public class PortfolioTest
     {
       tester.begin();
       PortfolioDao portfolioDao = new PortfolioDaoFileImplementation(tester);
-      Portfolio portfolio = new Portfolio(1000);
+      Portfolio portfolio = new Portfolio("Test",1000);
       portfolio.addTransactions(1);
       portfolioDao.createPortfolio(portfolio);
       tester.commit();

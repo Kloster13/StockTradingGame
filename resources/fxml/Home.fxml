@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="865.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="865.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="presentation.controllers.HomeViewController">
     <children>
         <HBox alignment="CENTER" prefHeight="670.0" prefWidth="865.0">
             <children>
-                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="681.0" prefWidth="0.0">
+                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="681.0" prefWidth="400.0">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Yo" textAlignment="CENTER">
-                            <VBox.margin>
-                                <Insets bottom="30.0" />
-                            </VBox.margin>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Here we go again" textAlignment="CENTER" wrappingWidth="200.0">
-                            <VBox.margin>
-                                <Insets bottom="150.0" />
-                            </VBox.margin>
-                        </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the stock trading game!" textAlignment="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Chose or create a portfolio, then start the game" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </Text>
+                  <ComboBox fx:id="portfolioCombo" prefWidth="150.0">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <HBox alignment="CENTER" prefHeight="48.0" prefWidth="256.0" spacing="20.0">
+                     <children>
+                        <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#handleStartGame" text="Start Game" />
+                        <Button fx:id="resetGameButton" mnemonicParsing="false" onAction="#handleReset" text="Reset Game" />
+                     </children>
+                  </HBox>
                     </children>
                     <opaqueInsets>
                         <Insets />

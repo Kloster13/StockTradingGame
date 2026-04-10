@@ -61,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.*;
   {
     Stock stock = new Stock("GOOG", "Google", 100);
     stockDao.createStock(stock);
-    Portfolio portfolio = new Portfolio(1, 10000, new ArrayList<>());
+    Portfolio portfolio = new Portfolio(1,"TestPortfolio", 10000, new ArrayList<>());
     portfolioDao.createPortfolio(portfolio);
     transactionService.buyStock(new BuySellStockRequest(1, "GOOG", 1));
   }
