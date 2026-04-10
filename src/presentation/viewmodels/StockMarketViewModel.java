@@ -31,6 +31,7 @@ public class StockMarketViewModel implements PropertyChangeListener
   private final IntegerProperty sellAmount = new SimpleIntegerProperty(0);
   private final StringProperty sellStockSymbol = new SimpleStringProperty();
   private final StringProperty sellStatus = new SimpleStringProperty("");
+  private BooleanProperty isGameRunning;
 
   public StockMarketViewModel(GameService gameService, StockTransactionService transactionService)
   {
@@ -43,6 +44,7 @@ public class StockMarketViewModel implements PropertyChangeListener
     buyAmount.addListener((obs, oldValue, newValue) -> validateStockBuy());
     stockSymbol.addListener((obs, oldValue, newValue) -> validateStockBuy());
     validateStockBuy();
+    System.out.println(gameService.isGameIsRunning());
   }
 
   public void addPriceData(StockGraphDTO dto)

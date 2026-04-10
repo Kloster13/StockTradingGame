@@ -25,6 +25,7 @@ public class GameService
   private final StockDao stockDao;
   private final TheStockMarket market;
   private final PortfolioDao portfolioDao;
+  private boolean gameIsRunning;
 
   public GameService(UnitOfWork uow, OwnedStockDao ownedStockDao, StockDao stockDao,
       StockPriceHistoryDao historyDao, PortfolioDao portfolioDao)
@@ -32,6 +33,7 @@ public class GameService
     this.uow = uow;
     this.stockDao = stockDao;
     this.portfolioDao = portfolioDao;
+    gameIsRunning=false;
     market = TheStockMarket.getInstance();
     market.addListener(new StockListenerService(uow, stockDao, historyDao));
     market.addListener(new StockBankruptService(uow, ownedStockDao));
@@ -47,6 +49,7 @@ public class GameService
       market.addLiveStock(stock);
     }
     TheStockMarket.getInstance().startMarket();
+    gameIsRunning=true;
   }
 
   public void resetGame()
@@ -62,6 +65,7 @@ public class GameService
   {
     logger.log("INFO", "Stopping game");
     market.stopMarket();
+    gameIsRunning=false;
   }
 
   public List<Stock> getAllStocks()
@@ -79,5 +83,10 @@ public class GameService
     stockDao.createStock(new Stock("TSLA", "Tesla", startingPrice));
     portfolioDao.createPortfolio(new Portfolio(AppConfiguration.getAppConfiguration().getStartingBalance()));
     uow.commit();
+  }
+
+  public boolean isGameIsRunning()
+  {
+    return gameIsRunning;
   }
 }

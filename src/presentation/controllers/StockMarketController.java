@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -52,9 +51,9 @@ public class StockMarketController
       sellStockAmount.setValueFactory(sellStockValueFactory);
       sellStockAmount.setEditable(true);
       sellStockValueFactory.valueProperty().bindBidirectional(viewModel.sellAmountProperty().asObject());
-
     });
-    //Byy
+
+    //Buy
     buyStatusLabel.textProperty().bind(viewModel.buyStatusProperty());
     buyStockDropdown.valueProperty().bindBidirectional(viewModel.stockSymbolProperty());
     buyStockDropdown.setItems(viewModel.getStockSymbols());
@@ -90,6 +89,29 @@ public class StockMarketController
         });
   }
 
+  public void handleStartGame()
+  {
+    viewModel.startGame();
+    startGameButton.setDisable(true);
+  }
+
+  public void handleReset()
+  {
+    stockChart.getData().clear();
+    viewModel.resetGame();
+    startGameButton.setDisable(false);
+  }
+
+  public void handleBuyStock()
+  {
+    viewModel.buyStock();
+  }
+
+  public void handleSellStock()
+  {
+    viewModel.sellStock();
+  }
+
   private void attachSeries(XYChart.Series<Number, Number> series)
   {
     stockChart.getData().add(series);
@@ -117,28 +139,5 @@ public class StockMarketController
       xAxis.setLowerBound(maxX - window);
     if (maxX + 10 > window)
       xAxis.setUpperBound(maxX + 10);
-  }
-
-  public void handleStartGame()
-  {
-    viewModel.startGame();
-    startGameButton.setDisable(true);
-  }
-
-  public void handleReset(ActionEvent actionEvent)
-  {
-    stockChart.getData().clear();
-    viewModel.resetGame();
-    startGameButton.setDisable(false);
-  }
-
-  public void handleBuyStock(ActionEvent actionEvent)
-  {
-    viewModel.buyStock();
-  }
-
-  public void handleSellStock()
-  {
-    viewModel.sellStock();
   }
 }
