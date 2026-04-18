@@ -26,10 +26,7 @@ public class StockMarketController
   public Label balanceLabel;
   private NumberAxis xAxis;
 
-  private StockMarketViewModel viewModel;
-
-  private ObjectProperty<Integer> buyAmountWrapper;
-  private ObjectProperty<Integer> sellAmountWrapper;
+  private final StockMarketViewModel viewModel;
 
   public StockMarketController(StockMarketViewModel viewModel)
   {
@@ -51,7 +48,7 @@ public class StockMarketController
         200, 0);
     buyStockAmount.setValueFactory(buyStockValueFactory);
     buyStockAmount.setEditable(true);
-    buyAmountWrapper = viewModel.buyAmountProperty().asObject();
+    ObjectProperty<Integer> buyAmountWrapper = viewModel.buyAmountProperty().asObject();
     buyStockValueFactory.valueProperty().bindBidirectional(buyAmountWrapper);
 
     // Sell
@@ -63,7 +60,7 @@ public class StockMarketController
         200, 0);
     sellStockAmount.setValueFactory(sellStockValueFactory);
     sellStockAmount.setEditable(true);
-    sellAmountWrapper = viewModel.sellAmountProperty().asObject();
+    ObjectProperty<Integer> sellAmountWrapper = viewModel.sellAmountProperty().asObject();
     sellStockValueFactory.valueProperty().bindBidirectional(sellAmountWrapper);
 
     // Chart Stuff

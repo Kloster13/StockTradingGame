@@ -11,9 +11,9 @@ import presentation.core.AppContext;
 
 public class HomeViewModel
 {
-  private GameService gameService;
+  private final GameService gameService;
   private final ObservableList<Portfolio> portfolios = FXCollections.observableArrayList();
-  private ObjectProperty<Portfolio> selectedPortfolio = new SimpleObjectProperty<>();
+  private final ObjectProperty<Portfolio> selectedPortfolio = new SimpleObjectProperty<>();
 
   public HomeViewModel(GameService gameService, PortfolioService portfolioService)
   {

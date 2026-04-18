@@ -37,7 +37,7 @@ public class AppContext
     return new PortfolioViewModel(createPortfolioService());
   }
 
-  public StockMarketViewModel createStockMarketViewModel()
+  public StockMarketViewModel  createStockMarketViewModel()
   {
     return new StockMarketViewModel(createGameService(), createStockTransactionService(),
         createPortfolioService());

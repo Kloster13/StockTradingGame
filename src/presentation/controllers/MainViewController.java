@@ -14,33 +14,33 @@ import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable
 {
-  @FXML
-  private BorderPane shell;
-
-  public void handleStockMarket(ActionEvent evt)
-  {
-    Node source = (Node)evt.getSource();
-    source.fireEvent(new ChangeViewEvent("StockMarketView"));
-  }
-  public void handleWatchPortfolio(ActionEvent evt)
-  {
-    Node source = (Node)evt.getSource();
-    source.fireEvent(new ChangeViewEvent("PortfolioView"));
-  }
+  @FXML private BorderPane shell;
 
   @Override public void initialize(URL location, ResourceBundle resources)
   {
-    shell.addEventHandler(ChangeViewEvent.TYPE,this::changeView);
+    shell.addEventHandler(ChangeViewEvent.TYPE, this::changeView);
   }
 
-  private void changeView(ChangeViewEvent evt)
+  public void handleStockMarket(ActionEvent evt)
   {
-    ViewManager.showView(evt.getViewName());
+    Node source = (Node) evt.getSource();
+    source.fireEvent(new ChangeViewEvent("StockMarketView"));
+  }
+
+  public void handleWatchPortfolio(ActionEvent evt)
+  {
+    Node source = (Node) evt.getSource();
+    source.fireEvent(new ChangeViewEvent("PortfolioView"));
   }
 
   public void handleHomeButton(ActionEvent evt)
   {
     Node source = (Node) evt.getSource();
     source.fireEvent(new ChangeViewEvent("Home"));
+  }
+
+  private void changeView(ChangeViewEvent evt)
+  {
+    ViewManager.showView(evt.getViewName());
   }
 }

@@ -16,8 +16,7 @@ public class PortfolioViewModel
   private final StringProperty value = new SimpleStringProperty("");
 
   private final ObservableList<OwnedStockDTO> portfolios = FXCollections.observableArrayList();
-  private PortfolioService service;
-  private PortfolioData data;
+  private final PortfolioService service;
 
   public PortfolioViewModel(PortfolioService service)
   {
@@ -46,7 +45,7 @@ public class PortfolioViewModel
 
   public void refreshData()
   {
-    data = service.getPortfolioData(AppContext.getAppContext().getActivePortfolio());
+    PortfolioData data = service.getPortfolioData(AppContext.getAppContext().getActivePortfolio());
     portfolioName.set(data.name());
     balance.set(String.valueOf(data.currentBalance()));
     value.set(String.valueOf(data.portfolioValue()));

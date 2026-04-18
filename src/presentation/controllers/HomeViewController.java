@@ -9,7 +9,7 @@ import presentation.viewmodels.HomeViewModel;
 
 public class HomeViewController
 {
-  private HomeViewModel viewModel;
+  private final HomeViewModel viewModel;
   public ComboBox<Portfolio> portfolioCombo;
   public Button startGameButton;
   public Button resetGameButton;

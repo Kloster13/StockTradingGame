@@ -65,36 +65,6 @@ public class StockMarketViewModel implements PropertyChangeListener
       series.getData().removeFirst();
   }
 
-  @Override public void propertyChange(PropertyChangeEvent evt)
-  {
-    String evtName = evt.getPropertyName();
-    if (evtName.equals("GraphUpdate"))
-    {
-      Platform.runLater(() -> {
-        addPriceData((StockGraphDTO) evt.getNewValue());
-      });
-    }
-    if (evtName.equals("Bankrupt"))
-    {
-      Platform.runLater(() -> {
-        bankruptStatus.setValue(evt.getNewValue() + " went bankrupt!");
-      });
-    }
-  }
-
-  private void validateStockBuy()
-  {
-    boolean validStock = stockSymbol.getValue() != null && !stockSymbol.getValue().isBlank();
-    boolean validAmount = buyAmount.getValue() > 0;
-    canBuy.set(validAmount && validStock);
-  }
-
-  private void updateVisualData()
-  {
-    balance.setValue(Double.toString(
-        portfolioService.getPortfolioData(AppContext.getAppContext().getActivePortfolio()).currentBalance()));
-  }
-
   public void buyStock()
   {
     try
@@ -126,6 +96,36 @@ public class StockMarketViewModel implements PropertyChangeListener
     {
       sellStatus.setValue(e.getMessage());
     }
+  }
+
+  @Override public void propertyChange(PropertyChangeEvent evt)
+  {
+    String evtName = evt.getPropertyName();
+    if (evtName.equals("GraphUpdate"))
+    {
+      Platform.runLater(() -> {
+        addPriceData((StockGraphDTO) evt.getNewValue());
+      });
+    }
+    if (evtName.equals("Bankrupt"))
+    {
+      Platform.runLater(() -> {
+        bankruptStatus.setValue(evt.getNewValue() + " went bankrupt!");
+      });
+    }
+  }
+
+  private void validateStockBuy()
+  {
+    boolean validStock = stockSymbol.getValue() != null && !stockSymbol.getValue().isBlank();
+    boolean validAmount = buyAmount.getValue() > 0;
+    canBuy.set(validAmount && validStock);
+  }
+
+  private void updateVisualData()
+  {
+    balance.setValue(Double.toString(
+        portfolioService.getPortfolioData(AppContext.getAppContext().getActivePortfolio()).currentBalance()));
   }
 
   public ObservableList<String> getStockSymbols()
