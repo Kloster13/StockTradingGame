@@ -4,6 +4,8 @@ import domain.Stock;
 import shared.configuration.AppConfiguration;
 import shared.logging.Logger;
 
+import java.util.Objects;
+
 public class LiveStock
 {
   private final String symbol;
@@ -78,5 +80,18 @@ public class LiveStock
   public int getBankruptTic()
   {
     return bankruptTic;
+  }
+
+  @Override public boolean equals(Object o)
+  {
+    if (o == null || getClass() != o.getClass())
+      return false;
+    LiveStock liveStock = (LiveStock) o;
+    return Objects.equals(symbol, liveStock.symbol);
+  }
+
+  @Override public int hashCode()
+  {
+    return Objects.hashCode(symbol);
   }
 }

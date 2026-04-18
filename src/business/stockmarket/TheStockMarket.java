@@ -57,7 +57,9 @@ public class TheStockMarket
 
   public void addLiveStock(Stock stock)
   {
-    liveStocks.add(new LiveStock(stock));
+    LiveStock liveStock = new LiveStock(stock);
+    if(!liveStocks.contains(liveStock))
+      liveStocks.add(liveStock);
   }
 
   public void updateStocks()
@@ -87,25 +89,18 @@ public class TheStockMarket
     {
       throw new RuntimeException(e);
     }
-    liveStocks = new ArrayList<>();
     secondsRun = 0;
   }
 
   public void startMarket()
   {
-
     if (marketThread != null && marketThread.isAlive())
     {
       throw new RuntimeException("Market already Running");
     }
-
     marketTicker = new MarketTicker();
     marketThread = new Thread(marketTicker);
     marketThread.start();
-  }
-
-  public List<LiveStock> getLiveStocks(){
-    return liveStocks;
   }
 
   public void stopMarket()

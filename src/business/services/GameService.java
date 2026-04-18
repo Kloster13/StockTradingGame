@@ -56,8 +56,6 @@ public class GameService
   {
     logger.log("INFO", "Resetting game");
     uow.reset();
-    stopGame();
-    market.resetMarket();
     setUpStartingStocksAndPortfolio();
   }
 
@@ -65,6 +63,7 @@ public class GameService
   {
     logger.log("INFO", "Stopping game");
     market.stopMarket();
+    market.resetMarket();
     gameIsRunning=false;
   }
 

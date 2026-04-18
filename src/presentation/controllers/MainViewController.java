@@ -37,4 +37,10 @@ public class MainViewController implements Initializable
   {
     ViewManager.showView(evt.getViewName());
   }
+
+  public void handleHomeButton(ActionEvent evt)
+  {
+    Node source = (Node) evt.getSource();
+    source.fireEvent(new ChangeViewEvent("Home"));
+  }
 }

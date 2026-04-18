@@ -13,7 +13,7 @@ import java.util.Objects;
 public class ViewManager
 {
   private static BorderPane mainLayout;
-  private static String fxmlDirectoryPath = "/fxml/";
+  private final static String fxmlDirectoryPath = "/fxml/";
   private static ControllerFactory controllerFactory;
 
   private ViewManager()

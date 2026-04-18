@@ -1,6 +1,7 @@
 package presentation.viewmodels;
 
 import business.services.GameService;
+import business.services.PortfolioService;
 import business.services.StockTransactionService;
 import business.services.dtos.BuySellStockRequest;
 import business.stockmarket.StockGraphDTO;
@@ -14,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.chart.XYChart;
 import presentation.core.AppContext;
+import shared.configuration.AppConfiguration;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -22,10 +24,10 @@ public class StockMarketViewModel implements PropertyChangeListener
 {
   private final ObservableMap<String, XYChart.Series<Number, Number>> priceMap = FXCollections.observableHashMap();
   private final ObservableList<String> stockSymbols = FXCollections.observableArrayList();
-  private int activePortfolio = AppContext.getAppContext().getActivePortfolio();
 
-  private GameService gameService;
-  private StockTransactionService transactionService;
+  private final StockTransactionService transactionService;
+  private final PortfolioService portfolioService;
+  private final StringProperty balance = new SimpleStringProperty("");
   private final StringProperty buyStatus = new SimpleStringProperty("");
   private final IntegerProperty buyAmount = new SimpleIntegerProperty(0);
   private final StringProperty stockSymbol = new SimpleStringProperty();
@@ -33,20 +35,21 @@ public class StockMarketViewModel implements PropertyChangeListener
   private final IntegerProperty sellAmount = new SimpleIntegerProperty(0);
   private final StringProperty sellStockSymbol = new SimpleStringProperty();
   private final StringProperty sellStatus = new SimpleStringProperty("");
-  private BooleanProperty isGameRunning;
+  private final StringProperty bankruptStatus = new SimpleStringProperty("");
 
-  public StockMarketViewModel(GameService gameService, StockTransactionService transactionService)
+  public StockMarketViewModel(GameService gameService, StockTransactionService transactionService,
+      PortfolioService portfolioService)
   {
-    this.gameService = gameService;
     this.transactionService = transactionService;
+    this.portfolioService = portfolioService;
     TheStockMarket.getInstance().addListener("GraphUpdate", this);
+    TheStockMarket.getInstance().addListener("Bankrupt", this);
 
     stockSymbols.setAll(gameService.getAllStocks().stream().map(Stock::getSymbol).toList());
-
     buyAmount.addListener((obs, oldValue, newValue) -> validateStockBuy());
     stockSymbol.addListener((obs, oldValue, newValue) -> validateStockBuy());
+    updateVisualData();
     validateStockBuy();
-    System.out.println(gameService.isGameIsRunning());
   }
 
   public void addPriceData(StockGraphDTO dto)
@@ -71,6 +74,12 @@ public class StockMarketViewModel implements PropertyChangeListener
         addPriceData((StockGraphDTO) evt.getNewValue());
       });
     }
+    if (evtName.equals("Bankrupt"))
+    {
+      Platform.runLater(() -> {
+        bankruptStatus.setValue(evt.getNewValue() + " went bankrupt!");
+      });
+    }
   }
 
   private void validateStockBuy()
@@ -80,13 +89,20 @@ public class StockMarketViewModel implements PropertyChangeListener
     canBuy.set(validAmount && validStock);
   }
 
+  private void updateVisualData()
+  {
+    balance.setValue(Double.toString(
+        portfolioService.getPortfolioData(AppContext.getAppContext().getActivePortfolio()).currentBalance()));
+  }
+
   public void buyStock()
   {
     try
     {
-      BuySellStockRequest request = new BuySellStockRequest(activePortfolio, stockSymbol.getValue(),
-          buyAmount.getValue()); // TODO FIX PORTFOLIO LOGIC
+      BuySellStockRequest request = new BuySellStockRequest(AppContext.getAppContext().getActivePortfolio(),
+          stockSymbol.getValue(), buyAmount.getValue());
       transactionService.buyStock(request);
+      updateVisualData();
       buyStatus.setValue("Transaction completed");
     }
     catch (Exception e)
@@ -100,9 +116,10 @@ public class StockMarketViewModel implements PropertyChangeListener
   {
     try
     {
-      BuySellStockRequest request = new BuySellStockRequest(activePortfolio, sellStockSymbol.getValue(),
-          sellAmount.getValue());
+      BuySellStockRequest request = new BuySellStockRequest(AppContext.getAppContext().getActivePortfolio(),
+          sellStockSymbol.getValue(), sellAmount.getValue());
       transactionService.sellStock(request);
+      updateVisualData();
       sellStatus.setValue("Transaction completed");
     }
     catch (Exception e)
@@ -116,18 +133,7 @@ public class StockMarketViewModel implements PropertyChangeListener
     return stockSymbols;
   }
 
-  public void startGame()
-  {
-    gameService.startGame();
-  }
-
-  public void resetGame()
-  {
-    priceMap.clear();
-    gameService.resetGame();
-  }
-
-  public ObservableMap<String, XYChart.Series<Number, Number>> getPiceMap()
+  public ObservableMap<String, XYChart.Series<Number, Number>> getPriceMap()
   {
     return priceMap;
   }
@@ -165,5 +171,15 @@ public class StockMarketViewModel implements PropertyChangeListener
   public StringProperty sellStatusProperty()
   {
     return sellStatus;
+  }
+
+  public StringProperty bankruptStatusProperty()
+  {
+    return bankruptStatus;
+  }
+
+  public StringProperty balanceProperty()
+  {
+    return balance;
   }
 }

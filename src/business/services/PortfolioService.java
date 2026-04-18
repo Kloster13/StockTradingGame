@@ -40,18 +40,23 @@ public class PortfolioService
         if (ownedStock.getPortfolioId() == portfolioId)
         {
           Stock stock = stockDao.getStockBySymbol(ownedStock.getStockSymbol()).orElseThrow();
-          ownedStockInfo.add(
-              new OwnedStockDTO(ownedStock.getStockSymbol(), ownedStock.getNumberOfShares(),
-                  stock.getCurrentPrice()));
+          ownedStockInfo.add(new OwnedStockDTO(ownedStock.getStockSymbol(), ownedStock.getNumberOfShares(),
+              stock.getCurrentPrice()));
           portfolioValue += (stock.getCurrentPrice()) * ownedStock.getNumberOfShares();
         }
       }
-      return new PortfolioData(portfolio.getName(),portfolio.getCurrentBalance(), portfolioValue, ownedStockInfo);
+      return new PortfolioData(portfolio.getName(), portfolio.getCurrentBalance(), portfolioValue,
+          ownedStockInfo);
     }
     catch (NoSuchElementException e)
     {
       logger.log("ERROR", e.getMessage());
       throw new IllegalArgumentException(e.getMessage());
     }
+  }
+
+  public List<Portfolio> getAllPortfolios()
+  {
+    return portfolioDao.getAllPortfolios();
   }
 }

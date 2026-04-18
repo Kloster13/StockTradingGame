@@ -9,7 +9,10 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -19,8 +22,19 @@
             <children>
             <VBox alignment="TOP_CENTER" prefHeight="670.0" prefWidth="185.0" spacing="20.0">
                <children>
-                  <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#handleStartGame" prefHeight="26.0" prefWidth="92.0" text="Start Game" />
-                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="25.0" prefWidth="93.0" text="Reset Game" />
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label contentDisplay="RIGHT" text="Balance:    " />
+                        <Label fx:id="balanceLabel" text="BALANCE" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
                   <Separator prefWidth="200.0" />
                   <Label text="Buy Stocks">
                      <font>
@@ -41,6 +55,8 @@
                   <Spinner fx:id="sellStockAmount" />
                   <Button fx:id="sellStockButton" mnemonicParsing="false" onAction="#handleSellStock" text="Sell Stock" />
                   <Label fx:id="sellStatusLabel" />
+                  <Separator prefWidth="200.0" />
+                  <Label fx:id="bankruptLabel" />
                </children>
                <padding>
                   <Insets top="20.0" />

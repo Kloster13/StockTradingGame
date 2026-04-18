@@ -71,18 +71,20 @@ public class Portfolio
 
   @Override public String toString()
   {
-    return "Portfolio{" + "currentBalance=" + currentBalance + ", transactions=" + transactions + '}';
+    return name +" ("+currentBalance+")";
   }
 
   @Override public boolean equals(Object o)
   {
-    if (!(o instanceof Portfolio portfolio))
+    if (o == null || getClass() != o.getClass())
       return false;
-    return currentBalance == portfolio.currentBalance && Objects.equals(transactions, portfolio.transactions);
+    Portfolio portfolio = (Portfolio) o;
+    return Double.compare(currentBalance, portfolio.currentBalance) == 0 && Objects.equals(name,
+        portfolio.name) && Objects.equals(transactions, portfolio.transactions);
   }
 
   @Override public int hashCode()
   {
-    return Objects.hash(currentBalance, transactions);
+    return Objects.hash(name, currentBalance, transactions);
   }
 }

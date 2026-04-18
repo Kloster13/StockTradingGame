@@ -43,6 +43,7 @@ public class PortfolioViewController
     priceColumn.setCellValueFactory(
         cellData -> new ReadOnlyDoubleWrapper(cellData.getValue().currenPrice()).asObject());
     portfolioTable.setItems(viewModel.getPortfolios());
+    viewModel.refreshData();
   }
 
   public void handleBack(ActionEvent evt)

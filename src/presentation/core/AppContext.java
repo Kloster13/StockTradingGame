@@ -16,7 +16,7 @@ public class AppContext
   private int activePortfolio;
   private final String filePath = AppConfiguration.getAppConfiguration().getDirectoryPath();
   private GameService gameService;
-  private PortfolioService portfolioService;
+  private UnitOfWork unitOfWork;
 
   public AppContext()
   {
@@ -39,12 +39,13 @@ public class AppContext
 
   public StockMarketViewModel createStockMarketViewModel()
   {
-    return new StockMarketViewModel(createGameService(), createStockTransactionService());
+    return new StockMarketViewModel(createGameService(), createStockTransactionService(),
+        createPortfolioService());
   }
 
   public HomeViewModel createHomeViewModel()
   {
-    return new HomeViewModel(createGameService());
+    return new HomeViewModel(createGameService(), createPortfolioService());
   }
 
   // Services
@@ -64,15 +65,11 @@ public class AppContext
 
   private PortfolioService createPortfolioService()
   {
-    if (portfolioService == null)
-    {
-      UnitOfWork uow = creatUnitOfWork();
-      OwnedStockDao ownedStockDao = createOwnedStockDao(uow);
-      StockDao stockDao = createStockDao(uow);
-      PortfolioDao portfolioDao = createPortfolioDao(uow);
-      portfolioService = new PortfolioService(ownedStockDao, portfolioDao, stockDao);
-    }
-    return portfolioService;
+    UnitOfWork uow = creatUnitOfWork();
+    OwnedStockDao ownedStockDao = createOwnedStockDao(uow);
+    StockDao stockDao = createStockDao(uow);
+    PortfolioDao portfolioDao = createPortfolioDao(uow);
+    return new PortfolioService(ownedStockDao, portfolioDao, stockDao);
   }
 
   private StockTransactionService createStockTransactionService()
@@ -113,7 +110,10 @@ public class AppContext
 
   private UnitOfWork creatUnitOfWork()
   {
-    return new FileUnitOfWork(filePath);
+    if(unitOfWork==null)
+      unitOfWork = new FileUnitOfWork(filePath);
+
+    return unitOfWork;
   }
 
   public int getActivePortfolio()

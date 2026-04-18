@@ -22,11 +22,6 @@ public class PortfolioViewModel
   public PortfolioViewModel(PortfolioService service)
   {
     this.service = service;
-    data = service.getPortfolioData(AppContext.getAppContext().getActivePortfolio()); //TODO oh oh
-    portfolioName.set(data.name());
-    balance.set(String.valueOf(data.currentBalance()));
-    value.set(String.valueOf(data.portfolioValue()));
-    portfolios.setAll(data.ownedStockInfo());
   }
 
   public StringProperty portfolioNameProperty()
@@ -47,5 +42,14 @@ public class PortfolioViewModel
   public ObservableList<OwnedStockDTO> getPortfolios()
   {
     return portfolios;
+  }
+
+  public void refreshData()
+  {
+    data = service.getPortfolioData(AppContext.getAppContext().getActivePortfolio());
+    portfolioName.set(data.name());
+    balance.set(String.valueOf(data.currentBalance()));
+    value.set(String.valueOf(data.portfolioValue()));
+    portfolios.setAll(data.ownedStockInfo());
   }
 }
