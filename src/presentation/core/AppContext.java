@@ -13,13 +13,14 @@ import shared.configuration.AppConfiguration;
 public class AppContext
 {
   private static AppContext instance;
-  private int activePortfolio;
   private final String filePath = AppConfiguration.getAppConfiguration().getDirectoryPath();
   private GameService gameService;
   private UnitOfWork unitOfWork;
+  private ActivePortfolioCache cache;
 
   public AppContext()
   {
+    cache = new ActivePortfolioCache();
   }
 
   public static AppContext getAppContext()
@@ -34,18 +35,18 @@ public class AppContext
   // Exposed viewmodels
   public PortfolioViewModel createPortfolioViewModel()
   {
-    return new PortfolioViewModel(createPortfolioService());
+    return new PortfolioViewModel(createPortfolioService(),cache);
   }
 
-  public StockMarketViewModel  createStockMarketViewModel()
+  public StockMarketViewModel createStockMarketViewModel()
   {
     return new StockMarketViewModel(createGameService(), createStockTransactionService(),
-        createPortfolioService());
+        createPortfolioService(),cache);
   }
 
   public HomeViewModel createHomeViewModel()
   {
-    return new HomeViewModel(createGameService(), createPortfolioService());
+    return new HomeViewModel(createGameService(), createPortfolioService(),cache);
   }
 
   // Services
@@ -114,15 +115,5 @@ public class AppContext
       unitOfWork = new FileUnitOfWork(filePath);
 
     return unitOfWork;
-  }
-
-  public int getActivePortfolio()
-  {
-    return activePortfolio;
-  }
-
-  public void setActivePortfolio(int activePortfolio)
-  {
-    this.activePortfolio = activePortfolio;
   }
 }

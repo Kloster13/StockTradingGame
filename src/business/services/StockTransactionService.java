@@ -21,26 +21,29 @@ public class StockTransactionService
   private final StockDao stockDao;
   private final TransactionDao transactionDao;
 
-  public StockTransactionService(UnitOfWork uow, OwnedStockDao ownedStockDao,
-      PortfolioDao portfolioDao, StockDao stockDao,
-      TransactionDao transactionDao)
+  public StockTransactionService(UnitOfWork uow, OwnedStockDao ownedStockDao, PortfolioDao portfolioDao,
+      StockDao stockDao, TransactionDao transactionDao)
   {
     this.uow = uow;
     this.ownedStockDao = ownedStockDao;
     this.portfolioDao = portfolioDao;
     this.stockDao = stockDao;
-    this.transactionDao=transactionDao;
+    this.transactionDao = transactionDao;
   }
 
   public void buyStock(BuySellStockRequest request)
   {
     try
     {
-      logger.log("INFO","Buying "+ request.quantity() +" of "+ request.symbol());
+      logger.log("INFO", "Buying " + request.quantity() + " of " + request.symbol());
       uow.begin();
       // Validation and transaction creation
-      Stock stock = stockDao.getStockBySymbol(request.symbol()).orElseThrow();
-      Portfolio portfolio = portfolioDao.getPortfolioById(request.portfolioID()).orElseThrow();
+      if (request.symbol() == null)
+        throw new IllegalArgumentException("No stock selected");
+      Stock stock = stockDao.getStockBySymbol(request.symbol())
+          .orElseThrow(() -> new IllegalArgumentException("Can't find stock"));
+      Portfolio portfolio = portfolioDao.getPortfolioById(request.portfolioID())
+          .orElseThrow(() -> new IllegalArgumentException("Can't find portfolio"));
       if (stock.getCurrentState().equals("Bankrupt"))
         throw new IllegalArgumentException(stock.getSymbol() + " is bankrupt");
       if (request.quantity() < 1)
@@ -86,21 +89,22 @@ public class StockTransactionService
   {
     try
     {
-      logger.log("INFO","Selling "+ request.quantity() +" of "+ request.symbol());
+      logger.log("INFO", "Selling " + request.quantity() + " of " + request.symbol());
       uow.begin();
 
-      Stock stock = stockDao.getStockBySymbol(request.symbol()).orElseThrow();
+      Stock stock = stockDao.getStockBySymbol(request.symbol())
+          .orElseThrow(() -> new IllegalArgumentException("Can't find stock"));
       Portfolio portfolio = portfolioDao.getPortfolioById(request.portfolioID()).orElseThrow();
       OwnedStock ownedStock = getOwnedStockFromData(stock, portfolio);
       if (ownedStock == null)
       {
-        throw new IllegalArgumentException(stock.getSymbol() + " not found for in owned stock");
+        throw new IllegalArgumentException(stock.getSymbol() + " not found in owned stock");
       }
       if (request.quantity() < 1)
         throw new IllegalArgumentException("Quantity must be above 0");
       if (request.quantity() > ownedStock.getNumberOfShares())
-        throw new IllegalArgumentException("Request exceed number of owned stock. Owned stocks: "
-            + ownedStock.getNumberOfShares());
+        throw new IllegalArgumentException(
+            "Request exceed number of owned stock. Owned stocks: " + ownedStock.getNumberOfShares());
 
       if (ownedStock.getNumberOfShares() == request.quantity())
         ownedStockDao.deleteOwnedStock(ownedStock.getId());

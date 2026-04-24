@@ -59,4 +59,9 @@ public class PortfolioService
   {
     return portfolioDao.getAllPortfolios();
   }
+
+  public Portfolio getPortfolioById(int id)
+  {
+    return portfolioDao.getPortfolioById(id).orElseThrow();
+  }
 }

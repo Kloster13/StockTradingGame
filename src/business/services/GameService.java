@@ -76,6 +76,7 @@ public class GameService
   {
     uow.begin();
     double startingPrice = AppConfiguration.getAppConfiguration().getStockResetValue();
+    logger.log("INFO", "Resetting files");
     stockDao.createStock(new Stock("GOOG", "Google", startingPrice));
     stockDao.createStock(new Stock("MET", "Meta", startingPrice));
     stockDao.createStock(new Stock("NVDA", "Nvidia", startingPrice));

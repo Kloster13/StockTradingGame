@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import presentation.core.ActivePortfolioCache;
 import presentation.core.AppContext;
 
 public class PortfolioViewModel
@@ -17,10 +18,12 @@ public class PortfolioViewModel
 
   private final ObservableList<OwnedStockDTO> portfolios = FXCollections.observableArrayList();
   private final PortfolioService service;
+  private ActivePortfolioCache cache;
 
-  public PortfolioViewModel(PortfolioService service)
+  public PortfolioViewModel(PortfolioService service, ActivePortfolioCache cache)
   {
     this.service = service;
+    this.cache=cache;
   }
 
   public StringProperty portfolioNameProperty()
@@ -45,7 +48,7 @@ public class PortfolioViewModel
 
   public void refreshData()
   {
-    PortfolioData data = service.getPortfolioData(AppContext.getAppContext().getActivePortfolio());
+    PortfolioData data = service.getPortfolioData(cache.getPortfolioId());
     portfolioName.set(data.name());
     balance.set(String.valueOf(data.currentBalance()));
     value.set(String.valueOf(data.portfolioValue()));

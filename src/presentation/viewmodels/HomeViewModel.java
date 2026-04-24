@@ -7,20 +7,33 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import presentation.core.AppContext;
+import presentation.core.ActivePortfolioCache;
 
 public class HomeViewModel
 {
   private final GameService gameService;
+  ActivePortfolioCache activePortfolioCache;
   private final ObservableList<Portfolio> portfolios = FXCollections.observableArrayList();
   private final ObjectProperty<Portfolio> selectedPortfolio = new SimpleObjectProperty<>();
 
-  public HomeViewModel(GameService gameService, PortfolioService portfolioService)
+  public HomeViewModel(GameService gameService, PortfolioService portfolioService, ActivePortfolioCache cache)
   {
     this.gameService = gameService;
+    activePortfolioCache = cache;
     portfolios.setAll(portfolioService.getAllPortfolios());
+    if (portfolios.isEmpty())
+    {
+      gameService.resetGame();
+      portfolios.setAll(portfolioService.getAllPortfolios());
+      portfolios.getFirst();
+    }
     selectedPortfolio.addListener((obs, oldValue, newValue) -> setActivePortfolio(newValue));
-    selectedPortfolio.setValue(portfolios.getFirst());
+
+    if (activePortfolioCache.getPortfolioId() == 0)
+    {
+      setActivePortfolio(portfolios.getFirst());
+    }
+  selectedPortfolio.setValue(portfolioService.getPortfolioById(cache.getPortfolioId()));
   }
 
   public ObservableList<Portfolio> getPortfolios()
@@ -50,6 +63,6 @@ public class HomeViewModel
 
   private void setActivePortfolio(Portfolio portfolio)
   {
-    AppContext.getAppContext().setActivePortfolio(portfolio.getId());
+    activePortfolioCache.setPortfolioId(portfolio.getId());
   }
 }

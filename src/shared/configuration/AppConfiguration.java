@@ -7,11 +7,11 @@ import java.util.List;
 public class AppConfiguration
 {
   private static AppConfiguration instance;
-  private final int startingBalance = 10000;
+  private final double startingBalance = 10000.0;
   private double transactionFee = 5;
   private final int updateFrequencyInMs = 1000;
   private final double stockResetValue = 100;
-  private final String directoryPath = "src/data/testdata/";
+  private final String directoryPath = "src/data/devdata/";
 
   private AppConfiguration()
   {
@@ -26,7 +26,7 @@ public class AppConfiguration
     return instance;
   }
 
-  public int getStartingBalance()
+  public double getStartingBalance()
   {
     return startingBalance;
   }

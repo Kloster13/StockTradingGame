@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.chart.XYChart;
+import presentation.core.ActivePortfolioCache;
 import presentation.core.AppContext;
 import shared.configuration.AppConfiguration;
 
@@ -24,6 +25,7 @@ public class StockMarketViewModel implements PropertyChangeListener
 {
   private final ObservableMap<String, XYChart.Series<Number, Number>> priceMap = FXCollections.observableHashMap();
   private final ObservableList<String> stockSymbols = FXCollections.observableArrayList();
+  private ActivePortfolioCache cache;
 
   private final StockTransactionService transactionService;
   private final PortfolioService portfolioService;
@@ -38,10 +40,11 @@ public class StockMarketViewModel implements PropertyChangeListener
   private final StringProperty bankruptStatus = new SimpleStringProperty("");
 
   public StockMarketViewModel(GameService gameService, StockTransactionService transactionService,
-      PortfolioService portfolioService)
+      PortfolioService portfolioService, ActivePortfolioCache cache)
   {
     this.transactionService = transactionService;
     this.portfolioService = portfolioService;
+    this.cache=cache;
     TheStockMarket.getInstance().addListener("GraphUpdate", this);
     TheStockMarket.getInstance().addListener("Bankrupt", this);
 
@@ -69,7 +72,7 @@ public class StockMarketViewModel implements PropertyChangeListener
   {
     try
     {
-      BuySellStockRequest request = new BuySellStockRequest(AppContext.getAppContext().getActivePortfolio(),
+      BuySellStockRequest request = new BuySellStockRequest(cache.getPortfolioId(),
           stockSymbol.getValue(), buyAmount.getValue());
       transactionService.buyStock(request);
       updateVisualData();
@@ -79,14 +82,13 @@ public class StockMarketViewModel implements PropertyChangeListener
     {
       buyStatus.setValue(e.getMessage());
     }
-    System.out.println(buyAmount.getValue());
   }
 
   public void sellStock()
   {
     try
     {
-      BuySellStockRequest request = new BuySellStockRequest(AppContext.getAppContext().getActivePortfolio(),
+      BuySellStockRequest request = new BuySellStockRequest(cache.getPortfolioId(),
           sellStockSymbol.getValue(), sellAmount.getValue());
       transactionService.sellStock(request);
       updateVisualData();
@@ -125,7 +127,7 @@ public class StockMarketViewModel implements PropertyChangeListener
   private void updateVisualData()
   {
     balance.setValue(Double.toString(
-        portfolioService.getPortfolioData(AppContext.getAppContext().getActivePortfolio()).currentBalance()));
+        portfolioService.getPortfolioData(cache.getPortfolioId()).currentBalance()));
   }
 
   public ObservableList<String> getStockSymbols()
