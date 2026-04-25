@@ -1,5 +1,7 @@
 package Testing;
 
+import business.fee.FeeStrategy;
+import business.fee.FlatFee;
 import domain.*;
 import persistence.FileAccessException;
 import persistence.fileimplementation.*;
@@ -12,7 +14,7 @@ public class PersistenceTesting
   {
     // Slet filer før test køres////
     FileUnitOfWork tester = new FileUnitOfWork("src/data/testdata/");
-
+    FeeStrategy feeStrategy = new FlatFee();
     // stock testing
     try
     {
@@ -93,7 +95,7 @@ public class PersistenceTesting
     try
     {
       TransactionDao TransactionDao = new TransactionDaoFileImplementation(tester);
-      Transaction Transaction = new Transaction("META", "buy", 10, 100);
+      Transaction Transaction = new Transaction("META", "buy", 10, 100,feeStrategy);
       TransactionDao.createTransaction(Transaction);
     }
     catch (FileAccessException | IllegalArgumentException e)
@@ -103,8 +105,8 @@ public class PersistenceTesting
     try
     {
       TransactionDao TransactionDao = new TransactionDaoFileImplementation(tester);
-      Transaction Transaction2 = new Transaction("GOOG", "sell", 100, 20);
-      Transaction Transaction3 = new Transaction("GOOG", "sell", 1000, 20);
+      Transaction Transaction2 = new Transaction("GOOG", "sell", 100, 20,feeStrategy);
+      Transaction Transaction3 = new Transaction("GOOG", "sell", 1000, 20,feeStrategy);
       TransactionDao.createTransaction(Transaction3);
       TransactionDao.deleteTransaction(2);
       TransactionDao.createTransaction(

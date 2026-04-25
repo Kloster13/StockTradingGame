@@ -1,5 +1,7 @@
 package portfolioservicetests;
 
+import business.fee.FeeStrategy;
+import business.fee.FlatFee;
 import business.services.PortfolioService;
 import business.services.StockTransactionService;
 import business.services.dtos.BuySellStockRequest;
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.*;
   PortfolioService portfolioService;
   Logger logger;
   double transactionFee;
+  FeeStrategy feeStrategy = new FlatFee();
 
   @BeforeAll void setupLogger()
   {
@@ -52,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.*;
     transactionDao = new TransactionDaoMock(uow);
     stockPriceHistoryDao = new StockPriceHistoryDaoMock(uow);
     transactionService = new StockTransactionService(uow, ownedStockDao, portfolioDao, stockDao,
-        transactionDao);
+        transactionDao, feeStrategy);
     portfolioService = new PortfolioService(ownedStockDao, portfolioDao, stockDao);
     transactionFee = AppConfiguration.getAppConfiguration().getTransactionFee();
   }

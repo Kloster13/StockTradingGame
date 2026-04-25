@@ -1,5 +1,7 @@
 package buystock;
 
+import business.fee.FeeStrategy;
+import business.fee.FlatFee;
 import business.services.GameService;
 import business.services.PortfolioService;
 import business.services.StockTransactionService;
@@ -35,10 +37,13 @@ import static org.junit.jupiter.api.Assertions.*;
   IntegerProperty buyStockAmount;
   StringProperty buyStatusLabel;
 
+  FeeStrategy feeStrategy = new FlatFee();
   @BeforeAll static void initToolkit()
   {
-    Platform.startup(() -> {
-    });
+    try {
+      Platform.startup(() -> {});
+    } catch (IllegalStateException e) {
+    }
   }
 
   @BeforeAll void setupLogger()
@@ -182,7 +187,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
     GameService gameService = new GameService(unitOfWork, ownedStockDao, stockDao, historyDao, portfolioDao);
     StockTransactionService transactionService = new StockTransactionService(unitOfWork, ownedStockDao,
-        portfolioDao, stockDao, transactionDao);
+        portfolioDao, stockDao, transactionDao, feeStrategy);
     PortfolioService portfolioService = new PortfolioService(ownedStockDao, portfolioDao, stockDao);
     return new StockMarketViewModel(gameService, transactionService, portfolioService,cache);
   }

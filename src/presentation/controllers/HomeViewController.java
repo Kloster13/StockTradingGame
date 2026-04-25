@@ -1,6 +1,7 @@
 package presentation.controllers;
 
 import domain.Portfolio;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -13,12 +14,14 @@ public class HomeViewController
   public ComboBox<Portfolio> portfolioCombo;
   public Button startGameButton;
   public Button resetGameButton;
-
+  public ComboBox<String> feeStrategyCombo;
 
   @FXML private void initialize()
   {
     portfolioCombo.setItems(viewModel.getPortfolios());
     portfolioCombo.valueProperty().bindBidirectional(viewModel.selectedPortfolioProperty());
+    feeStrategyCombo.setItems(viewModel.getFeeStrategies());
+    feeStrategyCombo.valueProperty().bindBidirectional(viewModel.selectedFeeProperty());
   }
 
   public HomeViewController(HomeViewModel viewModel)
@@ -37,5 +40,9 @@ public class HomeViewController
   public void handleReset()
   {
     viewModel.resetGame();
+  }
+
+  public void handleFeeStrategy()
+  {
   }
 }

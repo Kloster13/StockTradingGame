@@ -1,5 +1,8 @@
 package presentation.core;
 
+import business.fee.FeeStrategy;
+import business.fee.FlatFee;
+import business.fee.PercentageFee;
 import business.services.GameService;
 import business.services.PortfolioService;
 import business.services.StockTransactionService;
@@ -16,11 +19,13 @@ public class AppContext
   private final String filePath = AppConfiguration.getAppConfiguration().getDirectoryPath();
   private GameService gameService;
   private UnitOfWork unitOfWork;
-  private ActivePortfolioCache cache;
+  private final ActivePortfolioCache cache;
+  private FeeStrategy feeStrategy;
 
   public AppContext()
   {
     cache = new ActivePortfolioCache();
+    feeStrategy = new FlatFee();
   }
 
   public static AppContext getAppContext()
@@ -80,7 +85,7 @@ public class AppContext
     StockDao stockDao = createStockDao(uow);
     PortfolioDao portfolioDao = createPortfolioDao(uow);
     TransactionDao transactionDao = createTransactionDao(uow);
-    return new StockTransactionService(uow, ownedStockDao, portfolioDao, stockDao, transactionDao);
+    return new StockTransactionService(uow, ownedStockDao, portfolioDao, stockDao, transactionDao, feeStrategy);
   }
 
   ///  DAOs
@@ -115,5 +120,15 @@ public class AppContext
       unitOfWork = new FileUnitOfWork(filePath);
 
     return unitOfWork;
+  }
+
+  public FeeStrategy getFeeStrategy()
+  {
+    return feeStrategy;
+  }
+
+  public void setFeeStrategy(FeeStrategy feeStrategy)
+  {
+    this.feeStrategy = feeStrategy;
   }
 }

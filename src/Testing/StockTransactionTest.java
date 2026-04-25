@@ -1,5 +1,7 @@
 package Testing;
 
+import business.fee.FeeStrategy;
+import business.fee.FlatFee;
 import business.services.StockTransactionService;
 import business.services.dtos.BuySellStockRequest;
 import persistence.fileimplementation.*;
@@ -25,6 +27,7 @@ public class StockTransactionTest
 
   public static StockTransactionService getStockTransactionService()
   {
+    FeeStrategy feeStrategy = new FlatFee();
     FileUnitOfWork tester = new FileUnitOfWork("src/data/testdata/");
     OwnedStockDao ownedStockDao = new OwnedStockDaoFileImplementation(tester);
     PortfolioDao portfolioDao = new PortfolioDaoFileImplementation(tester);
@@ -34,7 +37,7 @@ public class StockTransactionTest
     TransactionDao transactionDao = new TransactionDaoFileImplementation(
         tester);
     StockTransactionService transaction = new StockTransactionService(tester,
-        ownedStockDao, portfolioDao, stockDao, transactionDao);
+        ownedStockDao, portfolioDao, stockDao, transactionDao, feeStrategy);
     return transaction;
   }
 }

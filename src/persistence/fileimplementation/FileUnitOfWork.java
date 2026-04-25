@@ -240,20 +240,20 @@ public class FileUnitOfWork implements UnitOfWork
   // From object to string
   private String ownedStockToPSV(OwnedStock ownedStock)
   {
-    return ownedStock.getId() + "|" + ownedStock.getPortfolioId() + "|"
-        + ownedStock.getStockSymbol() + "|" + ownedStock.getNumberOfShares();
+    return ownedStock.getId() + "|" + ownedStock.getPortfolioId() + "|" + ownedStock.getStockSymbol() + "|"
+        + ownedStock.getNumberOfShares();
   }
 
   private String portfolioToPSV(Portfolio portfolio)
   {
-    return portfolio.getId() + "|" +portfolio.getName()+"|" + portfolio.getCurrentBalance() + "|"
+    return portfolio.getId() + "|" + portfolio.getName() + "|" + portfolio.getCurrentBalance() + "|"
         + portfolio.getTransactions();
   }
 
   private String stockToPSV(Stock stock)
   {
-    return stock.getId() + "|" + stock.getSymbol() + "|" + stock.getName() + "|"
-        + stock.getCurrentPrice() + "|" + stock.getCurrentState();
+    return stock.getId() + "|" + stock.getSymbol() + "|" + stock.getName() + "|" + stock.getCurrentPrice()
+        + "|" + stock.getCurrentState();
   }
 
   private String stockPriceHistoryToPSV(StockPriceHistory history)
@@ -264,9 +264,9 @@ public class FileUnitOfWork implements UnitOfWork
 
   private String transactionToPSV(Transaction transaction)
   {
-    return transaction.getId() + "|" + transaction.getStockSymbol() + "|" + transaction.getType()
-        + "|" + transaction.getQuantity() + "|" + transaction.getPricePrShare() + "|"
-        + transaction.getTimestamp();
+    return transaction.getId() + "|" + transaction.getStockSymbol() + "|" + transaction.getType() + "|"
+        + transaction.getQuantity() + "|" + transaction.getPricePrShare() + "|" + transaction.getTimestamp()+"|"
+        + transaction.getFee();
   }
 
   // From string to object
@@ -300,15 +300,14 @@ public class FileUnitOfWork implements UnitOfWork
   private Portfolio portfolioFromPSV(String psv)
   {
     String[] parts = psv.split("\\|");
-    return new Portfolio(Integer.parseInt(parts[0]),parts[1], Double.parseDouble(parts[2]),
+    return new Portfolio(Integer.parseInt(parts[0]), parts[1], Double.parseDouble(parts[2]),
         parseStringToList(parts[3]));
   }
 
   private Stock stockFromPSV(String psv)
   {
     String[] parts = psv.split("\\|");
-    return new Stock(Integer.parseInt(parts[0]), parts[1], parts[2], Double.parseDouble(parts[3]),
-        parts[4]);
+    return new Stock(Integer.parseInt(parts[0]), parts[1], parts[2], Double.parseDouble(parts[3]), parts[4]);
   }
 
   private StockPriceHistory historyFromPSV(String psv)
@@ -321,8 +320,8 @@ public class FileUnitOfWork implements UnitOfWork
   private Transaction transactionFromPSV(String psv)
   {
     String[] parts = psv.split("\\|");
-    return new Transaction(Integer.parseInt(parts[0]), parts[1], parts[2],
-        Integer.parseInt(parts[3]), Double.parseDouble(parts[4]), LocalDate.parse(parts[5]));
+    return new Transaction(Integer.parseInt(parts[0]), parts[1], parts[2], Integer.parseInt(parts[3]),
+        Double.parseDouble(parts[4]), LocalDate.parse(parts[5]), Double.parseDouble(parts[6]));
   }
 
   private void ensureFilesExist()

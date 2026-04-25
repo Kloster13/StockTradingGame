@@ -1,5 +1,6 @@
 package business.services;
 
+import business.fee.FeeStrategy;
 import business.services.dtos.BuySellStockRequest;
 import domain.OwnedStock;
 import domain.Portfolio;
@@ -20,15 +21,17 @@ public class StockTransactionService
   private final PortfolioDao portfolioDao;
   private final StockDao stockDao;
   private final TransactionDao transactionDao;
+  private FeeStrategy feeStrategy;
 
   public StockTransactionService(UnitOfWork uow, OwnedStockDao ownedStockDao, PortfolioDao portfolioDao,
-      StockDao stockDao, TransactionDao transactionDao)
+      StockDao stockDao, TransactionDao transactionDao, FeeStrategy feeStrategy)
   {
     this.uow = uow;
     this.ownedStockDao = ownedStockDao;
     this.portfolioDao = portfolioDao;
     this.stockDao = stockDao;
     this.transactionDao = transactionDao;
+    this.feeStrategy=feeStrategy;
   }
 
   public void buyStock(BuySellStockRequest request)
@@ -48,8 +51,9 @@ public class StockTransactionService
         throw new IllegalArgumentException(stock.getSymbol() + " is bankrupt");
       if (request.quantity() < 1)
         throw new IllegalArgumentException("Quantity must be above 0");
+      System.out.println(feeStrategy);
       Transaction transaction = new Transaction(stock.getSymbol(), "buy", request.quantity(),
-          stock.getCurrentPrice());
+          stock.getCurrentPrice(), feeStrategy);
       if (portfolio.getCurrentBalance() < transaction.getTotalAmount())
         throw new IllegalArgumentException("Not enough money");
 
@@ -112,7 +116,7 @@ public class StockTransactionService
         ownedStock.setNumberOfShares(ownedStock.getNumberOfShares() - request.quantity());
 
       Transaction transaction = new Transaction(stock.getSymbol(), "sell", request.quantity(),
-          stock.getCurrentPrice());
+          stock.getCurrentPrice(),feeStrategy);
       transactionDao.createTransaction(transaction);
       portfolio.addTransactions(transaction.getId());
 

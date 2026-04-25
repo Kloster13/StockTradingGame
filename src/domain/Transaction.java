@@ -1,6 +1,8 @@
 package domain;
 
+import business.fee.FeeStrategy;
 import shared.configuration.AppConfiguration;
+import shared.logging.Logger;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -17,34 +19,33 @@ public class Transaction
   private final LocalDate timestamp;
 
   public Transaction(String stockSymbol, String type, int quantity,
-      double pricePrShare)
+      double pricePrShare, FeeStrategy feeStrategy)
   {
     this.stockSymbol = stockSymbol;
     this.type = type;
     this.quantity = quantity;
     this.pricePrShare = pricePrShare;
-    this.fee = AppConfiguration.getAppConfiguration().getTransactionFee();
+    this.fee = feeStrategy.calculateFee(quantity,pricePrShare);
     if (type.equals("sell"))
       this.totalAmount = (pricePrShare * quantity) - fee;
     else
-
       this.totalAmount = (pricePrShare * quantity) + fee;
     this.timestamp = LocalDate.now();
+    Logger.getInstance().log("INFO","New transaction: Fee calculated to: "+fee+ " strategy: "+feeStrategy);
   }
 
   public Transaction(int id, String stockSymbol, String type, int quantity,
-      double pricePrShare, LocalDate timestamp)
+      double pricePrShare, LocalDate timestamp, double fee)
   {
     this.id = id;
     this.stockSymbol = stockSymbol;
     this.type = type;
     this.quantity = quantity;
     this.pricePrShare = pricePrShare;
-    this.fee = AppConfiguration.getAppConfiguration().getTransactionFee();
+    this.fee = fee;
     if (type.equals("sell"))
       this.totalAmount = (pricePrShare * quantity) - fee;
     else
-
       this.totalAmount = (pricePrShare * quantity) + fee;
     this.timestamp = timestamp;
   }
