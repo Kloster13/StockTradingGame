@@ -17,6 +17,7 @@ public class AppContext
 {
   private static AppContext instance;
   private final String filePath = AppConfiguration.getAppConfiguration().getDirectoryPath();
+  private StockMarketViewModel stockMarketViewModel;
   private GameService gameService;
   private UnitOfWork unitOfWork;
   private final ActivePortfolioCache cache;
@@ -40,18 +41,22 @@ public class AppContext
   // Exposed viewmodels
   public PortfolioViewModel createPortfolioViewModel()
   {
-    return new PortfolioViewModel(createPortfolioService(),cache);
+    return new PortfolioViewModel(createPortfolioService(), cache);
   }
 
   public StockMarketViewModel createStockMarketViewModel()
   {
-    return new StockMarketViewModel(createGameService(), createStockTransactionService(),
-        createPortfolioService(),cache);
+    if (stockMarketViewModel == null)
+    {
+      stockMarketViewModel = new StockMarketViewModel(createGameService(), createStockTransactionService(),
+          createPortfolioService(), cache);
+    }
+    return stockMarketViewModel;
   }
 
   public HomeViewModel createHomeViewModel()
   {
-    return new HomeViewModel(createGameService(), createPortfolioService(),cache);
+    return new HomeViewModel(createGameService(), createPortfolioService(), cache);
   }
 
   // Services
@@ -85,7 +90,8 @@ public class AppContext
     StockDao stockDao = createStockDao(uow);
     PortfolioDao portfolioDao = createPortfolioDao(uow);
     TransactionDao transactionDao = createTransactionDao(uow);
-    return new StockTransactionService(uow, ownedStockDao, portfolioDao, stockDao, transactionDao, feeStrategy);
+    return new StockTransactionService(uow, ownedStockDao, portfolioDao, stockDao, transactionDao,
+        feeStrategy);
   }
 
   ///  DAOs
@@ -116,7 +122,7 @@ public class AppContext
 
   private UnitOfWork creatUnitOfWork()
   {
-    if(unitOfWork==null)
+    if (unitOfWork == null)
       unitOfWork = new FileUnitOfWork(filePath);
 
     return unitOfWork;

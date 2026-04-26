@@ -16,6 +16,8 @@ import javafx.collections.ObservableMap;
 import javafx.scene.chart.XYChart;
 import presentation.core.ActivePortfolioCache;
 import presentation.core.AppContext;
+import presentation.notification.AlertAdapter;
+import presentation.notification.ShowNotification;
 import shared.configuration.AppConfiguration;
 
 import java.beans.PropertyChangeEvent;
@@ -39,6 +41,7 @@ public class StockMarketViewModel implements PropertyChangeListener
   private final StringProperty sellStatus = new SimpleStringProperty("");
   private final StringProperty bankruptStatus = new SimpleStringProperty("");
 
+  ShowNotification notifications = new AlertAdapter();
   public StockMarketViewModel(GameService gameService, StockTransactionService transactionService,
       PortfolioService portfolioService, ActivePortfolioCache cache)
   {
@@ -111,9 +114,7 @@ public class StockMarketViewModel implements PropertyChangeListener
     }
     if (evtName.equals("Bankrupt"))
     {
-      Platform.runLater(() -> {
-        bankruptStatus.setValue(evt.getNewValue() + " went bankrupt!");
-      });
+      notifications.showNotification(evt,"info",evt.getNewValue() + " went bankrupt!");
     }
   }
 

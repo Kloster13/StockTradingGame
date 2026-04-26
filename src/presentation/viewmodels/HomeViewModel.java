@@ -17,7 +17,6 @@ import presentation.core.ActivePortfolioCache;
 import presentation.core.AppContext;
 
 import java.util.List;
-import java.util.SortedMap;
 
 public class HomeViewModel
 {
