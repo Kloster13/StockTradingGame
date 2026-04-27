@@ -8,7 +8,7 @@ public class RunApp extends Application
 {
   @Override public void start(Stage primaryStage) throws Exception
   {
-    //  Logger.getInstance().setOutput(new FileLogAdapter());
+    Logger.getInstance().setOutput(new FileLogAdapter());
     ViewManager.init(primaryStage, "MainView");
     ViewManager.showView("Home");
   }

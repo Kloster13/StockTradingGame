@@ -11,7 +11,8 @@ public class AppConfiguration
   private double transactionFee = 5;
   private final int updateFrequencyInMs = 1000;
   private final double stockResetValue = 100;
-  private final String directoryPath = "src/data/devdata/";
+
+  private String directoryPath = "src/data/devdata/";
 
   private AppConfiguration()
   {
@@ -39,6 +40,11 @@ public class AppConfiguration
   public double getTransactionFee()
   {
     return transactionFee;
+  }
+
+  public void setDirectoryPath(String directoryPath)
+  {
+    this.directoryPath = directoryPath;
   }
 
   public int getUpdateFrequencyInMs()
