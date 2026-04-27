@@ -1,0 +1,108 @@
+[2026-04-25 18:27:27] INFO: Hej
+[2026-04-25 18:27:46] INFO: Fetching portfolio data
+[2026-04-25 18:27:48] INFO: Starting game
+[2026-04-25 18:27:48] INFO: Starting stock: GOOG price: 83.0
+[2026-04-25 18:27:48] INFO: Starting stock: MET price: 167.0
+[2026-04-25 18:27:48] INFO: Starting stock: NVDA price: 127.0
+[2026-04-25 18:27:48] INFO: Starting stock: TSLA price: 38.0
+[2026-04-25 18:27:48] INFO: Writing stock to file
+[2026-04-25 18:27:48] INFO: Writing stock history to file
+[2026-04-25 18:27:48] INFO: Comitted
+[2026-04-25 18:27:48] INFO: GOOG was updated to: 83.0
+[2026-04-25 18:27:48] INFO: Writing stock to file
+[2026-04-25 18:27:48] INFO: Writing stock history to file
+[2026-04-25 18:27:48] INFO: Comitted
+[2026-04-25 18:27:48] INFO: MET was updated to: 172.0
+[2026-04-25 18:27:48] INFO: Writing stock to file
+[2026-04-25 18:27:48] INFO: Writing stock history to file
+[2026-04-25 18:27:48] INFO: Comitted
+[2026-04-25 18:27:48] INFO: NVDA was updated to: 103.0
+[2026-04-25 18:27:48] INFO: Writing stock to file
+[2026-04-25 18:27:48] INFO: Writing stock history to file
+[2026-04-25 18:27:48] INFO: Comitted
+[2026-04-25 18:27:48] INFO: TSLA was updated to: 41.0
+[2026-04-25 18:27:49] INFO: Writing stock to file
+[2026-04-25 18:27:49] INFO: Writing stock history to file
+[2026-04-25 18:27:49] INFO: Comitted
+[2026-04-25 18:27:49] INFO: GOOG was updated to: 86.0
+[2026-04-25 18:27:49] INFO: Writing stock to file
+[2026-04-25 18:27:49] INFO: Writing stock history to file
+[2026-04-25 18:27:49] INFO: Comitted
+[2026-04-25 18:27:49] INFO: MET was updated to: 187.0
+[2026-04-25 18:27:49] INFO: Writing stock to file
+[2026-04-25 18:27:49] INFO: Writing stock history to file
+[2026-04-25 18:27:49] INFO: Comitted
+[2026-04-25 18:27:49] INFO: NVDA was updated to: 76.0
+[2026-04-25 18:27:49] INFO: Writing stock to file
+[2026-04-25 18:27:49] INFO: Writing stock history to file
+[2026-04-25 18:27:49] INFO: Comitted
+[2026-04-25 18:27:49] INFO: TSLA was updated to: 41.0
+[2026-04-25 18:27:50] INFO: Writing stock to file
+[2026-04-25 18:27:50] INFO: Writing stock history to file
+[2026-04-25 18:27:50] INFO: Comitted
+[2026-04-25 18:27:50] INFO: GOOG was updated to: 86.0
+[2026-04-25 18:27:50] INFO: Writing stock to file
+[2026-04-25 18:27:50] INFO: Writing stock history to file
+[2026-04-25 18:27:50] INFO: Comitted
+[2026-04-25 18:27:50] INFO: MET was updated to: 192.0
+[2026-04-25 18:27:50] INFO: Writing stock to file
+[2026-04-25 18:27:50] INFO: Writing stock history to file
+[2026-04-25 18:27:50] INFO: Comitted
+[2026-04-25 18:27:50] INFO: NVDA was updated to: 63.0
+[2026-04-25 18:27:50] INFO: Writing stock to file
+[2026-04-25 18:27:50] INFO: Writing stock history to file
+[2026-04-25 18:27:50] INFO: Comitted
+[2026-04-25 18:27:50] INFO: TSLA was updated to: 29.0
+[2026-04-25 18:27:51] INFO: Writing stock to file
+[2026-04-25 18:27:51] INFO: Writing stock history to file
+[2026-04-25 18:27:51] INFO: Comitted
+[2026-04-25 18:27:51] INFO: GOOG was updated to: 88.0
+[2026-04-25 18:27:51] INFO: Writing stock to file
+[2026-04-25 18:27:51] INFO: Writing stock history to file
+[2026-04-25 18:27:51] INFO: Comitted
+[2026-04-25 18:27:51] INFO: MET was updated to: 198.0
+[2026-04-25 18:27:51] INFO: Writing stock to file
+[2026-04-25 18:27:51] INFO: Writing stock history to file
+[2026-04-25 18:27:51] INFO: Comitted
+[2026-04-25 18:27:51] INFO: NVDA was updated to: 51.0
+[2026-04-25 18:27:51] INFO: Writing stock to file
+[2026-04-25 18:27:51] INFO: Writing stock history to file
+[2026-04-25 18:27:51] INFO: Comitted
+[2026-04-25 18:27:51] INFO: TSLA was updated to: 19.0
+[2026-04-25 18:27:52] INFO: Writing stock to file
+[2026-04-25 18:27:52] INFO: Writing stock history to file
+[2026-04-25 18:27:52] INFO: Comitted
+[2026-04-25 18:27:52] INFO: GOOG was updated to: 84.0
+[2026-04-25 18:27:52] INFO: Writing stock to file
+[2026-04-25 18:27:52] INFO: Writing stock history to file
+[2026-04-25 18:27:52] INFO: Comitted
+[2026-04-25 18:27:52] INFO: MET was updated to: 205.0
+[2026-04-25 18:27:52] INFO: Writing stock to file
+[2026-04-25 18:27:52] INFO: Writing stock history to file
+[2026-04-25 18:27:52] INFO: Comitted
+[2026-04-25 18:27:52] INFO: NVDA was updated to: 45.0
+[2026-04-25 18:27:52] INFO: Writing stock to file
+[2026-04-25 18:27:52] INFO: Writing stock history to file
+[2026-04-25 18:27:52] INFO: Comitted
+[2026-04-25 18:27:52] INFO: TSLA was updated to: 10.0
+[2026-04-25 18:27:53] INFO: Writing stock to file
+[2026-04-25 18:27:53] INFO: Writing stock history to file
+[2026-04-25 18:27:53] INFO: Comitted
+[2026-04-25 18:27:53] INFO: GOOG was updated to: 87.0
+[2026-04-25 18:27:53] INFO: Writing stock to file
+[2026-04-25 18:27:53] INFO: Writing stock history to file
+[2026-04-25 18:27:53] INFO: Comitted
+[2026-04-25 18:27:53] INFO: MET was updated to: 223.0
+[2026-04-25 18:27:53] INFO: Writing stock to file
+[2026-04-25 18:27:53] INFO: Writing stock history to file
+[2026-04-25 18:27:53] INFO: Comitted
+[2026-04-25 18:27:53] INFO: NVDA was updated to: 32.0
+[2026-04-25 18:27:53] INFO: TSLA went bankrupt
+[2026-04-25 18:27:53] INFO: Writing stock to file
+[2026-04-25 18:27:53] INFO: Writing stock history to file
+[2026-04-25 18:27:53] INFO: Comitted
+[2026-04-25 18:27:53] INFO: TSLA was updated to: 0.0
+[2026-04-25 18:27:53] INFO: Writing owned stock to file
+[2026-04-25 18:27:53] INFO: Comitted
+[2026-04-25 18:27:53] INFO: Owned stock from TSLA was deleted
+[2026-04-25 18:27:54] INFO: Stopping game
